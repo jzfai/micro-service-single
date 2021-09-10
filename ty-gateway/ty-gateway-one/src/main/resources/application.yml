@@ -1,0 +1,83 @@
+#server:
+#  port: ${envpt.tomcatPortPre}0156
+#
+#spring:
+#  cloud:
+#    gateway:
+##      globalcors:
+##        corsConfigurations:
+##          '[/**]':
+##            # 允许携带认证信息
+##            # 允许跨域的源(网站域名/ip)，设置*为全部
+##            # 允许跨域请求里的head字段，设置*为全部
+##            # 允许跨域的method， 默认为GET和OPTIONS，设置*为全部
+##            # 跨域允许的有效期
+##            allow-credentials: true
+##            allowed-origins: "*"
+##            allowed-headers: "*"
+##            allowed-methods:
+##            - OPTIONS
+##            - GET
+##            - POST
+##            - PUT
+##            - DELETE
+##            #max-age: 3600
+#      routes:
+#      - id: ty-auth
+#        uri: lb://ty-auth
+#        predicates:
+#        - Path=/api/ty-auth/**
+#        filters:
+#        - StripPrefix=2
+#
+#      - id: ty-email
+#        uri: lb://ty-email
+#        predicates:
+#        - Path=/api/ty-email/**
+#        filters:
+#        - StripPrefix=2
+#
+#      - id: ty-excel
+#        uri: lb://ty-excel
+#        predicates:
+#        - Path=/api/ty-excel/**
+#        filters:
+#        - StripPrefix=2
+#
+#      - id: ty-user
+#        uri: lb://ty-user
+#        predicates:
+#        - Path=/api/ty-user/**
+#        filters:
+#        - StripPrefix=2
+#
+##      - id: fai_search_route
+##        uri: lb://search
+##        predicates:
+##        - Path=/api/search/**
+##        filters:
+##        - StripPrefix=2
+##        - name: RequestRateLimiter #请求数限流 名字不能随便写 ，使用默认的facatory
+##          args:
+##            key-resolver: "#{@ipKeyResolver}"
+##            redis-rate-limiter.replenishRate: 2
+##            redis-rate-limiter.burstCapacity: 2
+#
+#
+#management:
+#  endpoint:
+#    gateway:
+#      enabled: true
+#    web:
+#      exposure:
+#        include: true
+#
+#
+##白名单过滤
+#filter:
+#  allowPaths: swagger,docs,userRegister,userLogin,sendEmailCode,registry,login,loginOut,insertUser
+#
+#
+#
+#token-properties:
+#  renewTokenMinute: 1440 #默认1天时间告知前端刷新token
