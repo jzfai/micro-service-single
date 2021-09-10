@@ -96,7 +96,7 @@
                 <nacosDiscoveryIp>127.0.0.1</nacosDiscoveryIp>
                 <nacosNamespace>df87d91b-b1ab-4720-8e1c-5a147edc6ddc</nacosNamespace>
                 <nacosGroup>nacos-group-${activatedProperties}</nacosGroup>
-                <nacosUsername>admin</nacosUsername>
+                <nacosUsername>jzfai</nacosUsername>
                 <nacosPassword>123456</nacosPassword>
             </properties>
         </profile>
@@ -113,7 +113,7 @@
                 <nacosDiscoveryIp>127.0.0.1</nacosDiscoveryIp>
                 <nacosNamespace>df87d91b-b1ab-4720-8e1c-5a147edc6ddc</nacosNamespace>
                 <nacosGroup>nacos-group-${activatedProperties}</nacosGroup>
-                <nacosUsername>admin</nacosUsername>
+                <nacosUsername>jzfai</nacosUsername>
                 <nacosPassword>123456</nacosPassword>
             </properties>
         </profile>
