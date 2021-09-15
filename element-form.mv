@@ -1,0 +1,302 @@
+##导入宏定义
+$!init
+$!define
+##定义实体对象名
+#set($entityName = $!tool.firstLowerCase($!tableInfo.name))
+#set($serviceName = 'ty-user')
+
+##保存文件（宏定义）
+#save($!{entityName}, "Form.vue")
+<template>
+    <el-dialog
+            v-if="dialogVisibleMixin"
+            :title="dialogTitleMixin"
+            v-model="dialogVisibleMixin"
+            width="50vw"
+            :close-on-click-modal="false"
+            :before-close="beforeCloseModal">
+        <el-form
+                label-width="150px"
+                ref="refForm"
+                :inline="false"
+                :model="subFormMixin"
+                :rules="formRulesMixin"
+                class="pr-5">
+            #foreach($column in $tableInfo.otherColumn)
+                #if(${column.comment})
+                ##date
+                    #if( $column.comment.indexOf("date") != -1)
+                        <el-form-item
+                                label="$!{column.comment.split(';')[0]}"
+                                prop="$!{column.name}"
+                                :rules="formRulesMixin.isNotNull"
+                                label-position="left">
+                            <el-date-picker
+                                    v-model="subFormMixin.$!{column.name}"
+                                    type="date"
+                                    format="YYYY-MM-DD"
+                                    placeholder="请选择日期"
+                                    value-format="YYYY-MM-DD"
+                                    class="widthPx-150"/>
+                        </el-form-item>
+                    ##datetimerange
+                    #elseif( $column.comment.indexOf("timerange") != -1)
+                        <el-form-item
+                                label="$!{column.comment.split(';')[0]}"
+                                prop="$!{column.name}"
+                                :rules="formRulesMixin.isNotNull"
+                                label-position="left">
+                            <el-date-picker
+                                    v-model="subFormMixin.timeArrMixin"
+                                    type="datetimerange"
+                                    format="YYYY-MM-DD"
+                                    @change="timePacking"
+                                    value-format="YYYY-MM-DD HH:mm:ss"
+                                    class="widthPx-330"
+                                    range-separator="-"
+                                    start-placeholder="开始日期"
+                                    end-placeholder="结束日期"/>
+                        </el-form-item>
+                    ##select
+                    #elseif( $column.comment.indexOf("select") != -1)
+                        <el-form-item
+                                label="$!{column.comment.split(';')[0]}"
+                                prop="$!{column.name}"
+                                :rules="formRulesMixin.isNotNull"
+                                label-position="left">
+                            <el-select
+                                    v-model="subFormMixin.$!{column.name}"
+                                    clearable
+                                    default-first-option
+                                    class="widthPx-120"
+                                    placeholder="状态">
+                                #set($lable= $!{column.comment.split(';')[1]})
+                                #set($indexFirst=$lable.indexOf('(')+1)
+                                #set($selectLableArr=$lable.substring($indexFirst,$lable.indexOf(")")).split(','))
+                                #foreach($item in $selectLableArr)
+                                    #if($item)
+                                        <el-option :key="$item.split("\.")[0]" :value="$item.split("\.")[0]"
+                                                   label="$item.split("\.")[1]"/>
+                                    #end
+                                #end
+                            </el-select>
+                        </el-form-item>
+                    ##cascader
+                    #elseif( $column.comment.indexOf("cascader") != -1)
+                        <el-form-item
+                                label="$!{column.comment.split(';')[0]}"
+                                prop="$!{column.name}"
+                                :rules="formRulesMixin.isNotNull"
+                                label-position="left">
+                            <el-cascader
+                                    v-model="subFormMixin.cascaderArrMixin"
+                                    :key="cascaderKeyMixin"
+                                    filterable
+                                    placeholder="$!{column.comment.split(';')[0]}"
+                                    clearable
+                                    class="widthPx-200"
+                                    :props="SetKesDeptMixin"
+                                    :options="cascaderOptionsMixin"
+                                    @change="casHandleVehicleChangeSub"/>
+                        </el-form-item>
+                    ##upload
+                    #elseif( $column.comment.indexOf("uploadImage") != -1)
+                        <el-form-item
+                                label="$!{column.comment.split(';')[0]}"
+                                prop="$!{column.name}"
+                                :rules="formRulesMixin.isNotNull"
+                                label-position="left">
+                            <div class="rowSE">
+                                <img :src="subFormMixin.$!{column.name}" v-if="subFormMixin.$!{column.name}"
+                                     class="widthPx-120 heightPx-120 border_radius5">
+                                <div :class="[subFormMixin.$!{column.name}&&'ml-1']" class="rowSS">
+                                    <el-button type="primary" @click="goUploadFileMixin">
+                                        <i class="el-icon-upload2"/>上传
+                                        <input type="file" style="display: none;" ref="refSettingFile" id="uploadFile"
+                                               @change="fileUploadSave"/>
+                                    </el-button>
+                                    <div class="ml-1">{{chooseFileNameMixin}}</div>
+                                </div>
+                            </div>
+                        </el-form-item>
+                    ##input
+                    #else
+                        <el-form-item
+                                label="$!{column.comment.split(';')[0]}"
+                                prop="$!{column.name}"
+                                :rules="formRulesMixin.isNotNull"
+                                label-position="left">
+                            <el-input v-model="subFormMixin.$!{column.name}" class="widthPx-150"
+                                      placeholder="$!{column.comment.split(';')[0]}"/>
+                        </el-form-item>
+                    #end
+                #end
+            #end
+        </el-form>
+        <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="beforeCloseDetailModal">取 消</el-button>
+        <el-button type="primary" @click="confirmBtnClick">确 定</el-button>
+      </span>
+        </template>
+    </el-dialog>
+</template>
+
+<script setup>
+    /*1.初始化引入和实例化*/
+    import {onMounted, getCurrentInstance, watch, ref, toRefs, reactive, computed} from 'vue'
+    let { proxy } = getCurrentInstance()
+    const emit = defineEmits(['selectPageReq', 'hideComp'])
+
+    /*2.modal新增和修改*/
+    //新增
+    const refForm = ref(null)
+    let subFormMixin = reactive({
+        #foreach($column in $tableInfo.fullColumn)
+            #if(${column.comment})
+                $!{column.name}:
+            '',
+            #end
+        #end
+    })
+    let $!{entityName}ListData = ref([])
+    let confirmBtnClick = () => {
+        refForm.value.validate((valid) => {
+            if (valid) {
+                if (subFormMixin.id) {
+                    updateReq()
+                } else {
+                    insertReq()
+                }
+            } else {
+                return false
+            }
+        })
+    }
+    const insertReq = () => {
+        const data = JSON.parse(JSON.stringify(proxy.subFormMixin))
+        delete data.id
+        proxy.$axiosReq({
+            url: '/$serviceName/$!{entityName}/insert',
+            data: data,
+            method: 'post',
+            isParams: true,
+            bfLoading: true
+        }).then((res) => {
+            proxy.elMessageMixin('保存成功')
+            emit('selectPageReq')
+            emit('hideComp')
+        })
+    }
+    //修改
+    const reshowData = (row) => {
+        Object.keys(row).forEach((fItem) => {
+            Object.keys(subFormMixin).forEach((sItem) => {
+                if (fItem === sItem) {
+                    subFormMixin[sItem] = row[sItem]
+                }
+            })
+        })
+    }
+    let updateReq = () => {
+        return proxy.$axiosReq({
+            url: '/$serviceName/$!{entityName}/updateById',
+            data: subFormMixin,
+            isParams: true,
+            method: 'update',
+            bfLoading: true
+        }).then(() => {
+            proxy.elMessageMixin('更新成功')
+            emit('selectPageReq')
+            emit('hideComp')
+        })
+    }
+
+    /*3.弹框相关*/
+    //显示弹框
+    let beforeCloseDetailModal = () => {
+        resetData()
+        proxy.dialogTitleMixin = '添加【$!{tableInfo.comment}】'
+        proxy.dialogVisibleMixin = false
+    }
+    //关闭弹框
+    let showModal = (isEdit, row) => {
+        if (isEdit) {
+            getDetailByIdReq(row.id).then((resData) => {
+                proxy.dialogTitleMixin = `编辑【${row.name}】`
+                proxy.dialogVisibleMixin = true
+                reshowData(resData.data)
+            })
+        } else {
+            proxy.dialogVisibleMixin = true
+        }
+    }
+    const tableImportReq = () => {
+        const formData = new FormData()
+        formData.append('file', proxy.$refs.refSettingFile.files[0])
+        proxy.$axiosReq({
+            url: '/ty-upload/uploadFile',
+            data: formData,
+            method: 'post',
+            bfLoading: true,
+            isUploadFile: true
+        }).then((resData) => {
+            let {ori, shot, name} = resData.data
+            proxy.$refs.refSettingFile.value = ''
+        })
+        .catch((err) => {
+            proxy.$refs.refSettingFile.value = ''
+        })
+    }
+    //关闭弹框
+    let closeFormModal = () => {
+        emit('hideComp')
+    }
+
+    /*4.文件上传和时间选择*/
+    const fileUploadSave = () => {
+        const formData = new FormData()
+        formData.append('file', proxy.$refs.refSettingFile.files[0])
+        proxy.$axiosReq({
+                    url: '/ty-upload/upload/image',
+                    data: formData,
+                    method: 'post',
+                    bfLoading: true,
+                    isUploadFile: true
+                })
+                .then((resData) => {
+                    let { shortPath } = resData.data
+                    proxy.chooseFileNameMixin = shortPath
+                    // 存储文件名称
+                    const filename = proxy.$refs.refSettingFile.value
+                            proxy.chooseFileNameMixin = filename.slice(filename.lastIndexOf('\\') + 1)
+
+                    subForm.image = import.meta.env.VITE_APP_IMAGE_URL + shortPath
+                    proxy.$refs.refSettingFile.value = ''
+                })
+                .catch(() => {
+                    proxy.chooseFileNameMixin = ''
+                    subForm.image = ''
+                    proxy.$refs.refSettingFile.value = ''
+                })
+    }
+    const dateTimePacking = (timeArr) => {
+        if (timeArr && timeArr.length === 2) {
+            searchFormMixin.startTime = timeArr[0]
+            searchFormMixin.endTime = timeArr[1]
+        } else {
+            searchFormMixin.startTime = ''
+            searchFormMixin.endTime = ''
+        }
+    }
+
+    //导出内部组件属性
+    defineExpose({
+        getDetailByIdReq,
+        showModal
+    })
+    //导出属性到页面中使用
+    // let {levelList} = toRefs(state);
+</script>
+
+<style scoped lang="scss"></style>

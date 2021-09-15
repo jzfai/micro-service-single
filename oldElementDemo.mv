@@ -1,0 +1,512 @@
+##导入宏定义
+$!init
+$!define
+##定义实体对象名
+#set($entityName = $!tool.firstLowerCase($!tableInfo.name))
+#set($gwServiceName = 'good-service')
+
+##保存文件（宏定义）
+#save("/element", ".vue")
+
+<template>
+    <div id="iD$!{entityName}">
+        <!--操作和搜索-->
+        <div class="rowBC">
+            <!--操作-->
+            <div style="margin-bottom: 18px">
+                <el-button type="primary" icon="el-icon-plus" @click.stop.prevent="dialogVisible=true">新增</el-button>
+                <el-button type="primary" icon="el-icon-delete" @click.stop.prevent="deleteBatchIdsReq()">批量删除
+                </el-button>
+            </div>
+            <!--条件搜索-->
+            <el-form ref="refsearchForm" :inline="true" class="demo-searchForm">
+                #foreach($column in $tableInfo.otherColumn)
+                    #if(${column.comment})
+                        <el-form-item
+                                label-width="0px"
+                                label=""
+                                prop="$!{column.name}"
+                                label-position="left"
+                        >
+                            <el-input v-model="searchForm.$!{column.name}" class="widthPx-150"
+                                      placeholder="${column.comment.split(';')[0]}"/>
+                        </el-form-item>
+                    #end
+                #end
+                <!--查询按钮-->
+                <el-button type="primary" @click.stop="searchBtnClick">搜索</el-button>
+            </el-form>
+        </div>
+        <!--表格和分页-->
+        <el-table
+                id="resetElementDialog"
+                ref="ref$!{entityName}Table"
+                v-loading="tableLoading"
+                size="mini"
+                border
+                :data="$!{entityName}ListData"
+                style="width: 100%"
+                element-loading-background="rgba(3, 3, 3, 0.1)"
+                element-loading-text="加载中"
+                element-loading-spinner="el-icon-loading"
+        >
+            <!--多选框-->
+            <el-table-column
+                    type="selection"
+                    width="55"
+            />
+
+            #foreach($column in $tableInfo.otherColumn)
+                #if(${column.comment})
+                    <el-table-column
+                            align="center"
+                            prop="$!{column.name}"
+                            label="${column.comment.split(';')[0]}"
+                            min-width="100"
+                    />
+                #end
+            #end
+            <!--点击操作-->
+            <el-table-column
+                    fixed="right"
+                    align="center"
+                    label="操作"
+                    min-width="140"
+            >
+                <template slot-scope="scope">
+                    <el-button type="text" size="small" @click="tableHandleEditClick(scope.row)">
+                        编辑
+                    </el-button>
+                    <el-button type="text" size="small" @click="deleteByIdReq(scope.row)">
+                        删除
+                    </el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+        <!--分页-->
+        <div class="block columnCC mt-2 mb-5">
+            <el-pagination
+                    :current-page="pageNum"
+                    :page-sizes="[10, 20, 50, 100]"
+                    :page-size="pageSize"
+                    layout="total, sizes, prev, pager, next, jumper"
+                    :total="pageTotal"
+                    @size-change="handleSizeChange"
+                    @current-change="handleCurrentChange"
+            />
+        </div>
+        <!--编辑和删除-->
+        <el-dialog
+                :title="`$!tableInfo.comment`"
+                :visible.sync="dialogVisible"
+                width="47%"
+                class="elODialogModalBodyH60vh elODialogModal"
+                :before-close="beforeCloseModal"
+        >
+            <el-form
+                    ref="refForm"
+                    :inline="false"
+                    :model="submitForm"
+                    :rules="subFromRules"
+                    label-width="140px"
+                    class="pr-5"
+            >
+                #foreach($column in $tableInfo.otherColumn)
+                    #if(${column.comment})
+                        #if( $column.comment.indexOf("time") != -1 || $column.name.indexOf("Time") != -1 )
+                            <!--时间-->
+                            <el-form-item
+                                    label="${column.comment.split(';')[0]}"
+                                    prop="$!{column.name}"
+                                    :rules="subFromRules.isNotNull"
+                                    label-position="left"
+                            >
+                                <el-date-picker
+                                        v-model="submitForm.$!{column.name}"
+                                        type="datetime"
+                                        format="yyyy-MM-dd"
+                                        value-format="yyyy-MM-dd HH:mm:ss"
+                                        class="widthPx-150"
+                                        placeholder="${column.comment.split(';')[0]}"
+                                />
+                            </el-form-item>
+                        #elseif( $column.comment.indexOf("upload") != -1 || $column.name.indexOf("image") != -1)
+                            <!--图片上传-->
+                            <el-form-item
+                                    label="${column.comment.split(';')[0]}"
+                                    prop="$!{column.name}"
+                                    :rules="subFromRules.isNotNull"
+                                    label-position="left"
+                            >
+                                <!-- multiple :limit="3"
+                                list-type="picture-card"
+                                -->
+                                <el-upload
+                                        ref="uploadMutiple"
+                                        class="upload-demo"
+                                        :auto-upload="false"
+                                        action="Fake Action"
+                                        drag
+                                        multiple
+                                        :on-change="handleChangeMixin"
+                                        :file-list="fileListMixin"
+                                >
+                                    <i class="el-icon-upload"></i>
+                                    <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+                                    <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过2M</div>
+                                </el-upload>
+                                <el-button type="primary" size="small" @click="submitUpload">上传</el-button>
+                            </el-form-item>
+                        #elseif( $column.comment.indexOf("option") != -1 )
+                            <el-form-item
+                                    label="${column.comment.split(';')[0]}"
+                                    prop="$!{column.name}"
+                                    :rules="subFromRules.isNotNull"
+                                    label-position="left"
+                            >
+                                <el-select
+                                        style="min-width: 100px"
+                                        v-model="submitForm.$!{column.name}"
+                                        multiple
+                                        filterable
+                                        allow-create
+                                        default-first-option
+                                        placeholder="${column.comment.split(';')[0]}">
+                                    <el-option
+                                            v-for="item in tableGlobalMixinData"
+                                            :key="item.id"
+                                            :label="item.name"
+                                            :value="item.name">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                        #elseif( $column.comment.indexOf("checkbox") != -1 )
+                            <el-form-item
+                                    label="${column.comment.split(';')[0]}"
+                                    prop="$!{column.name}"
+                                    :rules="subFromRules.isNotNull"
+                                    label-position="left"
+                            >
+                                <el-checkbox-group
+                                        v-model="submitForm.$!{column.name}">
+                                    <el-checkbox v-for="item in tableGlobalMixinData" :label="item.name"
+                                                 :key="item.name">{{item.name}}
+                                    </el-checkbox>
+                                </el-checkbox-group>
+                            </el-form-item>
+                        #elseif( $column.comment.indexOf("radio") != -1 )
+                            <el-form-item
+                                    label="${column.comment.split(';')[0]}"
+                                    prop="$!{column.name}"
+                                    :rules="subFromRules.isNotNull"
+                                    label-position="left"
+                            >
+                                <el-radio-group v-model="submitForm.$!{column.name}" size="small"
+                                                style="margin-top: 7px">
+                                    <el-radio :label="1">昨日</el-radio>
+                                    <el-radio :label="2">今日</el-radio>
+                                </el-radio-group>
+                            </el-form-item>
+                        #else
+                            <el-form-item
+                                    label="${column.comment.split(';')[0]}"
+                                    prop="$!{column.name}"
+                                    :rules="subFromRules.isNotNull"
+                                    label-position="left"
+                            >
+                                <el-input v-model="submitForm.$!{column.name}" class="widthPx-150"
+                                          placeholder="${column.comment.split(';')[0]}"/>
+                            </el-form-item>
+                        #end
+                    #end
+                #end
+            </el-form>
+            <span slot="footer" class="dialog-footer" style="text-align: right">
+       <el-button type="primary" @click="beforeCloseModal">取 消</el-button>
+        <el-button type="primary" @click="dialogConfirmBtn">确 定</el-button>
+      </span>
+        </el-dialog>
+    </div>
+</template>
+
+<script>
+    // import { mapState, mapMutations, mapActions } from 'vuex'
+    export default {
+        name: 'C$!{entityName}',
+        components: {
+            // TablesGZCJ,
+        },
+        // mixins: [elementUiCDataOrMethod],
+        props: {
+            // treeData: Array,
+        },
+        // mixins: [validMixins],
+        data() {
+            return {
+                // form表单和rule验证
+                submitForm: {
+            #foreach($column in $tableInfo.fullColumn)
+                #if(${column.comment})
+                    $!{column.name}:
+                    '',
+                #end
+            #end
+        },
+            searchForm: {
+                #foreach($column in $tableInfo.otherColumn)
+                    #if(${column.comment})
+                        $!{column.name}:
+                        '',
+                    #end
+                #end
+            }
+        ,
+            subFromRules: {
+                isNotNull: [
+                    {required: true, message: '该字段不能为空', trigger: 'blur'}
+                ]
+            }
+        ,
+            pageSize: 10,
+                    pageNum
+        :
+            1,
+                    pageTotal
+        :
+            100,
+                    rowDeleteIdArr
+        :
+            [],
+                    isDialogEdit
+        :
+            false,
+                    dialogVisible
+        :
+            false,
+                    tableLoading
+        :
+            false,
+                    /* 请求部分*/
+                        $!{entityName}ListData
+        :
+            []
+        }
+        },
+        computed: {
+            // ...mapState('user', ['token', 'userInfo'])
+        },
+        watch: {
+            // 'cmAddForm.enginePlatform': function(val) {
+            //   console.log('enginePlatformval', val)
+            //   if (val) {
+            //     this.emissionOptionReq()
+            //   }
+            // }
+        },
+        created() {
+
+        },
+        mounted() {
+            this.selectPageReq()
+        },
+        methods: {
+            // table
+            tableCheckSelect(rows) {
+                console.log('rows', rows)
+                const rowDeleteIdArr = rows.map(item => {
+                    return item.id
+                })
+                this.rowDeleteIdArr = rowDeleteIdArr
+            },
+            /* 分页*/
+            handleSizeChange(val) {
+                this.pageSize = val
+                this.selectPageReq()
+            },
+            handleCurrentChange(val) {
+                console.log(`当前页: ${val}`)
+                this.pageNum = val
+                this.selectPageReq()
+            },
+            /* modal*/
+            beforeCloseModal() {
+                this.resetData()
+            },
+            resetData() {
+                // 重置数据
+                this.submitForm = {
+                #foreach($column in $tableInfo.fullColumn)
+                    #if(${column.comment})
+                        $!{column.name}:
+                        '',
+                    #end
+                #end
+            }
+                this.dialogVisible = false
+                this.isDialogEdit = false
+            },
+            dialogConfirmBtn() {
+                let validFuc = (valid) => {
+                    if (valid) {
+                        if (this.isDialogEdit) {
+                            //编辑
+                            this.updateByIdReq()
+                        } else {
+                            this.insertReq()
+                        }
+                    }
+                }
+                this.$refs.refForm.validate(validFuc)
+            },
+            async tableHandleEditClick(row) {
+                //获取详情数据
+                let detailData = await this.selectByIdReq(row.id)
+
+                this.reshowData(detailData)
+                //显示弹框
+                this.isDialogEdit = true
+                this.dialogVisible = true
+            },
+            reshowData(row) {
+                Object.keys(row).forEach(fItem => {
+                    Object.keys(this.submitForm).forEach(sItem => {
+                        if (fItem === sItem) {
+                            // console.log('复制了', sItem)
+                            this.submitForm[sItem] = row[sItem]
+                        }
+                    })
+                })
+            },
+            searchBtnClick() {
+                this.pageNum = 1;
+                this.selectPageReq()
+            },
+            /* 请求*/
+            selectPageReq() {
+                const data = Object.assign(this.searchForm, {pageNum: this.pageNum, pageSize: this.pageSize})
+                Object.keys(data).forEach(fItem => {
+                    if (data[fItem] === '' || data[fItem] === null || data[fItem] === undefined) delete data[fItem]
+                })
+                this.$testHttpAxios({
+                    url: '/$!{entityName}', data, isParams: true,
+                    method: 'get', bfLoading: true
+                }).then(res => {
+                    this.$!{entityName}ListData = res.data.list
+                    this.pageTotal = res.data.total
+                })
+            },
+            insertReq() {
+                // 删除formModal id
+                const data = JSON.parse(JSON.stringify(this.submitForm))
+                delete data.id
+                this.$testHttpAxios({
+                    url: '/$!{entityName}', data,
+                    method: 'post', bfLoading: true
+                }).then(res => {
+                    this.elMessage('添加成功')
+                    this.dialogVisible = false
+                    this.resetData()
+                    this.selectPageReq()
+                })
+            },
+            updateByIdReq() {
+                const data = JSON.parse(JSON.stringify(this.submitForm))
+                this.$testHttpAxios({
+                    url: `/$!{entityName}/${this.submitForm.id}`, data,
+                    method: 'PUT', bfLoading: true
+                }).then(res => {
+                    this.elMessage('更新成功')
+                    this.dialogVisible = false
+                    this.resetData()
+                    this.selectPageReq()
+                })
+            },
+            //根据id查看详情
+            selectByIdReq(id) {
+                return new Promise((resolve) => {
+                    const data = {id: id}
+                    this.$testHttpAxios({
+                        url: '/$!{entityName}', data,
+                        method: 'get', bfLoading: true, isParams: true
+                    }).then(res => {
+                        resolve(res.data)
+                    })
+                })
+            },
+            //删除单个
+            async deleteByIdReq(row) {
+                if (!(row && row.id)) {
+                    this.elMessage('删除单个的id不能为空', 'warning')
+                    return
+                }
+                let deleteNameTitle = row.name
+                await this.elConfirm('删除', `您确定要删除${deleteNameTitle}吗`)
+                let data = [row.id]
+                console.log('data', data)
+                this.$testHttpAxios({
+                    url: `/$!{entityName}`, data,
+                    method: 'DELETE', bfLoading: true
+                }).then(res => {
+                    this.elMessage('删除成功')
+                    this.selectPageReq()
+                })
+            },
+
+            //批量删除
+            async deleteBatchIdsReq() {
+                let rowDeleteIdArr = []
+                let selectionArr = this.$refs.ref$!{entityName}Table
+                let deleteNameTitle = ""
+                rowDeleteIdArr = selectionArr.selection.map(mItem => {
+                    deleteNameTitle = deleteNameTitle + mItem.name + ',';
+                    return mItem.id
+                })
+                if (rowDeleteIdArr.length === 0) {
+                    this.elMessage('表格选项不能为空', 'warning')
+                    return
+                }
+                let stringLength = deleteNameTitle.length - 1
+                await this.elConfirm('删除', `您确定要删除${deleteNameTitle.slice(0,stringLength)}吗`)
+                const data = rowDeleteIdArr
+                console.log('data', data)
+                this.$testHttpAxios({
+                    url: `/$!{entityName}`, data,
+                    method: 'DELETE', bfLoading: true
+                }).then(res => {
+                    this.elMessage('删除成功')
+                    this.selectPageReq()
+                })
+            },
+
+            /*图片上传*/
+            async submitUpload() {
+                let data = await this.submitUploadMixin("/upload/upload/uploadGetMetaData")
+                console.log("data", data)
+                this.submitForm.image = data[0].url
+            },
+        }
+    }
+</script>
+
+<style lang="scss" scoped>
+    #iD$!{entityName} {
+        padding: 15px 10px;
+    }
+
+    .main_content {
+        padding: 10px !important;
+        background-color: #fff !important;
+    }
+</style>
+
+
+<style lang="scss">
+    #iD$!{entityName}{
+
+    .el-upload-dragger {
+        width: 220px;
+        height: 145px;
+    }
+
+    }
+</style>

@@ -20,12 +20,12 @@ import java.util.Map;
  * @since 1.0
  */
 public class JwtUtilsSelf {
+
+    //https://www.cnblogs.com/passedbylove/p/11207827.html
     //有效期为
-    public static final Long JWT_TTL = 3600000L;// 60 * 60 *1000  一个小时
-
+    public static final Long JWT_TTL = 259200000L;//60 * 60 * 1000 * 24 * 3  三天
     //Jwt令牌信息
-    public static final String JWT_KEY = "@Kuanghua8866";
-
+    public static final String JWT_KEY = "kh@Login(Auth}*^31)&kuanghua%";
     /**
      * 生成令牌
      //* @param id

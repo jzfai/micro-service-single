@@ -1,4 +1,4 @@
-package top.kuanghua.tyauth.config;
+package top.kuanghua.tyupload.config;
 
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,6 +19,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 public class Swagger2Config {
     private boolean swagger_is_enable = true;
 
+//    @Value("${.ipAddr}")
+//    private String ipAddr;
     @Value("${server.port}")
     private String port;
 
@@ -37,7 +39,6 @@ public class Swagger2Config {
 
     /**
      * 构建 api文档的详细信息函数
-     *
      * @return
      */
     private ApiInfo apiInfo() {
@@ -48,7 +49,4 @@ public class Swagger2Config {
                 .version("版本号:2.9")
                 .build();
     }
-    /**
-     * http://localhost:8080/swagger-ui.html
-     */
 }

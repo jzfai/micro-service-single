@@ -24,6 +24,7 @@ import javax.validation.Valid;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Api(tags = "用户相关")
@@ -71,11 +72,11 @@ public class UserController {
      * @param id 主键
      * @return 单条数据
      */
-//    @GetMapping("selectById")
-//    @ApiOperation(value = "通过id主键查询单条数据")
-//    public ResResult selectById(@RequestParam("id") Integer id) {
-//        return new ResResult().success(this.userMapper.selectById(id));
-//    }
+    @GetMapping("selectById")
+    @ApiOperation(value = "通过id主键查询单条数据")
+    public ResResult selectById(@RequestParam("id") Integer id) {
+        return new ResResult().success(this.userMapper.selectById(id));
+    }
 //
 //    /**
 //     * @Description: 根据id数组查询品牌列表
@@ -120,16 +121,16 @@ public class UserController {
 //     * @param idList 主键结合
 //     * @return 删除结果
 //     */
-//    @ApiOperation(value = "根据id数组删除数据")
-//    @DeleteMapping("deleteBatchIds")
-//    public ResResult deleteBatchIds(@RequestBody List<Long> idList) {
-//        return new ResResult().success(this.userMapper.deleteBatchIds(idList));
-//    }
-//    @DeleteMapping("deleteById")
-//    @ApiOperation(value = "根据id删除数据")
-//    public ResResult deleteById(@RequestParam("id") Integer id) {
-//        return new ResResult().success(this.userMapper.deleteById(id));
-//    }
+    @ApiOperation(value = "根据id数组删除数据")
+    @DeleteMapping("deleteBatchIds")
+    public ResResult deleteBatchIds(@RequestBody List<Long> idList) {
+        return new ResResult().success(this.userMapper.deleteBatchIds(idList));
+    }
+    @DeleteMapping("deleteById")
+    @ApiOperation(value = "根据id删除数据")
+    public ResResult deleteById(@RequestParam("id") Integer id) {
+        return new ResResult().success(this.userMapper.deleteById(id));
+    }
 
     @PostMapping("registry")
     @ApiOperation(value = "用户注册")
