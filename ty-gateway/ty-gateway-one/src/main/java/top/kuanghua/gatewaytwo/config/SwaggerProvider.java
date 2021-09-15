@@ -21,9 +21,12 @@ import java.util.List;
 @AllArgsConstructor
 public class SwaggerProvider implements SwaggerResourcesProvider {
 
-    public static final String API_URI = "/v2/api-docs";
+    static final String API_URI = "/v2/api-docs";
     private final RouteLocator routeLocator;
     private final GatewayProperties gatewayProperties;
+
+
+    private  SwaggerDocConfig swaggerDocConfig;
     /**
      * @return
      */
@@ -31,16 +34,22 @@ public class SwaggerProvider implements SwaggerResourcesProvider {
     public List<SwaggerResource> get() {
         List<SwaggerResource> resources = new ArrayList<>();
         //List<String> routes = new ArrayList<>();
-        routeLocator.getRoutes().subscribe(route -> {
+        swaggerDocConfig.getServiceMap().entrySet().stream().forEach(mapEntry -> {
+            /*设置swagger服务路径*/
+            resources.add(createResource(mapEntry.getValue().toString(), mapEntry.getKey(), "2.9"));
+        });
+
+//        routeLocator.getRoutes().subscribe(route -> {
 //            System.out.println("routeLocator");
 //            System.out.println(route);
-        });
-        gatewayProperties.getRoutes().stream().forEach(item -> {
+//            route.getId();
+//        });
+//        gatewayProperties.getRoutes().stream().forEach(item -> {
 //            System.out.println("gatewayProperties");
+//            item.getId();
 //            System.out.println(item);
-        });
-        /*设置swagger服务路径*/
-        resources.add(createResource("用户模块", "ty-user", "2.9"));
+//        });
+
         return resources;
     }
 

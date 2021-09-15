@@ -4,24 +4,24 @@
 #spring:
 #  cloud:
 #    gateway:
-##      globalcors:
-##        corsConfigurations:
-##          '[/**]':
-##            # 允许携带认证信息
-##            # 允许跨域的源(网站域名/ip)，设置*为全部
-##            # 允许跨域请求里的head字段，设置*为全部
-##            # 允许跨域的method， 默认为GET和OPTIONS，设置*为全部
-##            # 跨域允许的有效期
-##            allow-credentials: true
-##            allowed-origins: "*"
-##            allowed-headers: "*"
-##            allowed-methods:
-##            - OPTIONS
-##            - GET
-##            - POST
-##            - PUT
-##            - DELETE
-##            #max-age: 3600
+#      globalcors:
+#        corsConfigurations:
+#          '[/**]':
+#            # 允许携带认证信息
+#            # 允许跨域的源(网站域名/ip)，设置*为全部
+#            # 允许跨域请求里的head字段，设置*为全部
+#            # 允许跨域的method， 默认为GET和OPTIONS，设置*为全部
+#            # 跨域允许的有效期
+#            allow-credentials: true
+#            allowed-origins: "*"
+#            allowed-headers: "*"
+#            allowed-methods:
+#            - OPTIONS
+#            - GET
+#            - POST
+#            - PUT
+#            - DELETE
+#            #max-age: 3600
 #      routes:
 #      - id: ty-auth
 #        uri: lb://ty-auth
@@ -48,6 +48,13 @@
 #        uri: lb://ty-user
 #        predicates:
 #        - Path=/api/ty-user/**
+#        filters:
+#        - StripPrefix=2
+#
+#      - id: ty-upload
+#        uri: lb://ty-upload
+#        predicates:
+#        - Path=/api/ty-upload/**
 #        filters:
 #        - StripPrefix=2
 #
@@ -81,3 +88,9 @@
 #
 #token-properties:
 #  renewTokenMinute: 1440 #默认1天时间告知前端刷新token
+#
+#swagger-doc:
+#  serviceMap: {
+#    ty-user: "用户模块",
+#    ty-upload: "文件上传"
+#  }
