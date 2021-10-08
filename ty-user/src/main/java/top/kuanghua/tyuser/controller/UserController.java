@@ -176,7 +176,12 @@ public class UserController {
         this.userService.changePassword(tokenInfo.get("username").toString(),oldPassword,newPassword);
         return new ResResult().success();
     }
-
+    @PostMapping("getUserInfo")
+    @ApiOperation(value = "获取用户信息")
+    public ResResult changePassword(@ApiIgnore @RequestHeader("TOKEN_INFO") String TOKEN_INFO) throws UnsupportedEncodingException {
+        Map tokenInfo = JSON.parseObject(URLDecoder.decode(TOKEN_INFO, "utf-8"));
+        return new ResResult().success(tokenInfo);
+    }
 
 
     @PostMapping("insertUser")
