@@ -39,11 +39,13 @@ public class UploadService {
         if (!CONTENT_TYPES.contains(contentType)) {
             //文件类型不合法
             log.info("文件类型不合法：{}", originalFilename);
+            throw new RuntimeException("文件内容不合法");
         }
         //检验文件内容
         BufferedImage bufferedImage = ImageIO.read(file.getInputStream());
         if (bufferedImage == null) {
             log.info("文件内容不合法：{}", originalFilename);
+            throw new RuntimeException("文件内容不合法");
         }
         //保存到服务器
         //file.transferTo(new File("D:\\java\\javaproject\\pinyou\\pinyou-upload\\src\\main\\resources\\static\\" + originalFilename));
