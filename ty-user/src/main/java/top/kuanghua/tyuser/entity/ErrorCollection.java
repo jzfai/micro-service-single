@@ -22,6 +22,8 @@ import java.io.Serializable;
 @ApiModel("错误日志相关")
 @TableName(value = "tb_error_collection")
 public class ErrorCollection extends Model<ErrorCollection> {
+    @ApiModelProperty(value = "id主键")
+    private Long id;
     @ApiModelProperty(value = "错误日志")
     private String errorLog;
     @ApiModelProperty(value = "页面路径")
@@ -29,6 +31,6 @@ public class ErrorCollection extends Model<ErrorCollection> {
     @TableField(fill = FieldFill.INSERT)
     @ApiModelProperty(value = "创建时间",hidden = true)
     private Date createTime;
-    @ApiModelProperty(value = "id主键")
-    private Long id;
+    @ApiModelProperty(value = "浏览器类型",hidden = true)
+    private String browserType;
 }

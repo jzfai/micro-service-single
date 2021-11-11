@@ -19,23 +19,24 @@ import java.util.Date;
 @ApiModel("用户列表")
 @TableName(value = "tb_admin")
 public class Admin extends Model<Admin> {
-        private Integer id;
-        private String status;
-        private Date addTime;
-                    @ApiModelProperty(value="超级管理员(0.不是,1.是)")
-                private String isSuper;
-                    @ApiModelProperty(value="用户名")
-                private String username;
-                    @ApiModelProperty(value="密码")
-                private String password;
-                    @ApiModelProperty(value="是否删除")
-                private String isDelete;
-                    @ApiModelProperty(value="手机号")
-                private String mobile;
-                    @ApiModelProperty(value="邮箱")
-                private String email;
-                    @ApiModelProperty(value="角色id")
-                private Integer roleId;
+    private Integer id;
+    private String status;
+    private Date addTime;
+    @ApiModelProperty(value = "超级管理员(0.不是,1.是)")
+    private String isSuper;
+    @ApiModelProperty(value = "用户名")
+    private String username;
+    @ApiModelProperty(value = "密码")
+    private String password;
+    @ApiModelProperty(value = "是否删除")
+    private String isDelete;
+    @ApiModelProperty(value = "手机号")
+    private String mobile;
+    @ApiModelProperty(value = "邮箱")
+    private String email;
+    @ApiModelProperty(value = "角色id")
+    private Integer roleId;
+
     /**
      * 获取主键值
      *
@@ -45,4 +46,4 @@ public class Admin extends Model<Admin> {
     protected Serializable pkVal() {
         return this.id;
     }
-    }
+}

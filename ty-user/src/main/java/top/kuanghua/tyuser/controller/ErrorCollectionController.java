@@ -46,8 +46,6 @@ public class ErrorCollectionController {
         if (ObjectUtils.isNotEmpty(errorCollection.getCreateTime())) {
             queryWrapper.or().like("create_time", errorCollection.getCreateTime());
         }
-
-        queryWrapper.select("error_log,page_url,create_time,id");
         queryWrapper.or().orderByDesc("create_time");
         if(StringUtils.isNotEmpty(khCommonParams.getStartTime())) {
             queryWrapper.or().between("create_time",khCommonParams.getStartTime(),khCommonParams.getEndTime());

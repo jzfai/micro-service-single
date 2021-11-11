@@ -8,8 +8,7 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-
-    <artifactId>ty-user</artifactId>
+    <artifactId>ty-excel</artifactId>
 
     <dependencies>
         <dependency>
@@ -23,10 +22,9 @@
             <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
+
     <build>
-        <!--达成jar包的时候的名称-->
         <finalName>${project.artifactId}</finalName>
-        <!--@activatedProperties@-->
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
