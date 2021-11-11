@@ -1,17 +1,15 @@
 package top.kuanghua.khcomomon.utils;
 
 import com.alibaba.fastjson.JSON;
-import com.baomidou.mybatisplus.extension.api.R;
-import com.sun.javafx.collections.MappingChange;
 import org.apache.commons.lang3.StringUtils;
 import top.kuanghua.khcomomon.entity.ResResult;
 
 import java.lang.reflect.Array;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * 从jwt解析得到的数据是Object类型，转换为具体类型可能出现空指针，
@@ -101,4 +99,28 @@ public class ObjectUtilsSelf {
         return res;
     }
 
+    /**
+     * @return 时间年月日
+     */
+    public static String getCurrentDateTime(){
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+        return df.format(new Date());
+    }
+
+    /**
+     * @return 当前年月
+     */
+    public static String getCurrentDate(){
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");//设置日期格式
+        return df.format(new Date());
+    }
+
+    /**
+     * @param date
+     * @return
+     */
+    public static String formatDateTime(Date date){
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+        return df.format(date);
+    }
 }
