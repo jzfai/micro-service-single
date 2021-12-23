@@ -3,7 +3,7 @@
 本架构为springCloud微服务架构，提供基本的jwt权限认证，token更新，以及各微服务之间调用等
 使用的技术如下：
 
-```json
+```java
 spring-boot:2.1.4.RELEASE
 spring-cloud:Greenwich.SR1
 spring-cloud-starter-gateway:2.1.1.RELEASE
@@ -17,11 +17,12 @@ mysql:5.7
 #### 更新日志：
 
 to look doc ----
-[真香定律!带你用springcloud微服务撸后台(系列文章入口)](https://juejin.cn/post/7036302298435289095)
+
+[带你用springcloud微服务撸后台(系列文章入口)](https://juejin.cn/post/7044843310204059655)
 
 #### 线上文档：
 
-[真香定律!带你用springcloud微服务撸后台(系列文章入口)](https://juejin.cn/post/7036302298435289095)
+[带你用springcloud微服务撸后台(系列文章入口)](https://juejin.cn/post/7044843310204059655)
 
 #### 开发接口和nacos地址
 
