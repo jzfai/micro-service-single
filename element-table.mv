@@ -3,7 +3,7 @@ $!init
 $!define
 ##定义实体对象名
 #set($entityName = $!tool.firstLowerCase($!tableInfo.name))
-#set($serviceName = 'ty-user')
+#set($serviceName = 'rbox-service')
 
 ##保存文件（宏定义）
 #save($!{entityName}, ".vue")
@@ -13,7 +13,7 @@ $!define
         <el-button type="primary" icon="el-icon-plus" @click="addBtnClick">新增</el-button>
         <el-button type="primary" icon="el-icon-delete" @click="multiDelBtnClick">删除</el-button>
         <!--条件搜索-->
-        <el-form ref="refsearchForm" :inline="true" class="demo-searchForm">
+        <el-form ref="refsearchForm" :inline="true" class="demo-searchForm ml-3">
             #foreach($column in $tableInfo.otherColumn)
                 #if(${column.comment})
                     <el-form-item
@@ -22,29 +22,16 @@ $!define
                             prop="$!{column.name}"
                             label-position="left"
                     >
-                        <el-input v-model="searchForm.$!{column.name}" class="widthPx-150" placeholder="${column.comment.split(';')[0]}" />
+                        <el-input v-model="searchForm.$!{column.name}" class="widthPx-120" placeholder="${column.comment.split(';')[0]}" />
                     </el-form-item>
                 #end
             #end
-            <el-form-item label-width="0px" label="" prop="createTime" label-position="left">
-                <el-date-picker
-                        v-model="startEndArrMixin"
-                        type="datetimerange"
-                        format="YYYY-MM-DD"
-                        value-format="YYYY-MM-DD HH:mm:ss"
-                        @change="dateTimePacking"
-                        class="widthPx-250"
-                        range-separator="-"
-                        start-placeholder="开始日期"
-                        end-placeholder="结束日期"
-                />
-            </el-form-item>
             <!--查询按钮-->
             <el-button type="primary" @click="searchBtnClick">搜索</el-button>
         </el-form>
     </div>
     <!--表格和分页-->
-    <el-table height="calc(100vh - 230px)" id="resetElementDialog" ref="refuserTable" size="mini" border :data="usertableData">
+    <el-table height="calc(100vh - 280px)" @selection-change="handleSelectionChange" id="resetElementDialog" ref="refuserTable" size="mini" border :data="$!{tableInfo.name}tableData">
         <el-table-column
                 type="selection"
                 align="center"
@@ -73,12 +60,12 @@ $!define
                             align="center"
                             prop="$!{column.name}"
                             label="$!{column.comment.split(';')[0]}"
-                            min-width="100"/>
+                            />
                 #end
             #end
         #end
         <!--点击操作-->
-        <el-table-column fixed="right" align="center" label="操作" width="180">
+        <el-table-column  align="center" label="操作" width="120">
             <template #default="{ row }">
                 <el-button type="text" size="small" @click="tableEditClick(row)">编辑</el-button>
                 <el-button type="text" size="small" @click="tableDetailClick(row)">详情</el-button>
@@ -119,11 +106,12 @@ $!define
       </span>
         </template>
     </el-dialog>
-    <$!{tableInfo.name}Form ref="ref$!{tableInfo.name}Form"/>
+    <$!{tableInfo.name}Form v-if="showFrom" ref="ref$!{tableInfo.name}Form" @hideComp="hideComp" @selectPageReq="selectPageReq" />
 </template>
 
 <script setup>
     /*1.初始化引入和实例化*/
+    import momentMini from 'moment-mini'
     import {onMounted, getCurrentInstance, watch, ref, reactive, computed, toRefs} from 'vue'
     let {proxy} = getCurrentInstance()
     import $!{tableInfo.name}Form from './$!{tableInfo.name}Form.vue'
@@ -131,8 +119,12 @@ $!define
     const ref$!{tableInfo.name}Form = ref(null)
 
     /*2.表格查询和筛选*/
-    let usertableData = ref([])
-    let searchFormMixin = reactive({
+    let multipleSelection = ref([])
+    const handleSelectionChange = (val) => {
+        multipleSelection.value = val
+    }
+    let $!{tableInfo.name}tableData = ref([])
+    let searchForm = reactive({
         #foreach($column in $tableInfo.fullColumn)
             #if(${column.comment})
                 $!{column.name}:
@@ -144,7 +136,7 @@ $!define
         selectPageReq()
     })
     let selectPageReq = () => {
-        const data = Object.assign(searchFormMixin, {
+        const data = Object.assign(searchForm, {
             pageNum: pageNum.value,
             pageSize: pageSize.value
         })
@@ -159,7 +151,7 @@ $!define
             isAlertErrorMsg: false
         }
         proxy.$axiosReq(reqConfig).then((resData) => {
-            usertableData.value = resData.data?.records
+                $!{tableInfo.name}tableData.value = resData.data?.records
             proxy.pageTotalMixin = resData.data?.total
         })
     }
@@ -168,14 +160,13 @@ $!define
     //时间packing
     const dateTimePacking = (timeArr) => {
         if (timeArr && timeArr.length === 2) {
-            searchFormMixin.startTime = timeArr[0]
-            searchFormMixin.endTime = timeArr[1]
+            searchForm.startTime = timeArr[0]
+            searchForm.endTime = momentMini(timeArr[1]).endOf('day').format('YYYY-MM-DD HH:mm:ss')
         } else {
-            searchFormMixin.startTime = ''
-            searchFormMixin.endTime = ''
+            searchForm.startTime = ''
+            searchForm.endTime = ''
         }
     }
-
     const searchBtnClick = () => {
         //此处要重置页数，也是常出的bug
         pageNum.value = 1
@@ -183,18 +174,33 @@ $!define
     }
 
     //添加和修改
+    let showFrom = ref(false)
     let addBtnClick = () => {
-        ref$!{tableInfo.name}Form.value.showModal()
+        showFrom.value = true
+        proxy.$nextTick(() => {
+            ref$!{tableInfo.name}Form.value.showModal()
+        })
+
     }
     let tableEditClick = (row) => {
-        ref$!{tableInfo.name}Form.value.showModal(true, row)
+        showFrom.value = true
+        getDetailByIdReq(row.id).then((resData) => {
+            showFrom.value = true
+            proxy.$nextTick(() => {
+                ref$!{tableInfo.name}Form.value.showModal(true, resData.data)
+            })
+        })
+    }
+
+    const hideComp = () => {
+        showFrom.value = false
     }
 
     /*3.详情modal*/
     let detailData = ref({})
     let tableDetailClick = (row) => {
-        proxy.dialogTitleMixin = `详情【$!{tableInfo.comment}】`
-        ref$!{tableInfo.name}Form.value.getDetailByIdReq(row.id).then((resData) => {
+        proxy.dialogTitleMixin = `详情【${row.needReplace}】`
+        getDetailByIdReq(row.id).then((resData) => {
             detailData.value = resData.data
             proxy.detailDialogMixin = true
         })
@@ -227,9 +233,8 @@ $!define
     //批量删除
     const multiDelBtnClick = async () => {
         let rowDeleteIdArrMixin = []
-        let selectionArr = proxy.$refs.refuserTable
         let deleteNameTitle = ''
-        rowDeleteIdArrMixin = selectionArr.selection.map((mItem) => {
+        rowDeleteIdArrMixin = multipleSelection.value.map((mItem) => {
             deleteNameTitle = deleteNameTitle + mItem.needReplace + ','
             return mItem.id
         })
@@ -238,7 +243,7 @@ $!define
             return
         }
         let stringLength = deleteNameTitle.length - 1
-        await proxy.elConfirmMixin('删除', `您确定要删除${deleteNameTitle.slice(0, stringLength)}吗`)
+        await proxy.elConfirmMixin('删除', `您确定要删除【${deleteNameTitle.slice(0, stringLength)}】吗`)
         const data = rowDeleteIdArrMixin
         proxy.$axiosReq({
             url: `/$serviceName/$!{entityName}/deleteBatchIds`,
@@ -247,33 +252,33 @@ $!define
             bfLoading: true
         }).then((res) => {
             proxy.elMessageMixin('删除成功')
-            proxy.selectPageReq()
+            selectPageReq()
         })
     }
-    /*导出*/
-    let tableDownloadClick = (row) => {
-        downloadReq(row)
-    }
-    let downloadReq = (row) => {
-        let reqConfig = {
-            url: '/$serviceName/$!{entityName}/download',
-            method: 'get',
-            data: {
-                id: row.id
-            },
-            isDownLoadFile: true,
-            isParams: true,
-            isAlertErrorMsg: false
-        }
-        proxy.$axiosReq(reqConfig).then((resData) => {
-            const url = window.URL.createObjectURL(new Blob([resData]))
-            const link = document.createElement('a')
-            link.href = url
-            link.setAttribute('download', `${row.username}.xls`)
-            document.body.appendChild(link)
-            link.click()
-        })
-    }
+    /*导出或导入，模板下载*/
+    // let tableDownloadClick = (row) => {
+    //   downloadReq(row)
+    // }
+    // let downloadReq = (row) => {
+    //   let reqConfig = {
+    //     url: '/vci/download',
+    //     method: 'get',
+    //     data: {
+    //       id: row.id
+    //     },
+    //     isDownLoadFile: true,
+    //     isParams: true,
+    //     isAlertErrorMsg: false
+    //   }
+    //   proxy.$axiosReq(reqConfig).then((resData) => {
+    //     const url = window.URL.createObjectURL(new Blob([resData]))
+    //     const link = document.createElement('a')
+    //     link.href = url
+    //     link.setAttribute('download', `${row.username}.xls`)
+    //     document.body.appendChild(link)
+    //     link.click()
+    //   })
+    // }
 </script>
 
 <style scoped lang="scss">

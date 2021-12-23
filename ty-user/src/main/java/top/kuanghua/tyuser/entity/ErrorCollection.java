@@ -14,7 +14,6 @@ import java.io.Serializable;
 
 /**
  * error_log_collection(ErrorCollection)表实体类
- *
  * @author kuanghua
  * @since 2021-10-08 11:37:25
  */
@@ -28,9 +27,11 @@ public class ErrorCollection extends Model<ErrorCollection> {
     private String errorLog;
     @ApiModelProperty(value = "页面路径")
     private String pageUrl;
+    @ApiModelProperty(value = "当前版本")
+    private String version;
+    @ApiModelProperty(value = "浏览器类型",hidden = true)
+    private String browserType;
     @TableField(fill = FieldFill.INSERT)
     @ApiModelProperty(value = "创建时间",hidden = true)
     private Date createTime;
-    @ApiModelProperty(value = "浏览器类型",hidden = true)
-    private String browserType;
 }

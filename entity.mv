@@ -12,18 +12,28 @@ $!define
 ##$!autoImport
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import java.io.Serializable;
-
+import lombok.Data;
 ##表注释（宏定义）
 #tableComment("表实体类")
 @Data
 @ApiModel("$!tableInfo.comment")
-@TableName(value = "tb_$!{tool.firstLowerCase($tableInfo.name)}")
+@TableName(value = "tb_$!{tool.hump2Underline($tableInfo.name)}")
 public class $!{tableInfo.name} extends Model<$!{tableInfo.name}> {
 #foreach($column in $tableInfo.fullColumn)
     #if( $!column.comment )
         #set($listSize=$!{column.comment.split(';')})
         #if( $!listSize.size() > 0 )
         @ApiModelProperty(value="$!listSize[0]")
+        #end
+        #if($column.name.indexOf("updateTime") != -1)
+        @TableField(fill = FieldFill.UPDATE)
+        #end
+        #if($column.name.indexOf("createTime") != -1)
+        @TableField(fill = FieldFill.INSERT)
+        #end
+        #if($column.name.indexOf("isDeleted") != -1)
+        @TableLogic
+        @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
         #end
     #end
 private $!{tool.getClsNameByFullName($column.type)} $!{column.name};
@@ -32,15 +42,15 @@ private $!{tool.getClsNameByFullName($column.type)} $!{column.name};
 ###getSetMethod($column)
 ###end
 #foreach($column in $tableInfo.pkColumn)
-    /**
-    * 获取主键值
-    *
-    * @return 主键值
-    */
-    @Override
-    protected Serializable pkVal() {
-       return this.$!column.name;
-    }
+/**
+* 获取主键值
+*
+* @return 主键值
+*/
+@Override
+protected Serializable pkVal() {
+return this.$!column.name;
+}
     #break
 #end
 }

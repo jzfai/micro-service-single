@@ -17,6 +17,9 @@ $!define
 ##定义实体对象名
 #set($entityName = $!tool.firstLowerCase($!tableInfo.name))
 
+
+import org.apache.commons.lang3.StringUtils;
+import top.kuanghua.khcomomon.entity.CommonParams;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.api.ApiController;
 import com.baomidou.mybatisplus.extension.api.R;
@@ -45,12 +48,12 @@ private $!{tableInfo.name}Service $!{serviceName};
 */
 @GetMapping("selectPage")
 @ApiOperation(value = "分页查询所有数据")
-public ResResult selectPage($!{tableInfo.name} $!entityName, KHCommonParams khCommonParams) {
+public ResResult selectPage($!{tableInfo.name} $!entityName, CommonParams commonParams) {
 QueryWrapper<$!{tableInfo.name}> queryWrapper = new QueryWrapper<>();
 #foreach($column in $tableInfo.fullColumn)
     #if( $!column.comment )
     if(ObjectUtils.isNotEmpty($!{entityName}.get$!{tool.firstUpperCase($column.name)}())) {
-    queryWrapper.or().like("$!{column.name}",$!{entityName}.get$!{tool.firstUpperCase($column.name)}());
+    queryWrapper.like("$!{tool.hump2Underline($column.name)}",$!{entityName}.get$!{tool.firstUpperCase($column.name)}());
     }
     #end
 #end
@@ -63,12 +66,14 @@ QueryWrapper<$!{tableInfo.name}> queryWrapper = new QueryWrapper<>();
 #end
 
 
-queryWrapper.or().orderByDesc("create_time");
+
 if(StringUtils.isNotEmpty(commonParams.getStartTime())) {
-    queryWrapper.or().between("create_time",commonParams.getStartTime(),commonParams.getEndTime());
+queryWrapper.between("create_time",commonParams.getStartTime(),commonParams.getEndTime());
+queryWrapper.or().orderByDesc("create_time");
 }
+
 queryWrapper.select("$StringBj.substring(0,$StringBj.lastIndexOf(','))");
-Page<$!{tableInfo.name}> $!{entityName}Page = this.$!{entityName}Service.selectPage(khCommonParams.getPageNum(), khCommonParams.getPageSize(), queryWrapper);
+Page<$!{tableInfo.name}> $!{entityName}Page = this.$!{entityName}Service.selectPage(commonParams.getPageNum(), commonParams.getPageSize(), queryWrapper);
 return new ResResult().success($!{entityName}Page);
 }
 
@@ -127,10 +132,9 @@ public ResResult selectBatchIds(@RequestParam("idList") List
     <Long> idList) {
         return new ResResult().success(this.$!{serviceName}.deleteBatchIds(idList));
         }
-
         @DeleteMapping("deleteById")
-        @ApiOperation(value = "根据id数组删除数据")
+        @ApiOperation(value = "根据id删除数据")
         public ResResult deleteById(@RequestParam("id") Integer id) {
         return new ResResult().success(this.$!{serviceName}.deleteById(id));
         }
-        }
+    }
