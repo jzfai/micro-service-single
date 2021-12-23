@@ -103,22 +103,8 @@ public class AuthorizeFilterBefore implements GlobalFilter, Ordered {
                 httpHeaders.add("TOKEN_INFO", decode);
             }).build();
             //将信息设置到线程中
-            //TokenParseInfo tokenParseInfo = new TokenParseInfo(claims);
-
             ServerWebExchange build = exchange.mutate().request(httpRequest).build();
             return chain.filter(build);
-            //2.1.1.将解析出来的jwt token存入请求头中供其他服务读取（转发过去的服务不能接收）
-            //2.1.2 如果小于一个小时 刷新token
-//            long expValue = claims.getExpiration().getTime();
-//            Long currentData= DateTime.now().plusMinutes(40).getMillis();
-//            if(expValue < currentData){
-//                String generateToken = JwtUtilsKh.updateToken(claims, RsaUtils.getPrivateKey(priKeyPath), 62);
-//                JSONObject message = new JSONObject();
-//                message.put("code",10000);
-//                message.put("data",generateToken);
-//                message.put("msg","更新token");
-//                return response.writeWith(Mono.just(getDataBuffer(response,message)));
-//            }
         } catch (Exception e) {
             JSONObject message = new JSONObject();
             message.put("code",403);

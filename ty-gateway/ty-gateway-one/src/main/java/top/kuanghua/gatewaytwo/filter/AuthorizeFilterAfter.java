@@ -96,15 +96,15 @@ public class AuthorizeFilterAfter implements GlobalFilter, Ordered {
                             // 释放掉内存
                             DataBufferUtils.release(join);
                             String str = new String(content, Charset.forName("UTF-8"));
-                            //                        log.info("返回体：{}", str);
+                            // log.info("返回体：{}", str);
                             //todo 拦截到的返回体内容，可以随意去操作了
                             //2.1.2 如果小于一个小时 刷新token
                             //String jwtToken = request.getHeaders().getFirst("AUTHORIZE_TOKEN");
                             Long expValue = null;
                             Map dataMap=null;
                             try {
-                                //                            Object reqData=tokenFeign.parseToken(jwtToken);
-                                //                            Map map = JSON.parseObject(JSON.toJSONString(reqData), Map.class);
+                                //Object reqData=tokenFeign.parseToken(jwtToken);
+                                // Map map = JSON.parseObject(JSON.toJSONString(reqData), Map.class);
                                 String tokenInfo = request.getHeaders().getFirst("TOKEN_INFO");
                                 //System.out.println("获取到新的token"+tokenInfo);
                                 dataMap = JSON.parseObject(URLDecoder.decode(tokenInfo, "utf-8"), Map.class);

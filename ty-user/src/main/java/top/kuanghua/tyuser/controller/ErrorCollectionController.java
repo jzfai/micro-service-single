@@ -43,13 +43,17 @@ public class ErrorCollectionController {
         if (ObjectUtils.isNotEmpty(errorCollection.getPageUrl())) {
             queryWrapper.or().like("page_url", errorCollection.getPageUrl());
         }
+        if (ObjectUtils.isNotEmpty(errorCollection.getVersion())) {
+            queryWrapper.or().like("version", errorCollection.getVersion());
+        }
         if (ObjectUtils.isNotEmpty(errorCollection.getCreateTime())) {
             queryWrapper.or().like("create_time", errorCollection.getCreateTime());
         }
-        queryWrapper.or().orderByDesc("create_time");
+
         if(StringUtils.isNotEmpty(khCommonParams.getStartTime())) {
             queryWrapper.or().between("create_time",khCommonParams.getStartTime(),khCommonParams.getEndTime());
         }
+        queryWrapper.or().orderByDesc("create_time");
         Page<ErrorCollection> errorCollectionPage = this.errorCollectionService.selectPage(khCommonParams.getPageNum(), khCommonParams.getPageSize(), queryWrapper);
         return new ResResult().success(errorCollectionPage);
     }

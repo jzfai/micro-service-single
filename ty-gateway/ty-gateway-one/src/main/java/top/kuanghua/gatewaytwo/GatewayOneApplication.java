@@ -29,7 +29,7 @@ public class GatewayOneApplication {
                 //1.获取请求request对象
                 ServerHttpRequest request = exchange.getRequest();
                 //2.从request中获取ip地址
-                String hostString = request.getRemoteAddress().getHostString(); //Ip地址
+                String hostString = request.getRemoteAddress().getHostString();
                 //3.返回
                 return Mono.just(hostString);
             }

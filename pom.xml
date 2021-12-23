@@ -103,6 +103,24 @@
             </properties>
         </profile>
         <profile>
+            <id>test</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <activatedProperties>test</activatedProperties>
+                <baseLinuxIp>8.135.1.141</baseLinuxIp>
+                <nacosIpPort>${baseLinuxIp}:8848</nacosIpPort>
+                <nacosWeight>1000</nacosWeight>
+                <nacosDiscoveryIp>127.0.0.1</nacosDiscoveryIp>
+                <nacosNamespace>df87d91b-b1ab-4720-8e1c-5a147edc6ddc</nacosNamespace>
+                <nacosGroup>nacos-group-${activatedProperties}</nacosGroup>
+                <nacosUsername>jzfai</nacosUsername>
+                <nacosPassword>123456</nacosPassword>
+            </properties>
+        </profile>
+        <!--线上项目使用,请不要选择-->
+        <profile>
             <id>prod</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
@@ -119,22 +137,5 @@
                 <nacosPassword>123456</nacosPassword>
             </properties>
         </profile>
-        <!--<profile>-->
-            <!--<id>uat</id>-->
-            <!--<activation>-->
-                <!--<activeByDefault>true</activeByDefault>-->
-            <!--</activation>-->
-            <!--<properties>-->
-                <!--<activatedProperties>uat</activatedProperties>-->
-                <!--<baseLinuxIp>8.135.1.141</baseLinuxIp>-->
-                <!--<nacosIpPort>${baseLinuxIp}:8848</nacosIpPort>-->
-                <!--<nacosWeight>1000</nacosWeight>-->
-                <!--<nacosDiscoveryIp>127.0.0.1</nacosDiscoveryIp>-->
-                <!--<nacosNamespace>df87d91b-b1ab-4720-8e1c-5a147edc6ddc</nacosNamespace>-->
-                <!--<nacosGroup>nacos-group-${activatedProperties}</nacosGroup>-->
-                <!--<nacosUsername>jzfai</nacosUsername>-->
-                <!--<nacosPassword>123456</nacosPassword>-->
-            <!--</properties>-->
-        <!--</profile>-->
     </profiles>
 </project>
