@@ -37,24 +37,18 @@ public class BrandController {
     @ApiOperation(value = "分页查询所有数据")
     public ResResult selectPage(Brand brand, KHCommonParams commonParams) {
         QueryWrapper<Brand> queryWrapper = new QueryWrapper<>();
-        if (ObjectUtils.isNotEmpty(brand.getId())) {
-            queryWrapper.or().like("id", brand.getId());
-        }
         if (ObjectUtils.isNotEmpty(brand.getName())) {
-            queryWrapper.or().like("name", brand.getName());
+            queryWrapper.like("name", brand.getName());
         }
         if (ObjectUtils.isNotEmpty(brand.getImage())) {
-            queryWrapper.or().like("image", brand.getImage());
+            queryWrapper.like("image", brand.getImage());
         }
         if (ObjectUtils.isNotEmpty(brand.getLetter())) {
-            queryWrapper.or().like("letter", brand.getLetter());
+            queryWrapper.like("letter", brand.getLetter());
         }
-        if (ObjectUtils.isNotEmpty(brand.getSeq())) {
-            queryWrapper.or().like("seq", brand.getSeq());
-        }
-        queryWrapper.or().orderByDesc("create_time");
+        queryWrapper.orderByDesc("create_time");
         if(StringUtils.isNotEmpty(commonParams.getStartTime())) {
-            queryWrapper.or().between("create_time",commonParams.getStartTime(),commonParams.getEndTime());
+            queryWrapper.between("create_time",commonParams.getStartTime(),commonParams.getEndTime());
         }
         queryWrapper.select("id,name,image,letter,seq,create_time,update_time");
         Page<Brand> brandPage = this.brandService.selectPage(commonParams.getPageNum(), commonParams.getPageSize(), queryWrapper);

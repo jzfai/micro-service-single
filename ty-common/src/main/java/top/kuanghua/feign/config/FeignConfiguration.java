@@ -2,6 +2,8 @@ package top.kuanghua.feign.config;
 
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
+import lombok.Data;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -13,6 +15,7 @@ import java.util.Enumeration;
 
 /*feign转发时将请求的参数设转发到请求头上*/
 @Configuration
+@Log4j2
 public class FeignConfiguration implements RequestInterceptor {
   @Override
   public void apply(RequestTemplate template) {
@@ -25,7 +28,7 @@ public class FeignConfiguration implements RequestInterceptor {
         while (headerNames.hasMoreElements()) {
           String name = headerNames.nextElement();
           String values = request.getHeader(name);
-          //System.out.println("等到的hearder头消息"+name+values);
+
           template.header(name, values);
         }
       }

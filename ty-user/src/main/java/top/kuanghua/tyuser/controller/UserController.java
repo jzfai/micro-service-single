@@ -53,13 +53,13 @@ public class UserController {
     public ResResult selectPage(User user, KHCommonParams commonParams) {
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         if(StringUtils.isNotEmpty(user.getUsername())) {
-            queryWrapper.or().like("username",user.getUsername());
+            queryWrapper.like("username",user.getUsername());
         }
         if(StringUtils.isNotEmpty(user.getPhone())) {
-            queryWrapper.or().like("phone",user.getPhone());
+            queryWrapper.like("phone",user.getPhone());
         }
         if(StringUtils.isNotEmpty(commonParams.getStartTime())) {
-            queryWrapper.or().between("create_time",commonParams.getStartTime(),commonParams.getEndTime());
+            queryWrapper.between("create_time",commonParams.getStartTime(),commonParams.getEndTime());
         }
         queryWrapper.select("username","phone","create_time");
         Page<User> userPage = this.userMapper.selectPage(new Page<>(commonParams.getPageNum(), commonParams.getPageSize()), queryWrapper);
@@ -100,7 +100,7 @@ public class UserController {
 
     public ResResult insert(@Valid @RequestBody User user) {
         //List<UserInfo> userInfos = userInfoMapper.selectList(new EntityWrapper<>(userInfo).like("firstname", name)
-        //                .or().like("lastname", name));52
+        //                .like("lastname", name));52
         return new ResResult().success(this.userService.insert(user));
     }
     /**

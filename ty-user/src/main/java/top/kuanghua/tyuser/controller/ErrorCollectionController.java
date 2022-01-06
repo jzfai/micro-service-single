@@ -38,22 +38,22 @@ public class ErrorCollectionController {
     public ResResult selectPage(ErrorCollection errorCollection, KHCommonParams khCommonParams) {
         QueryWrapper<ErrorCollection> queryWrapper = new QueryWrapper<>();
         if (ObjectUtils.isNotEmpty(errorCollection.getErrorLog())) {
-            queryWrapper.or().like("error_log", errorCollection.getErrorLog());
+            queryWrapper.like("error_log", errorCollection.getErrorLog());
         }
         if (ObjectUtils.isNotEmpty(errorCollection.getPageUrl())) {
-            queryWrapper.or().like("page_url", errorCollection.getPageUrl());
+            queryWrapper.like("page_url", errorCollection.getPageUrl());
         }
         if (ObjectUtils.isNotEmpty(errorCollection.getVersion())) {
-            queryWrapper.or().like("version", errorCollection.getVersion());
+            queryWrapper.like("version", errorCollection.getVersion());
         }
         if (ObjectUtils.isNotEmpty(errorCollection.getCreateTime())) {
-            queryWrapper.or().like("create_time", errorCollection.getCreateTime());
+            queryWrapper.like("create_time", errorCollection.getCreateTime());
         }
 
         if(StringUtils.isNotEmpty(khCommonParams.getStartTime())) {
-            queryWrapper.or().between("create_time",khCommonParams.getStartTime(),khCommonParams.getEndTime());
+            queryWrapper.between("create_time",khCommonParams.getStartTime(),khCommonParams.getEndTime());
         }
-        queryWrapper.or().orderByDesc("create_time");
+        queryWrapper.orderByDesc("create_time");
         Page<ErrorCollection> errorCollectionPage = this.errorCollectionService.selectPage(khCommonParams.getPageNum(), khCommonParams.getPageSize(), queryWrapper);
         return new ResResult().success(errorCollectionPage);
     }

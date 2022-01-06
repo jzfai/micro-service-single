@@ -9,7 +9,6 @@ import java.util.Date;
 
 /**
  * VCI设备表(Vci)表实体类
- *
  * @author kuanghua
  * @since 2021-10-22 10:34:43
  */
