@@ -58,8 +58,8 @@ public class ChineseUtils {
     }
 
     public static void main(String args[]) {
-        System.out.println(ChineseUtils.getChinese());
-        System.out.println(ChineseUtils.getFixedLengthChinese(20));
-        System.out.println(ChineseUtils.getRandomLengthChiness(2, 5));
+//        System.out.println(ChineseUtils.getChinese());
+//        System.out.println(ChineseUtils.getFixedLengthChinese(20));
+//        System.out.println(ChineseUtils.getRandomLengthChiness(2, 5));
     }
 }

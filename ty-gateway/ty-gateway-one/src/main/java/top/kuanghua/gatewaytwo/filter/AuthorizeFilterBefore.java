@@ -82,7 +82,7 @@ public class AuthorizeFilterBefore implements GlobalFilter, Ordered {
             DataBuffer buffer = getDataBuffer(response,message);
             return response.writeWith(Mono.just(buffer));
         }
-        //2.1 将解析到的jwt数据保存到线程中(转发过去的服务都能接收)（但是服务必须部署到同一台机器上）
+        //2.1 将解析到的jwt数据保存到线程中(转发过去的服务都能接收)
         try {
             //本地文件解析
             //Claims claims = JwtUtilsKh.parserTokenGetBody(jwtToken, RsaUtils.getPublicKey(pubKeyPath));

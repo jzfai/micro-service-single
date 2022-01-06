@@ -17,23 +17,26 @@ import java.util.Map;
  * @create 2021/1/31 16:31
  */
 
+
+//FeignConfiguration.class -> forward req params of include the token
 @FeignClient(name="ty-auth",configuration = FeignConfiguration.class)
 @RequestMapping("token")
 public interface TokenFeign {
+
     /*
-     * 解析token
+     *  parse token
      * */
     @PostMapping("parseToken")
     ResResult parseToken(@RequestParam("jwtToken") String jwtToken);
 
     /*
-     * 生成token
+     * create  token
      * */
     @PostMapping("generateToken")
     ResResult generateToken(@RequestBody Map map);
 
     /*
-     * 更新token
+     * update token
      * */
     @PostMapping("updateToken")
     ResResult updateToken(@RequestBody Map map);

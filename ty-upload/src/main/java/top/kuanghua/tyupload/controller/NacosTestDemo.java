@@ -31,7 +31,7 @@ public class NacosTestDemo {
         HashMap hashMap = new HashMap();
         hashMap.put("username","邝华");
         ResResult resResult = tokenFeign.generateToken(hashMap);
-        System.out.println(resResult);
+        //System.out.println(resResult);
         return resResult;
     }
 
@@ -39,7 +39,6 @@ public class NacosTestDemo {
     @GetMapping("test2")
     public ResResult test2(String token){
         ResResult resResult = tokenFeign.parseToken(token);
-        System.out.println(resResult);
         return resResult;
     }
 }

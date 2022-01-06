@@ -86,7 +86,6 @@ public class UploadService {
         Map<String, String> hashMap = new HashMap<>();
         hashMap.put("name", name);
         hashMap.put("url", storePath.getFullPath());
-        System.out.println(hashMap);
         return hashMap;
     }
 }

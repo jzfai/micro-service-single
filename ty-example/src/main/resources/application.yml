@@ -1,0 +1,24 @@
+#msg config，  place change to you sms config
+kuanghua:
+  sms:
+    accessKeyId: LTAI4FrD2voTK2wTgRCPwT6d
+    accessKeySecret: Zj07thnb2jiBkl4wtqgvPeuSzkJRJ3
+    signName: 品优商城 # 签名名称
+    verifyCodeTemplate: SMS_189216068 # 模板名称
+
+
+
+
+#email config, place change to you email
+spring:
+  mail:
+    username: 869653722@qq.com
+    password: xbthzedhnxatbcab
+    host: smtp.qq.com
+    properties:
+      mail.smtp.starttls.enable: true
+
+
+
+server:
+  port: ${envpt.tomcatPortPre}0121

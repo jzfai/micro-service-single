@@ -155,7 +155,6 @@ public class UserService {
             throw new RuntimeException("用户不存在");
         }
 
-        System.out.println(CodecUtils.md5Hex(user.getPassword(), resUser.getSalt()));
         if(!resUser.getPassword().equals(CodecUtils.md5Hex(user.getPassword(),resUser.getSalt()))){
             throw new RuntimeException("用户名或密码错误");
         }
@@ -178,7 +177,6 @@ public class UserService {
         if (ObjectUtilsSelf.isEmpty(resUser)) {
             throw new RuntimeException("用户不存在");
         }
-        System.out.println(CodecUtils.md5Hex(resUser.getPassword(), resUser.getSalt()));
         if(!resUser.getPassword().equals(CodecUtils.md5Hex(oldPassword,resUser.getSalt()))){
             throw new RuntimeException("密码错误");
         }
