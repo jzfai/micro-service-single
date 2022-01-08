@@ -34,7 +34,7 @@ public class JwtProperties {
         File priKeyFile = new File(priKeyPath);
         if (!pubKeyFile.exists() || !priKeyFile.exists()) {
             File fileParent = pubKeyFile.getParentFile();
-            if(!fileParent.exists()){
+            if (!fileParent.exists()) {
                 fileParent.mkdirs();
             }
             throw new RuntimeException("秘钥文件不存在");
@@ -45,7 +45,7 @@ public class JwtProperties {
 //            } catch (Exception e) {
 //                log.error("生成秘钥失败");
 //                //e.printStackTrace();
-//            }
+//            }r
         }
         //读取公钥和私钥文件
         this.publicKey = RsaUtils.getPublicKey(pubKeyPath);

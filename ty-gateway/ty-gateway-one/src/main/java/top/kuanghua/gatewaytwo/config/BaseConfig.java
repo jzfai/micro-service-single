@@ -18,4 +18,6 @@ import org.springframework.context.annotation.Configuration;
 //dao包扫描
 @ComponentScan(basePackages = {"top.kuanghua.khcomomon"})
 @EnableFeignClients(basePackages = {"top.kuanghua.feign"})
-public class BaseConfig {}
+public class BaseConfig {
+
+}

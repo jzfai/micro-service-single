@@ -3,21 +3,18 @@ package top.kuanghua.tyuser.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
-import com.baomidou.mybatisplus.extension.api.ApiController;
-import com.baomidou.mybatisplus.extension.api.R;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.web.bind.annotation.*;
 import top.kuanghua.khcomomon.entity.KHCommonParams;
 import top.kuanghua.khcomomon.entity.ResResult;
 import top.kuanghua.tyuser.entity.ErrorCollection;
 import top.kuanghua.tyuser.service.ErrorCollectionService;
-import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.io.Serializable;
-import java.util.*;
+import java.util.List;
 
 @Api(tags = "日志相关")
 @RestController
@@ -50,8 +47,8 @@ public class ErrorCollectionController {
             queryWrapper.like("create_time", errorCollection.getCreateTime());
         }
 
-        if(StringUtils.isNotEmpty(khCommonParams.getStartTime())) {
-            queryWrapper.between("create_time",khCommonParams.getStartTime(),khCommonParams.getEndTime());
+        if (StringUtils.isNotEmpty(khCommonParams.getStartTime())) {
+            queryWrapper.between("create_time", khCommonParams.getStartTime(), khCommonParams.getEndTime());
         }
         queryWrapper.orderByDesc("create_time");
         Page<ErrorCollection> errorCollectionPage = this.errorCollectionService.selectPage(khCommonParams.getPageNum(), khCommonParams.getPageSize(), queryWrapper);

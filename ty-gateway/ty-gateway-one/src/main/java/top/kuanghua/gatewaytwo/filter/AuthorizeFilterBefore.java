@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
@@ -17,11 +16,10 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 import top.kuanghua.feign.tyauth.feign.TokenFeign;
-import top.kuanghua.khcomomon.entity.ResResult;
 import top.kuanghua.khcomomon.utils.ObjectUtilsSelf;
 
+import javax.annotation.Resource;
 import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
@@ -46,7 +44,7 @@ private Map<String,String> maps;
 * */
 public class AuthorizeFilterBefore implements GlobalFilter, Ordered {
 
-    private static  final String AUTHORIZE_TOKEN="AUTHORIZE_TOKEN";
+    private static final String AUTHORIZE_TOKEN = "AUTHORIZE_TOKEN";
     @Value("#{'${filter.allowPaths:}'.empty ? null : '${filter.allowPaths:}'.split(',')}")
     private List<String> allowPaths;
 //    @Value("${filter.allowPaths}")
@@ -56,7 +54,7 @@ public class AuthorizeFilterBefore implements GlobalFilter, Ordered {
 //    @Value("${jwt-properties.priKeyPath}")
 //    private String priKeyPath;
 
-    @Autowired
+    @Resource
     private TokenFeign tokenFeign;
 
     @Override
@@ -68,18 +66,18 @@ public class AuthorizeFilterBefore implements GlobalFilter, Ordered {
         //List<String> stringList = Arrays.asList("/api/user/login","/api/search/searchData");
         //1.白名单放行
         for (String allowPath : allowPaths) {
-            if(StringUtils.contains(path,allowPath)){
-                return  chain.filter(exchange);
+            if (StringUtils.contains(path, allowPath)) {
+                return chain.filter(exchange);
             }
         }
         //2.解析jwt token放行
         String jwtToken = request.getHeaders().getFirst(AUTHORIZE_TOKEN);
 
-        if(ObjectUtils.isEmpty(jwtToken)){
+        if (ObjectUtils.isEmpty(jwtToken)) {
             JSONObject message = new JSONObject();
-            message.put("code",403);
+            message.put("code", 403);
             message.put("msg", "token为空");
-            DataBuffer buffer = getDataBuffer(response,message);
+            DataBuffer buffer = getDataBuffer(response, message);
             return response.writeWith(Mono.just(buffer));
         }
         //2.1 将解析到的jwt数据保存到线程中(转发过去的服务都能接收)
@@ -88,13 +86,13 @@ public class AuthorizeFilterBefore implements GlobalFilter, Ordered {
             //Claims claims = JwtUtilsKh.parserTokenGetBody(jwtToken, RsaUtils.getPublicKey(pubKeyPath));
             //System.out.println("解析出来的body"+claims);
             //调用feign服务进行解析
-            Object resResult= tokenFeign.parseToken(jwtToken);
+            Object resResult = tokenFeign.parseToken(jwtToken);
 
             Map tokenInfo = ObjectUtilsSelf.parseResToData(resResult);
-            log.info("解析的token数据",tokenInfo.toString());
+            log.info("解析的token数据", tokenInfo.toString());
             //将信息设置到头部
             ServerHttpRequest httpRequest = exchange.getRequest().mutate().headers(httpHeaders -> {
-                String decode="";
+                String decode = "";
                 try {
                     decode = URLEncoder.encode(JSON.toJSONString(tokenInfo), "utf-8");
                 } catch (UnsupportedEncodingException e) {
@@ -107,14 +105,14 @@ public class AuthorizeFilterBefore implements GlobalFilter, Ordered {
             return chain.filter(build);
         } catch (Exception e) {
             JSONObject message = new JSONObject();
-            message.put("code",403);
-            message.put("msg","token解析失败"+e.getMessage());
-            log.error("token解析失败"+e);
-            return response.writeWith(Mono.just(getDataBuffer(response,message)));
+            message.put("code", 403);
+            message.put("msg", "token解析失败" + e.getMessage());
+            log.error("token解析失败" + e);
+            return response.writeWith(Mono.just(getDataBuffer(response, message)));
         }
     }
 
-    private DataBuffer getDataBuffer(ServerHttpResponse response, JSONObject  message) {
+    private DataBuffer getDataBuffer(ServerHttpResponse response, JSONObject message) {
         byte[] bits = message.toJSONString().getBytes(StandardCharsets.UTF_8);
         DataBuffer buffer = response.bufferFactory().wrap(bits);
         //response.setStatusCode(HttpStatus.UNAUTHORIZED);
