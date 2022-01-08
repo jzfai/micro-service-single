@@ -21,12 +21,12 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.2.4.RELEASE</version>
+        <version>2.1.4.RELEASE</version>
         <relativePath/>
     </parent>
 
     <properties>
-        <spring-cloud.version>Hoxton.SR12</spring-cloud.version>
+        <spring-cloud.version>Greenwich.SR1</spring-cloud.version>
     </properties>
 
     <dependencyManagement>
@@ -88,9 +88,6 @@
     <profiles>
         <profile>
             <id>dev</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
             <properties>
                 <activatedProperties>dev</activatedProperties>
                 <baseLinuxIp>8.135.1.141</baseLinuxIp>
@@ -105,6 +102,7 @@
         </profile>
         <profile>
             <id>test</id>
+            <!--default choose env-->
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
@@ -120,23 +118,23 @@
                 <nacosPassword>123456</nacosPassword>
             </properties>
         </profile>
-        <!--线上项目使用,请不要选择-->
-        <profile>
-            <id>prod</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <properties>
-                <activatedProperties>prod</activatedProperties>
-                <baseLinuxIp>8.135.1.141</baseLinuxIp>
-                <nacosIpPort>${baseLinuxIp}:8848</nacosIpPort>
-                <nacosWeight>1000</nacosWeight>
-                <nacosDiscoveryIp>127.0.0.1</nacosDiscoveryIp>
-                <nacosNamespace>df87d91b-b1ab-4720-8e1c-5a147edc6ddc</nacosNamespace>
-                <nacosGroup>nacos-group-${activatedProperties}</nacosGroup>
-                <nacosUsername>jzfai</nacosUsername>
-                <nacosPassword>123456</nacosPassword>
-            </properties>
-        </profile>
+        <!--the prod env has been used online, don't choose it -->
+        <!--<profile>-->
+        <!--<id>prod</id>-->
+        <!--<activation>-->
+        <!--<activeByDefault>true</activeByDefault>-->
+        <!--</activation>-->
+        <!--<properties>-->
+        <!--<activatedProperties>prod</activatedProperties>-->
+        <!--<baseLinuxIp>8.135.1.141</baseLinuxIp>-->
+        <!--<nacosIpPort>${baseLinuxIp}:8848</nacosIpPort>-->
+        <!--<nacosWeight>1000</nacosWeight>-->
+        <!--<nacosDiscoveryIp>127.0.0.1</nacosDiscoveryIp>-->
+        <!--<nacosNamespace>df87d91b-b1ab-4720-8e1c-5a147edc6ddc</nacosNamespace>-->
+        <!--<nacosGroup>nacos-group-${activatedProperties}</nacosGroup>-->
+        <!--<nacosUsername>jzfai</nacosUsername>-->
+        <!--<nacosPassword>123456</nacosPassword>-->
+            <!--</properties>-->
+        <!--</profile>-->
     </profiles>
 </project>

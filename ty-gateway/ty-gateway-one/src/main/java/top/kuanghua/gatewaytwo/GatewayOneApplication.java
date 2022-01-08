@@ -18,11 +18,12 @@ import reactor.core.publisher.Mono;
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
 public class GatewayOneApplication {
     public static void main(String[] args) {
-        SpringApplication.run(GatewayOneApplication.class,args);
+        SpringApplication.run(GatewayOneApplication.class, args);
     }
+
     //创建一个ipKeyResolver 指定用户的IP
-    @Bean(name="ipKeyResolver")
-    public KeyResolver keyResolver(){
+    @Bean(name = "ipKeyResolver")
+    public KeyResolver keyResolver() {
         return new KeyResolver() {
             @Override
             public Mono<String> resolve(ServerWebExchange exchange) {
@@ -35,4 +36,5 @@ public class GatewayOneApplication {
             }
         };
     }
+
 }

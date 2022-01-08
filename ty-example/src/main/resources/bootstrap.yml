@@ -16,18 +16,24 @@ spring:
         file-extension: yml
         # 用于共享的配置文件
         shared-configs:
-        - data-id: application-@activatedProperties@.yml
+        - data-id: application-main.yml
           group: @nacosGroup@
           refresh: true
         # 额外的配置文件
         extension-configs:
+        #get mysql config
         - data-id: application-db.yml
           group: @nacosGroup@
           refresh: true
         - data-id: application-rabbit.yml
           group: @nacosGroup@
           refresh: true
+        #get redis config
         - data-id: application-redis.yml
+          group: @nacosGroup@
+          refresh: true
+        #get fdfs config
+        - data-id: application-upload.yml
           group: @nacosGroup@
           refresh: true
       discovery:

@@ -16,13 +16,10 @@ spring:
         file-extension: yml
         # 用于共享的配置文件
         shared-configs:
-        - data-id: application-@activatedProperties@.yml
+        - data-id: application-main.yml
           group: @nacosGroup@
           refresh: true
         extension-configs:
-        - data-id: ty-gateway-one.yml
-          group: @nacosGroup@
-          refresh: true
         - data-id: application-rabbit.yml
           group: @nacosGroup@
           refresh: true

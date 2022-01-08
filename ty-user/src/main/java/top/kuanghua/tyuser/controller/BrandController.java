@@ -3,21 +3,18 @@ package top.kuanghua.tyuser.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
-import com.baomidou.mybatisplus.extension.api.ApiController;
-import com.baomidou.mybatisplus.extension.api.R;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.web.bind.annotation.*;
 import top.kuanghua.khcomomon.entity.KHCommonParams;
 import top.kuanghua.khcomomon.entity.ResResult;
 import top.kuanghua.tyuser.entity.Brand;
 import top.kuanghua.tyuser.service.BrandService;
-import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.io.Serializable;
-import java.util.*;
+import java.util.List;
 
 @Api(tags = "品牌表(Brand)")
 @RestController
@@ -30,25 +27,32 @@ public class BrandController {
     /**
      * 分页查询所有数据
      *
-     * @param brand    查询实体
+     * @param brand 查询实体
      * @return 所有数据
      */
     @GetMapping("selectPage")
     @ApiOperation(value = "分页查询所有数据")
     public ResResult selectPage(Brand brand, KHCommonParams commonParams) {
         QueryWrapper<Brand> queryWrapper = new QueryWrapper<>();
+        if (ObjectUtils.isNotEmpty(brand.getId())) {
+            queryWrapper.like("id", brand.getId());
+        }
         if (ObjectUtils.isNotEmpty(brand.getName())) {
             queryWrapper.like("name", brand.getName());
         }
         if (ObjectUtils.isNotEmpty(brand.getImage())) {
             queryWrapper.like("image", brand.getImage());
         }
+
         if (ObjectUtils.isNotEmpty(brand.getLetter())) {
             queryWrapper.like("letter", brand.getLetter());
         }
+        if (ObjectUtils.isNotEmpty(brand.getSeq())) {
+            queryWrapper.like("seq", brand.getSeq());
+        }
         queryWrapper.orderByDesc("create_time");
-        if(StringUtils.isNotEmpty(commonParams.getStartTime())) {
-            queryWrapper.between("create_time",commonParams.getStartTime(),commonParams.getEndTime());
+        if (StringUtils.isNotEmpty(commonParams.getStartTime())) {
+            queryWrapper.between("create_time", commonParams.getStartTime(), commonParams.getEndTime());
         }
         queryWrapper.select("id,name,image,letter,seq,create_time,update_time");
         Page<Brand> brandPage = this.brandService.selectPage(commonParams.getPageNum(), commonParams.getPageSize(), queryWrapper);

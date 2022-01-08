@@ -4,15 +4,18 @@
 使用的技术如下：
 
 ```java
-spring-boot:2.2.4.RELEASE
-spring-cloud:Hoxton.SR12
-spring-cloud-starter-gateway:2.2.9.RELEASE
+spring-boot:2.1.4.RELEASE
+spring-cloud:Greenwich.SR1
+spring-cloud-starter-gateway:2.1.1.RELEASE
 nacos:2.1.3.RELEASE
 mybatis-plus: 3.3.2
 rabbitmq:3.7-management
 redis: 3.2.9
 mysql:5.7
 ```
+
+
+
 
 #### 更新日志：
 
