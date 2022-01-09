@@ -1,23 +1,20 @@
 package top.kuanghua.tyexample.service;
 
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ResourceUtils;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import top.kuanghua.khcomomon.utils.ObjectUtilsSelf;
 
+import javax.annotation.Resource;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 /**
  * @Title: SendEmailService
@@ -28,7 +25,7 @@ import java.util.List;
 @Service
 public class SendEmailService {
 
-    @Autowired
+    @Resource
     private JavaMailSenderImpl javaMailSender;
 
     @Value("${spring.mail.username}")
@@ -66,7 +63,7 @@ public class SendEmailService {
      * @Date: 2020-08-20
      */
     @Async
-    public void sendMimeMail(String subject, String text, String sendTo,MultipartFile file)
+    public void sendMimeMail(String subject, String text, String sendTo, MultipartFile file)
             throws MessagingException, IOException {
         // String path = ResourceUtils.getURL("classpath:").getPath();
         // System.out.println(path + file.getOriginalFilename());

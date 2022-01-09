@@ -1,5 +1,7 @@
 package top.kuanghua.tyexample.config;
 
+import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
@@ -16,6 +18,10 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 //扫描公用包的配置和自身的配置类
 @ComponentScan(basePackages = {"top.kuanghua.khcomomon"})
+//mapper包扫描
+@MapperScan(basePackages = {"top.kuanghua.tyexample.mapper"})
+//feign扫描
+@EnableFeignClients(basePackages = {"top.kuanghua.feign.tyauth"})
 public class BaseConfig {
 
 }
