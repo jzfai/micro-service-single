@@ -15,8 +15,6 @@ mysql:5.7
 ```
 
 
-
-
 #### 更新日志：
 
 to look doc ----
@@ -69,6 +67,7 @@ git clone  https://github.com/jzfai/micro-service-plus.git
 ```
 
 >注：在Maven Projects->Profies 选择环境时，请不要选择prod环境。目前线上是prod环境下构建的包
+
 
 #### 架构亮点
 
