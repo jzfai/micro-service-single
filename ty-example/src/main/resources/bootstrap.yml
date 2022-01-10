@@ -36,6 +36,10 @@ spring:
         - data-id: application-upload.yml
           group: @nacosGroup@
           refresh: true
+        #get seata config need after db config
+        - data-id: application-seata.yml
+          group: @nacosGroup@
+          refresh: true
       discovery:
         namespace: @nacosNamespace@
         group: @nacosGroup@

@@ -25,10 +25,6 @@ public class SeataTestController {
     @ApiOperation(value = "测试seata回滚")
     @GetMapping("test-seata-rollback")
     public void testSeataRollback() {
-        try {
-            seataTestService.testSeataRollback();
-        } catch (InterruptedException e) {
-            throw new RuntimeException("错误了");
-        }
+        seataTestService.testSeataRollback();
     }
 }

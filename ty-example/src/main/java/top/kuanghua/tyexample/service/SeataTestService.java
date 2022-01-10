@@ -1,6 +1,7 @@
 package top.kuanghua.tyexample.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import top.kuanghua.feign.tyuser.feign.UserFeign;
 
 import javax.annotation.Resource;
@@ -17,10 +18,9 @@ public class SeataTestService {
     @Resource
     private UserFeign userFeign;
 
-
-    public void testSeataRollback() throws InterruptedException {
+    @Transactional(rollbackFor = Exception.class)
+    public void testSeataRollback(){
         userFeign.insertUser("jzfai");
-        Thread.sleep(2000);
-        int fai = 1 / 0;
+        int i=10/0;
     }
 }

@@ -16,11 +16,6 @@
             <artifactId>ty-common</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
-        <dependency>
-            <groupId>top.kuanghua</groupId>
-            <artifactId>user-api</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
         <!--aliYun msg-->
         <dependency>
             <groupId>com.aliyun</groupId>

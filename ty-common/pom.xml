@@ -123,7 +123,6 @@
             <artifactId>spring-boot-devtools</artifactId>
         </dependency>
 
-        <!--&lt;!&ndash;Seata 包&ndash;&gt;-->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-seata</artifactId>
