@@ -11,7 +11,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @create 2020/11/7 20:07
  */
 @SpringBootApplication
-@EnableAutoDataSourceProxy //开启seata事务管理
+@EnableAutoDataSourceProxy
 public class UserApplication {
     public static void main(String[] args) {
         SpringApplication.run(UserApplication.class, args);
