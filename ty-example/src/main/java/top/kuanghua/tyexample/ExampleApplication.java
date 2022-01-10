@@ -8,8 +8,9 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 @EnableScheduling
 @EnableAsync
+//@EnableAutoDataSourceProxy
 public class ExampleApplication {
     public static void main(String[] args) {
-        SpringApplication.run(ExampleApplication.class,args);
+        SpringApplication.run(ExampleApplication.class, args);
     }
 }
