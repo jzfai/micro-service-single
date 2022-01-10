@@ -79,11 +79,9 @@ public class RedisTestController {
 
     * */
 
-
     @ApiOperation(value = "查询错误日志")
     @GetMapping("queryErrorLogList")
     public ResResult queryErrorLogList() {
-
         String key = "queryErrorLogList";
         /*
          * 解决缓存穿透带来的问题
