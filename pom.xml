@@ -12,10 +12,10 @@
         <module>ty-common</module>
         <module>ty-gateway</module>
         <module>ty-auth</module>
-        <module>ty-user</module>
-        <module>ty-upload</module>
-        <module>ty-excel</module>
+        <module>integration-front</module>
         <module>ty-example</module>
+        <!--<module>ty-upload</module>-->
+        <!--<module>ty-excel</module>-->
     </modules>
 
     <parent>
@@ -120,20 +120,17 @@
         </profile>
         <!--the prod env has been used online, don't choose it -->
         <!--<profile>-->
-        <!--<id>prod</id>-->
-        <!--<activation>-->
-        <!--<activeByDefault>true</activeByDefault>-->
-        <!--</activation>-->
-        <!--<properties>-->
-        <!--<activatedProperties>prod</activatedProperties>-->
-        <!--<baseLinuxIp>8.135.1.141</baseLinuxIp>-->
-        <!--<nacosIpPort>${baseLinuxIp}:8848</nacosIpPort>-->
-        <!--<nacosWeight>1000</nacosWeight>-->
-        <!--<nacosDiscoveryIp>127.0.0.1</nacosDiscoveryIp>-->
-        <!--<nacosNamespace>df87d91b-b1ab-4720-8e1c-5a147edc6ddc</nacosNamespace>-->
-        <!--<nacosGroup>nacos-group-${activatedProperties}</nacosGroup>-->
-        <!--<nacosUsername>jzfai</nacosUsername>-->
-        <!--<nacosPassword>123456</nacosPassword>-->
+            <!--<id>prod</id>-->
+            <!--<properties>-->
+                <!--<activatedProperties>prod</activatedProperties>-->
+                <!--<baseLinuxIp>8.135.1.141</baseLinuxIp>-->
+                <!--<nacosIpPort>${baseLinuxIp}:8848</nacosIpPort>-->
+                <!--<nacosWeight>1000</nacosWeight>-->
+                <!--<nacosDiscoveryIp>127.0.0.1</nacosDiscoveryIp>-->
+                <!--<nacosNamespace>df87d91b-b1ab-4720-8e1c-5a147edc6ddc</nacosNamespace>-->
+                <!--<nacosGroup>nacos-group-${activatedProperties}</nacosGroup>-->
+                <!--<nacosUsername>jzfai</nacosUsername>-->
+                <!--<nacosPassword>123456</nacosPassword>-->
             <!--</properties>-->
         <!--</profile>-->
     </profiles>

@@ -1,8 +1,8 @@
 package top.kuanghua.tyexample.service;
 
+import io.seata.spring.annotation.GlobalTransactional;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import top.kuanghua.feign.tyuser.feign.UserFeign;
+import top.kuanghua.feign.integrationfront.feign.UserFeign;
 
 import javax.annotation.Resource;
 
@@ -18,7 +18,7 @@ public class SeataTestService {
     @Resource
     private UserFeign userFeign;
 
-    @Transactional(rollbackFor = Exception.class)
+    @GlobalTransactional(rollbackFor = Exception.class)
     public void testSeataRollback(){
         userFeign.insertUser("jzfai");
         int i=10/0;

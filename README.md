@@ -12,6 +12,8 @@ mybatis-plus: 3.3.2
 rabbitmq:3.7-management
 redis: 3.2.9
 mysql:5.7
+seata:1.4.2
+cancel
 ```
 
 
@@ -51,9 +53,8 @@ ty-common: 统一依赖，统一配置管理，feign接口整合等
 本架构的微服务有：
 ty-gateway:网关微服务。使用的是spring-cloud-starter-gateway，先对于zull网关来说性能更好。主要实现了，权限控制和拦截，jwt token解析和校验,swagger文件整合，使用令牌技术请求限流等
 ty-auth：权限服务。jwt token生成，解析，校验等，默认配置3天有效期，少于一天自动续约（此处感兴趣的可以查看下源码）
-ty-user：用户服务。用户的登录，注册，查看用户信息等一系列功能
-ty-excel：excel文件的读取和导出
-ty-upload：文件上传服务。使用的技术为fastDFS技术，此服务主要用于文件的上传和下载
+integration-front：前端实例数据。用户的登录，注册，查看用户信息等一系列功能
+ty-example：全分布式事务seata,rabbitmq延时队列,短信发送,email发送，canal等功能实例
 ```
 
 
