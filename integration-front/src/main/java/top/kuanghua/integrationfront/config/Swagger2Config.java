@@ -1,4 +1,4 @@
-package top.kuanghua.tyexample.config;
+package top.kuanghua.integrationfront.config;
 
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,7 +18,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 //配置包扫描
 public class Swagger2Config {
     private boolean swagger_is_enable = true;
-
+//    @Value("${.ipAddr}")
+//    private String ipAddr;
     @Value("${server.port}")
     private String port;
 
@@ -37,14 +38,15 @@ public class Swagger2Config {
 
     /**
      * 构建 api文档的详细信息函数
+     *
      * @return
      */
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("title:micro-service-plus")
+                .title("标题：swagger文档")
                 .description("描述：新一代的微服务架构")
                 .contact(new Contact("jzfai", null, "869653722@qq.com"))
-                .version("版本号:2.9")
+                .version("版本号:2.8")
                 .build();
     }
 

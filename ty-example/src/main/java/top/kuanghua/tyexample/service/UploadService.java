@@ -30,17 +30,17 @@ public class UploadService {
     @Resource
     private FastFileStorageClient storageClient;
 
-    private static final List<String> CONTENT_TYPES = Arrays.asList("image/jpeg", "image/gif");
+    //private static final List<String> CONTENT_TYPES = Arrays.asList("image/jpeg", "image/gif");
 
     public String upload(MultipartFile file) throws IOException {
         String originalFilename = file.getOriginalFilename();
         //检验文件类型
-        String contentType = file.getContentType();
-        if (!CONTENT_TYPES.contains(contentType)) {
-            //文件类型不合法
-            log.info("文件类型不合法：{}", originalFilename);
-            throw new RuntimeException("文件内容不合法");
-        }
+//        String contentType = file.getContentType();
+//        if (!CONTENT_TYPES.contains(contentType)) {
+//            //文件类型不合法
+//            log.info("文件类型不合法：{}", originalFilename);
+//            throw new RuntimeException("文件内容不合法");
+//        }
         //检验文件内容
         BufferedImage bufferedImage = ImageIO.read(file.getInputStream());
         if (bufferedImage == null) {
@@ -62,10 +62,10 @@ public class UploadService {
         String originalFilename = file.getOriginalFilename();
         //检验文件类型
         String contentType = file.getContentType();
-        if (!CONTENT_TYPES.contains(contentType)) {
-            //文件类型不合法
-            log.info("文件类型不合法：{}", originalFilename);
-        }
+//        if (!CONTENT_TYPES.contains(contentType)) {
+//            //文件类型不合法
+//            log.info("文件类型不合法：{}", originalFilename);
+//        }
         //检验文件内容
         BufferedImage bufferedImage = ImageIO.read(file.getInputStream());
         if (bufferedImage == null) {

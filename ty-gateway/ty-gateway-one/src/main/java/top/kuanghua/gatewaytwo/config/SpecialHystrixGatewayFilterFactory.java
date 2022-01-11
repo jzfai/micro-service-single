@@ -82,7 +82,7 @@ public class SpecialHystrixGatewayFilterFactory extends AbstractGatewayFilterFac
                     HystrixRuntimeException.FailureType failureType = e.getFailureType();
                     switch (failureType) {
                         case TIMEOUT:
-                            return Mono.error(new TimeoutException());
+                            return Mono.error(new TimeoutException("接口请求超时了"));
                         case COMMAND_EXCEPTION: {
                             Throwable cause = e.getCause();
                             if (cause instanceof ResponseStatusException || AnnotatedElementUtils

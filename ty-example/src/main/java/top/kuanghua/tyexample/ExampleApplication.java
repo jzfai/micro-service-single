@@ -10,7 +10,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 @EnableScheduling
 @EnableAsync
-//@EnableCanalClient
+@EnableCanalClient
 @EnableAutoDataSourceProxy
 public class ExampleApplication {
     public static void main(String[] args) {

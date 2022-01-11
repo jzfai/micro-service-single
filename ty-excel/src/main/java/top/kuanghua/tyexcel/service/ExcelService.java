@@ -131,8 +131,6 @@ public class ExcelService {
 
 
             }
-
-
             //注：headRowNumber(1)如果不写会自动匹配
         })// 需要读取批注 默认不读取
                 .extraRead(CellExtraTypeEnum.COMMENT)
