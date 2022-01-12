@@ -34,6 +34,14 @@
             <artifactId>fastdfs-client</artifactId>
             <version>1.27.2</version>
         </dependency>
+
+        <!--go fastdfs上传依赖-->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>4.5.1</version>
+        </dependency>
+
         <!--canal依赖-->
         <dependency>
             <groupId>com.xpand</groupId>

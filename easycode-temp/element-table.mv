@@ -1,0 +1,300 @@
+##导入宏定义
+$!init
+$!define
+##定义实体对象名
+#set($entityName = $!tool.firstLowerCase($!tableInfo.name))
+#set($serviceName = 'rbox-service')
+
+##保存文件（宏定义）
+#save($!{entityName}, ".vue")
+<template>
+    <!--操作-->
+    <div class="mr-3 rowSS">
+        <el-button type="primary" icon="el-icon-plus" @click="addBtnClick">新增</el-button>
+        <el-button type="primary" icon="el-icon-delete" @click="multiDelBtnClick">删除</el-button>
+        <!--条件搜索-->
+        <el-form ref="refsearchForm" :inline="true" class="demo-searchForm ml-3">
+            #foreach($column in $tableInfo.otherColumn)
+                #if(${column.comment})
+                    <el-form-item
+                            label-width="0px"
+                            label=""
+                            prop="$!{column.name}"
+                            label-position="left"
+                    >
+                        <el-input v-model="searchForm.$!{column.name}" class="widthPx-120" placeholder="${column.comment.split(';')[0]}" />
+                    </el-form-item>
+                #end
+            #end
+            <!--查询按钮-->
+            <el-button type="primary" @click="searchBtnClick">搜索</el-button>
+        </el-form>
+    </div>
+    <!--表格和分页-->
+    <el-table height="calc(100vh - 280px)" @selection-change="handleSelectionChange" id="resetElementDialog" ref="refuserTable" size="mini" border :data="$!{tableInfo.name}tableData">
+        <el-table-column
+                type="selection"
+                align="center"
+                width="50"/>
+        #foreach($column in $tableInfo.otherColumn)
+            #if(${column.comment})
+                #if( $column.comment.indexOf("select") != -1)
+                    <el-table-column
+                            align="center"
+                            prop="$!{column.name}"
+                            label="$!{column.comment.split(';')[0]}"
+                            width="100">
+                        <template slot-scope="{row,$index}">
+                            #set($lable= $!{column.comment.split(';')[1]})
+                            #set($indexFirst=$lable.indexOf('(')+1)
+                            #set($selectLableArr=$lable.substring($indexFirst,$lable.indexOf(")")).split(','))
+                            #foreach($item in $selectLableArr)
+                                #if($item)
+                                    <span v-if="row.$!{column.name}===$item.split("\.")[0]">$item.split("\.")[1]</span>
+                                #end
+                            #end
+                        </template>
+                    </el-table-column>
+                #else
+                    <el-table-column
+                            align="center"
+                            prop="$!{column.name}"
+                            label="$!{column.comment.split(';')[0]}"
+                            />
+                #end
+            #end
+        #end
+        <!--点击操作-->
+        <el-table-column  align="center" label="操作" width="120">
+            <template #default="{ row }">
+                <el-button type="text" size="small" @click="tableEditClick(row)">编辑</el-button>
+                <el-button type="text" size="small" @click="tableDetailClick(row)">详情</el-button>
+                <el-button type="text" size="small" @click="tableDelClick(row)">删除</el-button>
+            </template>
+        </el-table-column>
+    </el-table>
+    <!--分页-->
+    <div class="block columnCC mt-2 mb-5">
+        <el-pagination
+                :current-page="pageNum"
+                :page-sizes="[10, 20, 50, 100]"
+                :page-size="pageSize"
+                layout="total, sizes, prev, pager, next, jumper"
+                :total="pageTotalMixin"
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+        />
+    </div>
+    <!--详情-->
+    <el-dialog
+            v-if="detailDialogMixin"
+            :title="dialogTitleMixin"
+            v-model="detailDialogMixin"
+            width="40vw"
+            :close-on-click-modal="false"
+    >
+        #foreach($column in $tableInfo.otherColumn)
+            #if(${column.comment})
+                <div class="detail-container rowBC">
+                    <div class="detail-container-item">${column.comment.split(';')[0]}：{{ detailData.$!{column.name} }}</div>
+                </div>
+            #end
+        #end
+        <template #footer>
+      <span class="dialog-footer">
+        <el-button type="primary" @click="detailDialogMixin = false">确 定</el-button>
+      </span>
+        </template>
+    </el-dialog>
+    <$!{tableInfo.name}Form v-if="showFrom" ref="ref$!{tableInfo.name}Form" @hideComp="hideComp" @selectPageReq="selectPageReq" />
+</template>
+
+<script setup>
+    /*1.初始化引入和实例化*/
+    import momentMini from 'moment-mini'
+    import {onMounted, getCurrentInstance, watch, ref, reactive, computed, toRefs} from 'vue'
+    let {proxy} = getCurrentInstance()
+    import $!{tableInfo.name}Form from './.$!{tableInfo.name}Form.vue'
+    //获取子组件实例
+    const ref$!{tableInfo.name}Form = ref(null)
+
+    /*2.表格查询和筛选*/
+    let multipleSelection = ref([])
+    const handleSelectionChange = (val) => {
+        multipleSelection.value = val
+    }
+    let $!{tableInfo.name}tableData = ref([])
+    let searchForm = reactive({
+        #foreach($column in $tableInfo.fullColumn)
+            #if(${column.comment})
+                $!{column.name}:
+            '',
+            #end
+        #end
+    })
+    onMounted(() => {
+        selectPageReq()
+    })
+    let selectPageReq = () => {
+        const data = Object.assign(searchForm, {
+            pageNum: pageNum.value,
+            pageSize: pageSize.value
+        })
+        Object.keys(data).forEach((fItem) => {
+            if (data[fItem] === '' || data[fItem] === null || data[fItem] === undefined) delete data[fItem]
+        })
+        let reqConfig = {
+            url: '/$serviceName/$!{entityName}/selectPage',
+            method: 'get',
+            data,
+            isParams: true,
+            isAlertErrorMsg: false
+        }
+        proxy.$axiosReq(reqConfig).then((resData) => {
+                $!{tableInfo.name}tableData.value = resData.data?.records
+            proxy.pageTotalMixin = resData.data?.total
+        })
+    }
+    import tablePageHook from '@/hooks/tablePageHook'
+    let { pageNum, pageSize, handleCurrentChange, handleSizeChange } = tablePageHook(selectPageReq)
+    //时间packing
+    const dateTimePacking = (timeArr) => {
+        if (timeArr && timeArr.length === 2) {
+            searchForm.startTime = timeArr[0]
+            searchForm.endTime = momentMini(timeArr[1]).endOf('day').format('YYYY-MM-DD HH:mm:ss')
+        } else {
+            searchForm.startTime = ''
+            searchForm.endTime = ''
+        }
+    }
+    const searchBtnClick = () => {
+        //此处要重置页数，也是常出的bug
+        pageNum.value = 1
+        selectPageReq()
+    }
+
+    //添加和修改
+    let showFrom = ref(false)
+    let addBtnClick = () => {
+        showFrom.value = true
+        proxy.$nextTick(() => {
+            ref$!{tableInfo.name}Form.value.showModal()
+        })
+
+    }
+    let tableEditClick = (row) => {
+        showFrom.value = true
+        getDetailByIdReq(row.id).then((resData) => {
+            showFrom.value = true
+            proxy.$nextTick(() => {
+                ref$!{tableInfo.name}Form.value.showModal(true, resData.data)
+            })
+        })
+    }
+
+    const hideComp = () => {
+        showFrom.value = false
+    }
+
+    /*3.详情modal*/
+    let detailData = ref({})
+    let tableDetailClick = (row) => {
+        proxy.dialogTitleMixin = `详情【${row.needReplace}】`
+        getDetailByIdReq(row.id).then((resData) => {
+            detailData.value = resData.data
+            proxy.detailDialogMixin = true
+        })
+    }
+    let getDetailByIdReq = (id) => {
+        return proxy.$axiosReq({
+            url: '/$serviceName/$!{entityName}/selectById',
+            data: { id },
+            isParams: true,
+            method: 'get'
+        })
+    }
+    //删除
+    let deleteByIdReq = (id) => {
+        return proxy.$axiosReq({
+            url: '/$serviceName/$!{entityName}/deleteById',
+            data: {id: id},
+            isParams: true,
+            method: 'delete',
+            bfLoading: true
+        })
+    }
+    let tableDelClick = async (row) => {
+        await proxy.elConfirmMixin('确定', `您确定要删除【${row.needReplace}】吗？`)
+        deleteByIdReq(row.id).then(() => {
+            selectPageReq()
+            proxy.elMessageMixin(`【${row.needReplace}】删除成功`)
+        })
+    }
+    //批量删除
+    const multiDelBtnClick = async () => {
+        let rowDeleteIdArrMixin = []
+        let deleteNameTitle = ''
+        rowDeleteIdArrMixin = multipleSelection.value.map((mItem) => {
+            deleteNameTitle = deleteNameTitle + mItem.needReplace + ','
+            return mItem.id
+        })
+        if (rowDeleteIdArrMixin.length === 0) {
+            proxy.elMessageMixin('表格选项不能为空', 'warning')
+            return
+        }
+        let stringLength = deleteNameTitle.length - 1
+        await proxy.elConfirmMixin('删除', `您确定要删除【${deleteNameTitle.slice(0, stringLength)}】吗`)
+        const data = rowDeleteIdArrMixin
+        proxy.$axiosReq({
+            url: `/$serviceName/$!{entityName}/deleteBatchIds`,
+            data,
+            method: 'DELETE',
+            bfLoading: true
+        }).then((res) => {
+            proxy.elMessageMixin('删除成功')
+            selectPageReq()
+        })
+    }
+    /*导出或导入，模板下载*/
+    // let tableDownloadClick = (row) => {
+    //   downloadReq(row)
+    // }
+    // let downloadReq = (row) => {
+    //   let reqConfig = {
+    //     url: '/vci/download',
+    //     method: 'get',
+    //     data: {
+    //       id: row.id
+    //     },
+    //     isDownLoadFile: true,
+    //     isParams: true,
+    //     isAlertErrorMsg: false
+    //   }
+    //   proxy.$axiosReq(reqConfig).then((resData) => {
+    //     const url = window.URL.createObjectURL(new Blob([resData]))
+    //     const link = document.createElement('a')
+    //     link.href = url
+    //     link.setAttribute('download', `${row.username}.xls`)
+    //     document.body.appendChild(link)
+    //     link.click()
+    //   })
+    // }
+</script>
+
+<style scoped lang="scss">
+    /*详情*/
+    .detail-container {
+        flex-wrap: wrap;
+    }
+
+    .detail-container-item {
+        min-width: 40%;
+        margin-bottom: 20px;
+    }
+
+    .detailDialog-title {
+        margin-bottom: 14px;
+        font-weight: bold;
+        font-size: 16px;
+    }
+</style>
