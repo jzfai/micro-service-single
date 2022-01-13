@@ -26,7 +26,7 @@ import java.util.concurrent.TimeUnit;
  * @Auther: kuanghua
  * @create 2022-01-09 16:48
  */
-@Api(tags = "缓存击穿和雪崩解决方案")
+@Api(tags = "缓存击穿和雪崩，redis锁")
 @RestController
 @RequestMapping("redisCache")
 public class RedisTestController {

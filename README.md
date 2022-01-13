@@ -1,40 +1,52 @@
-### 前言
+### foreword
 
-本架构为springCloud微服务架构，提供基本的jwt权限认证，token更新，以及各微服务之间调用等
-使用的技术如下：
+this architecture is the springCloud microservice architecture, which provides basic jwt authorization authentication,
+token update, and calls between microservices, as well as enterprise-level usage examples.
 
 ```java
 spring-boot:2.1.4.RELEASE
-spring-cloud:Greenwich.SR1
-spring-cloud-starter-gateway:2.1.1.RELEASE
-nacos:2.1.3.RELEASE
-mybatis-plus: 3.3.2
-rabbitmq:3.7-management
-redis: 3.2.9
-mysql:5.7
-seata:1.4.2
-cancel
+        spring-cloud:Greenwich.SR1
+        spring-cloud-starter-gateway:2.1.1.RELEASE
+        nacos:2.1.3.RELEASE
+        mybatis-plus:3.3.2
+        rabbitmq:3.7-management
+        redis:3.2.9
+        mysql:5.7
+        seata:1.4.2
+        canal:1.2.1  
 ```
 
+> some of the above versions will be upgraded in the future
 
-#### 更新日志：
+### Recommended reading
+
+使用save action 保存自动格式化代码
+
+http://www.360doc.com/content/21/1130/10/77916903_1006517212.shtml
+
+网关hystix和ribbon超时时间熔断设置
+https://blog.csdn.net/u014203449/article/details/105248914?utm_medium=distribute.pc_aggpage_search_result.none-task-blog-2~aggregatepage~first_rank_ecpm_v1~rank_v31_ecpm-1-105248914.pc_agg_new_rank&utm_term=gateway%E8%AE%BE%E7%BD%AE%E8%B6%85%E6%97%B6%E6%97%B6%E9%97%B4&spm=1000.2123.3001.4430
+
+高并发架构系列：Kafka、RocketMQ、RabbitMQ的优劣势比较
+https://www.jianshu.com/p/fec054f3e496
+
+#### update log
 
 to look doc ----
 
 [带你用springcloud微服务撸后台(系列文章入口)](https://juejin.cn/post/7044843310204059655)
 
-#### 线上文档：
+#### online documentation
 
 [带你用springcloud微服务撸后台(系列文章入口)](https://juejin.cn/post/7044843310204059655)
 
-#### 开发接口和nacos地址
+#### Interface documentation and nacos address
 
 [swager文档地址](http://8.135.1.141/micro-service-doc/swagger-ui.html)
 
 [nacos地址](http://8.135.1.141:8848/nacos/)    naocs:    用户名：jzfai; 密码：123456
 
-
-#### 线上体验地址：
+#### Online experience address
 
 [github address](https://github.com/jzfai/micro-service-plus.git)
 
@@ -44,40 +56,139 @@ to look doc ----
 
 github 地址：  https://github.com/jzfai/micro-service-plus.git
 
+#### Introduction to Microservices
 
+```javascript
+ty - gateway - one
+:
+Gateway
+Microservices.The
+spring - cloud - starter - gateway
+is
+used, which
+has
+better
+performance
+than
+the
+zull
+gateway.It
+mainly
+implements
+permission
+control
+and
+interception, jwt
+token
+parsing
+and
+verification, swagger
+file
+integration, and
+request
+current
+limiting
+using
+token
+technology.Can
+start
+multiple
 
-#### 目前实现的微服务（后续还会新增新的微服务）
+ty - auth：Permission
+service.jwt
+token
+generation, parsing, verification, etc., the
+default
+configuration
+is
+valid
+for 3 days, and
+the
+contract
+is
+automatically
+renewed
+if it is
+less
+than
+one
+day(
+if you are
+interested
+here, you
+can
+view
+the
+source
+code
+)
+
+ty - example
+:
+Provide
+some
+examples.Including, rabbitmq
+delay
+queue, goFastDFS
+file
+upload, canal, seata
+partial
+transaction, SMS
+sending, mail
+sending, etc.integration - front：Data
+Integration.vue3 - admin - plus
+data
+source
+
+easycode - temp：easycode
+front - end
+and
+back - end
+templates
+```
+
+#### How to run
+
+Run micro-service-plus, the default selection is the test branch
 
 ```
-ty-common: 统一依赖，统一配置管理，feign接口整合等
-本架构的微服务有：
-ty-gateway:网关微服务。使用的是spring-cloud-starter-gateway，先对于zull网关来说性能更好。主要实现了，权限控制和拦截，jwt token解析和校验,swagger文件整合，使用令牌技术请求限流等
-ty-auth：权限服务。jwt token生成，解析，校验等，默认配置3天有效期，少于一天自动续约（此处感兴趣的可以查看下源码）
-integration-front：前端实例数据。用户的登录，注册，查看用户信息等一系列功能
-ty-example：全分布式事务seata,rabbitmq延时队列,短信发送,email发送，canal等功能实例
+git clone  https://github.com/jzfai/micro-service-plus.git
+//maven download the depdences
 ```
 
-
-#### 如何运行
+How to cooperate with vue3-admin-plus to develop front-end and back-end together
 
 ```java
-//git clone项目
-git clone  https://github.com/jzfai/micro-service-plus.git
+#vue3-admin-plus
+        git clone https://github.com/jzfai/vue3-admin-plus.git  
+        pnpm i
+        #test Branch requests local gateway
+        pnpm run test
 
-//maven 下载依赖,即可运行
+        #micro-service-plus At least need to run
+        ty-auth
+        ty-gateway-one
+        ty-integration-front
+
+        The above three service
 ```
 
->注：在Maven Projects->Profies 选择环境时，请不要选择prod环境。目前线上是prod环境下构建的包
+> Note: Select the environment in Maven Projects->Profies. Currently online is a package built in the prod environment, please do not select.
 
+#### Architecture Highlights
 
-#### 架构亮点
+1. In the gateway, the jwt token and the parsed token information have been set in the request header, and the
+   subsequent forwarding microservices can easily get the token and token parsed data in the request header. There is no
+   need to call ty-auth through feign to obtain token information.
 
-1.网关中将jwt token和解析后的token信息已经设置在请求头中，在后续转发的微服务可以在请求头中，轻松的拿到token和token解析后的数据。不用再通过feign去调用ty-auth，获取token信息。
+2. During the invocation of each microservice, the token in the request header will be forwarded. So the token will not
+   be lost when calling the microservice with feign.
 
-2.各微服务在调用期间，会将请求头的token进行转发。所以在用feign调用微服务时token也不会丢失。
+3. The token is automatically updated in less than 1 day, and the isNeedUpdateToken field is used to tell the front end
+   that the token needs to be updated, realizing the function of token renewal
 
-3.少于1天时间自动更新token，通过isNeedUpdateToken字段告诉前端需要更新token，实现了token续约的功能
+4. Switch between multiple environments at will. In the pom.xml in the root directory, profiles are configured to switch
+   the environment according to your needs.
 
-4.多环境随意切换。在根目录下的pom.xml配置了profiles可以根据你的需要进行切换环境
-
-5.提供了vue3+element-plus和mybits-plus相关的easycode模板。你可以一次性生成前后端模板，极大提高开发效率
+5. Provides easycode templates related to vue3+element-plus and mybits-plus. You can generate front-end and back-end
+   templates at one time, greatly improving development efficiency
