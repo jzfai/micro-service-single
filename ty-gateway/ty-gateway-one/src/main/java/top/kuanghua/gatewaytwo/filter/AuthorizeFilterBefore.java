@@ -47,12 +47,6 @@ public class AuthorizeFilterBefore implements GlobalFilter, Ordered {
     private static final String AUTHORIZE_TOKEN = "AUTHORIZE_TOKEN";
     @Value("#{'${filter.allowPaths:}'.empty ? null : '${filter.allowPaths:}'.split(',')}")
     private List<String> allowPaths;
-//    @Value("${filter.allowPaths}")
-//    private String  allowPaths;
-//    @Value("${jwt-properties.pubKeyPath}")
-//    private String pubKeyPath;
-//    @Value("${jwt-properties.priKeyPath}")
-//    private String priKeyPath;
 
     @Resource
     private TokenFeign tokenFeign;
@@ -63,7 +57,7 @@ public class AuthorizeFilterBefore implements GlobalFilter, Ordered {
         ServerHttpResponse response = exchange.getResponse();
 
         String path = request.getURI().getPath();
-        //List<String> stringList = Arrays.asList("/api/user/login","/api/search/searchData");
+
         //1.白名单放行
         for (String allowPath : allowPaths) {
             if (StringUtils.contains(path, allowPath)) {
@@ -82,9 +76,6 @@ public class AuthorizeFilterBefore implements GlobalFilter, Ordered {
         }
         //2.1 将解析到的jwt数据保存到线程中(转发过去的服务都能接收)
         try {
-            //本地文件解析
-            //Claims claims = JwtUtilsKh.parserTokenGetBody(jwtToken, RsaUtils.getPublicKey(pubKeyPath));
-            //System.out.println("解析出来的body"+claims);
             //调用feign服务进行解析
             Object resResult = tokenFeign.parseToken(jwtToken);
 

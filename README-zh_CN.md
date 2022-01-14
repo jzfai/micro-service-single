@@ -10,17 +10,17 @@
 
 本架构为springCloud微服务架构，提供基本的jwt权限认证，token更新，以及各微服务之间调用，以及提供企业级的使用例子
 
-```java
+```yaml
 spring-boot:2.1.4.RELEASE
-        spring-cloud:Greenwich.SR1
-        spring-cloud-starter-gateway:2.1.1.RELEASE
-        nacos:2.1.3.RELEASE
-        mybatis-plus:3.3.2
-        rabbitmq:3.7-management
-        redis:3.2.9
-        mysql:5.7
-        seata:1.4.2
-        canal:1.2.1  
+spring-cloud:Greenwich.SR1
+spring-cloud-starter-gateway:2.1.1.RELEASE
+nacos:2.1.3.RELEASE
+mybatis-plus:3.3.2
+rabbitmq:3.7-management
+redis:3.2.9
+mysql:5.7
+seata:1.4.2
+canal:1.2.1  
 ```
 
 > 以上部分版本后续会升级
@@ -65,20 +65,26 @@ github 地址：  https://github.com/jzfai/micro-service-plus.git
 
 #### 目前实现的微服务（后续还会新增新的微服务）
 
-```javascript
-ty - gateway - one
-:
-网关微服务。使用的是spring - cloud - starter - gateway，相对于zull网关来说性能更好。主要实现了，权限控制和拦截，jwt
-token解析和校验, swagger文件整合，使用令牌技术请求限流等。可启动多个
-ty - auth：权限服务。jwt
-token生成，解析，校验等，默认配置3天有效期，少于一天自动续约（此处感兴趣的可以查看下源码）
-ty - example
-:
+##### ty - gateway - one
+
+网关微服务。使用的是spring - cloud - starter - gateway，相对于zull网关来说性能更好。主要实现了，权限控制和拦截，jwt token解析和校验,
+swagger文件整合，使用令牌技术请求限流等。可启动多个实例
+
+##### ty - auth
+
+权限服务。jwt token生成，解析，校验等，默认配置3天有效期，少于一天自动续约
+
+##### ty - example
+
 提供一些例子。包括，rabbitmq延时队列，goFastDFS文件上传，canal, seata分部式事务，短信发送，邮件发送等。
-integration - front：数据整合。vue3 - admin - plus
-数据来源
-easycode - temp：easycode前后端模板
-```
+
+##### integration - front
+
+数据整合。vue3 - admin - plus 数据来源
+
+##### easycode - temp
+
+easycode前后端模板
 
 #### 如何运行
 
@@ -91,18 +97,18 @@ git clone  https://github.com/jzfai/micro-service-plus.git
 
 如何配合vue3-admin-plus ，前后端一起开发
 
-```java
+```shell
 #vue3-admin-plus
-        git clone https://github.com/jzfai/vue3-admin-plus.git  
-        pnpm i
-        #test分支请求本地的网关
-        pnpm run test
+git clone https://github.com/jzfai/vue3-admin-plus.git  
+pnpm i
+#test分支请求本地的网关
+pnpm run test
 
-        #micro-service-plus 至少需要运行
-        ty-auth
-        ty-gateway-one
-        ty-integration-front
-        以上三个服务 
+#micro-service-plus 至少需要运行
+ty-auth
+ty-gateway-one
+ty-integration-front
+以上三个服务 
 ```
 
 > 注：在Maven Projects->Profies 选择环境。目前线上是prod环境下构建的包，请不要选择。
