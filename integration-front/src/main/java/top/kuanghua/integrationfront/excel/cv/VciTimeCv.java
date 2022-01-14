@@ -13,7 +13,7 @@ import java.util.Date;
 public class VciTimeCv implements Converter<Date> {
     @Override
     public Date convertToJavaData(ReadCellData cellData, ExcelContentProperty contentProperty, GlobalConfiguration globalConfiguration) throws Exception {
-        String stringValue = cellData.getNumberValue().toString() ;
+        String stringValue = cellData.getNumberValue().toString();
         String DATE_FORMAT = "yyyyMMdd";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DATE_FORMAT);
         Date parse = simpleDateFormat.parse(stringValue);

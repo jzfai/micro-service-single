@@ -21,7 +21,7 @@ import org.springframework.context.annotation.Configuration;
 //mapper  scanning
 @MapperScan(basePackages = {"top.kuanghua.tyexample.mapper"})
 //feign scanning
-@EnableFeignClients(basePackages = {"top.kuanghua.feign"})
+@EnableFeignClients(basePackages = {"top.kuanghua.feign.integrationfront", "top.kuanghua.feign.tyauth",})
 public class BaseConfig {
 
 }

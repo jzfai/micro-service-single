@@ -42,7 +42,7 @@ public class AuthorizeFilterAfter implements GlobalFilter, Ordered {
 
     @Value("#{'${filter.allowPaths:}'.empty ? null : '${filter.allowPaths:}'.split(',')}")
     private List<String> allowPaths;
-    
+
     @Resource
     private TokenFeign tokenFeign;
 

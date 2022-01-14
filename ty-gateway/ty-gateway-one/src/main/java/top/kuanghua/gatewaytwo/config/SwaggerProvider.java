@@ -1,8 +1,6 @@
 package top.kuanghua.gatewaytwo.config;
 
 import lombok.AllArgsConstructor;
-import org.springframework.cloud.gateway.config.GatewayProperties;
-import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 import springfox.documentation.swagger.web.SwaggerResource;
@@ -12,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @introduce: SwaggerProvider
+ * @introduce: gateway集成各微服务swagger
  * @author: kuanghua
  * @date: 2020/6/4
  **/
@@ -22,11 +20,12 @@ import java.util.List;
 public class SwaggerProvider implements SwaggerResourcesProvider {
 
     static final String API_URI = "/v2/api-docs";
-    private final RouteLocator routeLocator;
-    private final GatewayProperties gatewayProperties;
+//    private final RouteLocator routeLocator;
+//    private final GatewayProperties gatewayProperties;
 
 
-    private  SwaggerDocConfig swaggerDocConfig;
+    private SwaggerDocConfig swaggerDocConfig;
+
     /**
      * @return
      */

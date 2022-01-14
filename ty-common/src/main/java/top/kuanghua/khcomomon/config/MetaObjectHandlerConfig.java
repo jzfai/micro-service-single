@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.reflection.MetaObject;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 
 @Component
@@ -17,6 +16,7 @@ public class MetaObjectHandlerConfig implements MetaObjectHandler {
         //有值不进行填充fillStrategy
         this.strictInsertFill(metaObject, "createTime", Date.class, new Date());
     }
+
     @Override
     public void updateFill(MetaObject metaObject) {
         log.info("start update fill ....");

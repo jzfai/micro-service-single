@@ -1,9 +1,0 @@
-server:
-  port: ${envpt.tomcatPortPre}0135
-
-#限制spring上传文件大小为20M
-spring:
-  servlet:
-    multipart:
-      max-file-size: 20MB
-      max-request-size: 20MB

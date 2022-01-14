@@ -26,14 +26,15 @@ public class TokenController {
 
     @Autowired
     private TokenService tokenService;
+
     /*
      * 解析token
      * */
     @ApiOperation("获取token信息")
     @PostMapping("parseToken")
-    public ResResult parseToken(@RequestParam("jwtToken") String jwtToken){
+    public ResResult parseToken(@RequestParam("jwtToken") String jwtToken) {
         Claims claims = this.tokenService.parseToken(jwtToken);
-        return  new ResResult().success(claims);
+        return new ResResult().success(claims);
     }
 
     /*
@@ -42,17 +43,9 @@ public class TokenController {
     @ApiOperation("生成token")
     @PostMapping("generateToken")
     //@RequestHeader("authorize_token") String authorize_token
-    public ResResult generateToken(@RequestBody Map tokenMap){
-//        System.out.println("生成的代码信息");
-//        System.out.println(tokenMap);
-
-
-        // System.out.println("generateToken获得请求头的信息");
-        // 获取一个参数
-        // System.out.println(authorize_token);
-
+    public ResResult generateToken(@RequestBody Map tokenMap) {
         String generateToken = this.tokenService.generateToken(tokenMap);
-        return  new ResResult().success(generateToken);
+        return new ResResult().success(generateToken);
     }
 
     /*
@@ -60,11 +53,11 @@ public class TokenController {
      * */
     @ApiOperation("更新token")
     @PostMapping("updateToken")
-    public ResResult updateToken(@RequestBody Map map){
+    public ResResult updateToken(@RequestBody Map map) {
         String updateToken = this.tokenService.updateToken(map);
 //        System.out.println("生成信息的token"+updateToken);
 //        System.out.println("生成信息的token"+map.toString());
-        return  new ResResult().success(updateToken);
+        return new ResResult().success(updateToken);
     }
 }
 

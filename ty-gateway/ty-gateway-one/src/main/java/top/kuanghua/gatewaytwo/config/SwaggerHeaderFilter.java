@@ -9,7 +9,7 @@ import org.springframework.web.server.ServerWebExchange;
 
 /**
  * @introduce: swagger请求头过滤器
- * @author: lk
+ * @author: kuanghua
  * @date: 2020/6/4
  **/
 @Component

@@ -1,5 +1,7 @@
 package top.kuanghua.khcomomon.config;
-import java.util.*;
+
+import java.util.Map;
+
 /**
  * @Title: TokenParseInfo
  * @Description:

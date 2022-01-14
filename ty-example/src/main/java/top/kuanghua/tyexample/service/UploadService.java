@@ -44,8 +44,8 @@ public class UploadService {
         //检验文件内容
         BufferedImage bufferedImage = ImageIO.read(file.getInputStream());
         if (bufferedImage == null) {
-            log.info("文件内容不合法：{}", originalFilename);
-            throw new RuntimeException("文件内容不合法");
+            log.info("文件不能为空：{}", originalFilename);
+            throw new RuntimeException("文件不能为空");
         }
         //保存到服务器
         //file.transferTo(new File("D:\\java\\javaproject\\pinyou\\pinyou-upload\\src\\main\\resources\\static\\" + originalFilename));
