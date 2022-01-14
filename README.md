@@ -3,17 +3,17 @@
 this architecture is the springCloud microservice architecture, which provides basic jwt authorization authentication,
 token update, and calls between microservices, as well as enterprise-level usage examples.
 
-```java
+```yml
 spring-boot:2.1.4.RELEASE
-        spring-cloud:Greenwich.SR1
-        spring-cloud-starter-gateway:2.1.1.RELEASE
-        nacos:2.1.3.RELEASE
-        mybatis-plus:3.3.2
-        rabbitmq:3.7-management
-        redis:3.2.9
-        mysql:5.7
-        seata:1.4.2
-        canal:1.2.1  
+  spring-cloud:Greenwich.SR1
+  spring-cloud-starter-gateway:2.1.1.RELEASE
+  nacos:2.1.3.RELEASE
+mybatis-plus: 3.3.2
+  rabbitmq:3.7-management
+redis: 3.2.9
+  mysql:5.7
+  seata:1.4.2
+  canal:1.2.1  
 ```
 
 > some of the above versions will be upgraded in the future
@@ -58,94 +58,26 @@ github 地址：  https://github.com/jzfai/micro-service-plus.git
 
 #### Introduction to Microservices
 
-```javascript
-ty - gateway - one
-:
-Gateway
-Microservices.The
-spring - cloud - starter - gateway
-is
-used, which
-has
-better
-performance
-than
-the
-zull
-gateway.It
-mainly
-implements
-permission
-control
-and
-interception, jwt
-token
-parsing
-and
-verification, swagger
-file
-integration, and
-request
-current
-limiting
-using
-token
-technology.Can
-start
-multiple
+##### ty-gateway-one：
 
-ty - auth：Permission
-service.jwt
-token
-generation, parsing, verification, etc., the
-default
-configuration
-is
-valid
-for 3 days, and
-the
-contract
-is
-automatically
-renewed
-if it is
-less
-than
-one
-day(
-if you are
-interested
-here, you
-can
-view
-the
-source
-code
-)
+gateway Microservices. The spring-cloud-starter-gateway is used, which has better performance than the zull gateway. It
+mainly implements permission control and interception, jwt token parsing and verification, swagger file integration, and
+request current limiting using token technology. Can start multiple
 
-ty - example
-:
-Provide
-some
-examples.Including, rabbitmq
-delay
-queue, goFastDFS
-file
-upload, canal, seata
-partial
-transaction, SMS
-sending, mail
-sending, etc.integration - front：Data
-Integration.vue3 - admin - plus
-data
-source
+##### ty-auth：
 
-easycode - temp：easycode
-front - end
-and
-back - end
-templates
-```
+permission service. jwt token generation, parsing, verification, etc., the default configuration is valid for 3 days,
+and the contract is automatically renewed if it is less than one day (if you are interested here, you can view the
+source code)
+
+##### ty-example:
+
+provide some examples. Including, rabbitmq delay queue, goFastDFS file upload, canal, seata partial transaction, SMS
+sending, mail sending, etc.
+
+##### integration-front：
+
+data Integration. vue3-admin-plus data source easycode-temp：easycode front-end and back-end templates
 
 #### How to run
 
@@ -158,19 +90,19 @@ git clone  https://github.com/jzfai/micro-service-plus.git
 
 How to cooperate with vue3-admin-plus to develop front-end and back-end together
 
-```java
+```shell
 #vue3-admin-plus
-        git clone https://github.com/jzfai/vue3-admin-plus.git  
-        pnpm i
-        #test Branch requests local gateway
-        pnpm run test
+git clone  https://github.com/jzfai/vue3-admin-plus.git
+pnpm i
+  #test Branch requests local gateway
+pnpm run test
 
-        #micro-service-plus At least need to run
-        ty-auth
-        ty-gateway-one
-        ty-integration-front
+  #micro-service-plus At least need to run
+ty-auth
+ty-gateway-one
+ty-integration-front
 
-        The above three service
+The above three service
 ```
 
 > Note: Select the environment in Maven Projects->Profies. Currently online is a package built in the prod environment, please do not select.

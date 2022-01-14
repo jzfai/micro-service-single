@@ -2,7 +2,7 @@ spring:
   application:
     name: @project.artifactId@
   profiles:
-    active: @activatedProperties@
+    active: ""
   cloud:
     nacos:
       config:
