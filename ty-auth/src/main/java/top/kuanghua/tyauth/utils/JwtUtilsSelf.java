@@ -26,10 +26,12 @@ public class JwtUtilsSelf {
     public static final Long JWT_TTL = 259200000L;//60 * 60 * 1000 * 24 * 3  三天
     //Jwt令牌信息
     public static final String JWT_KEY = "kh@Login(Auth}*^31)&kuanghua%";
+
     /**
      * 生成令牌
-     //* @param id
-     //* @param subject
+     * //* @param id
+     * //* @param subject
+     *
      * @param ttlMillis
      * @return
      */
@@ -89,16 +91,4 @@ public class JwtUtilsSelf {
                 .parseClaimsJws(jwt)
                 .getBody();
     }
-//    public static void main(String[] args) {
-//        String jwt = JwtUtil.createJWT("weiyibiaoshi", )
-//        System.out.println(jwt);
-//        try {
-//            Claims claims = JwtUtil.parseJWT(jwt);
-//            System.out.println(claims);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//
-//    }
 }

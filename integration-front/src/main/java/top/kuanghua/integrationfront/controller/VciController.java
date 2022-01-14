@@ -8,21 +8,21 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import top.kuanghua.khcomomon.entity.CommonParamsSelf;
-import top.kuanghua.khcomomon.entity.ResResult;
-import top.kuanghua.khcomomon.utils.ObjectUtilsSelf;
 import top.kuanghua.integrationfront.entity.Vci;
 import top.kuanghua.integrationfront.excel.imp.VciExcelImp;
 import top.kuanghua.integrationfront.service.VciService;
-import org.springframework.web.bind.annotation.*;
 import top.kuanghua.integrationfront.vo.ExcelCheckResult;
+import top.kuanghua.khcomomon.entity.CommonParamsSelf;
+import top.kuanghua.khcomomon.entity.ResResult;
+import top.kuanghua.khcomomon.utils.ObjectUtilsSelf;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URLEncoder;
-import java.util.*;
+import java.util.List;
 
 
 @Api(tags = "VCI设备表(Vci)")
@@ -35,7 +35,8 @@ public class VciController {
 
     /**
      * 分页查询所有数据
-     * @param vci      查询实体
+     *
+     * @param vci 查询实体
      * @return 所有数据
      */
     @GetMapping("selectPage")
@@ -53,8 +54,8 @@ public class VciController {
         }
         //根据创建时间查询
         queryWrapper.orderByDesc("create_time");
-        if(StringUtils.isNotEmpty(commonParams.getStartTime())) {
-            queryWrapper.between("create_time",commonParams.getStartTime(),commonParams.getEndTime());
+        if (StringUtils.isNotEmpty(commonParams.getStartTime())) {
+            queryWrapper.between("create_time", commonParams.getStartTime(), commonParams.getEndTime());
         }
 
         queryWrapper.select("id,sn,hard_version,create_time,status,supplier,receipt_no,product_spec");
@@ -73,6 +74,7 @@ public class VciController {
     public ResResult selectById(@RequestParam("id") Integer id) {
         return new ResResult().success(this.vciService.selectById(id));
     }
+
     /**
      * @Description: 根据id数组查询品牌列表
      * @Param: idList id数组
@@ -83,8 +85,10 @@ public class VciController {
     public ResResult selectBatchIds(@RequestParam("idList") List<Integer> idList) {
         return new ResResult().success(this.vciService.selectBatchIds(idList));
     }
+
     /**
      * 新增数据
+     *
      * @param vci 实体对象
      * @return 新增结果
      */
@@ -96,6 +100,7 @@ public class VciController {
 
     /**
      * 修改数据
+     *
      * @param vci 实体对象
      * @return 修改结果
      */
@@ -107,6 +112,7 @@ public class VciController {
 
     /**
      * 删除数据
+     *
      * @param idList 主键结合
      * @return 删除结果
      */
@@ -131,14 +137,14 @@ public class VciController {
 
     @ApiOperation("导入excel")
     @PostMapping("importExcel")
-    public ResResult importExcel(@RequestBody List<VciExcelImp> vciExcelBo)  {
+    public ResResult importExcel(@RequestBody List<VciExcelImp> vciExcelBo) {
         vciService.importExcel(vciExcelBo);
         return new ResResult().success();
     }
 
     @ApiOperation("导出excel")
     @GetMapping("exportExcel")
-    public void exportExcel(HttpServletResponse response,Vci vci, CommonParamsSelf commonParams) throws IOException {
+    public void exportExcel(HttpServletResponse response, Vci vci, CommonParamsSelf commonParams) throws IOException {
         QueryWrapper<Vci> queryWrapper = new QueryWrapper<>();
         if (ObjectUtils.isNotEmpty(vci.getSn())) {
             queryWrapper.like("sn", vci.getSn());
@@ -151,8 +157,8 @@ public class VciController {
         }
         //根据创建时间查询
         queryWrapper.orderByDesc("create_time");
-        if(StringUtils.isNotEmpty(commonParams.getStartTime())) {
-            queryWrapper.between("create_time",commonParams.getStartTime(),commonParams.getEndTime());
+        if (StringUtils.isNotEmpty(commonParams.getStartTime())) {
+            queryWrapper.between("create_time", commonParams.getStartTime(), commonParams.getEndTime());
         }
 
         queryWrapper.select("sn,hard_version,create_time,status,supplier,receipt_no,product_spec");
@@ -161,9 +167,9 @@ public class VciController {
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         response.setCharacterEncoding("utf-8");
 
-        String fileName =  URLEncoder.encode("Vci导出数据", "UTF-8")+"-"+ ObjectUtilsSelf.getCurrentDateTime();
+        String fileName = URLEncoder.encode("Vci导出数据", "UTF-8") + "-" + ObjectUtilsSelf.getCurrentDateTime();
         response.setHeader("Access-Control-Expose-Headers", "exportFileName");
-        response.setHeader("exportFileName", fileName + ".xlsx" );
+        response.setHeader("exportFileName", fileName + ".xlsx");
         EasyExcel.write(response.getOutputStream(), VciExcelImp.class).sheet("模板").doWrite(vciPage.getRecords());
     }
 

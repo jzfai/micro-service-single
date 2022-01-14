@@ -8,10 +8,10 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
-import top.kuanghua.khcomomon.entity.KHCommonParams;
-import top.kuanghua.khcomomon.entity.ResResult;
 import top.kuanghua.integrationfront.entity.Brand;
 import top.kuanghua.integrationfront.service.BrandService;
+import top.kuanghua.khcomomon.entity.KHCommonParams;
+import top.kuanghua.khcomomon.entity.ResResult;
 
 import javax.annotation.Resource;
 import java.util.List;

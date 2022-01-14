@@ -26,15 +26,15 @@ public class SendMsgService {
 
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
-    
+
     public void sendMsg(String phone) {
         String code = NumberUtilsSelf.generateCode(6);
         Map<String, String> smsMap = new HashMap<String, String>();
-        smsMap.put("phone",phone);
-        smsMap.put("code",code);
-        amqpTemplate.convertAndSend("kuanghua.sms.exchange", "sms.verify.code",smsMap);
-        stringRedisTemplate.opsForValue().set("user:code:phone:"+phone,code,60, TimeUnit.SECONDS);
-        log.info("发送短信的code"+code);
+        smsMap.put("phone", phone);
+        smsMap.put("code", code);
+        amqpTemplate.convertAndSend("kuanghua.sms.exchange", "sms.verify.code", smsMap);
+        stringRedisTemplate.opsForValue().set("user:code:phone:" + phone, code, 60, TimeUnit.SECONDS);
+        log.info("发送短信的code" + code);
     }
 }
 

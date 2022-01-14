@@ -37,13 +37,14 @@ public class Swagger2Config {
 
     /**
      * 构建 api文档的详细信息函数
+     *
      * @return
      */
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("title:micro-service-plus")
+                .title("micro-service-pluss")
                 .description("描述：新一代的微服务架构")
-                .contact(new Contact("jzfai", null, "869653722@qq.com"))
+                .contact(new Contact("kuanghua", null, "869653722@qq.com"))
                 .version("版本号:2.9")
                 .build();
     }

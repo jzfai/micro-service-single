@@ -2,7 +2,6 @@ package top.kuanghua.feign.config;
 
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
-import lombok.Data;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.ObjectUtils;
@@ -17,21 +16,21 @@ import java.util.Enumeration;
 @Configuration
 @Log4j2
 public class FeignConfiguration implements RequestInterceptor {
-  @Override
-  public void apply(RequestTemplate template) {
-    ServletRequestAttributes attributes = (ServletRequestAttributes)
-            RequestContextHolder.getRequestAttributes();
-    if(!ObjectUtils.isEmpty(attributes)){
-      HttpServletRequest request = attributes.getRequest();
-      Enumeration<String> headerNames = request.getHeaderNames();
-      if (headerNames != null) {
-        while (headerNames.hasMoreElements()) {
-          String name = headerNames.nextElement();
-          String values = request.getHeader(name);
+    @Override
+    public void apply(RequestTemplate template) {
+        ServletRequestAttributes attributes = (ServletRequestAttributes)
+                RequestContextHolder.getRequestAttributes();
+        if (!ObjectUtils.isEmpty(attributes)) {
+            HttpServletRequest request = attributes.getRequest();
+            Enumeration<String> headerNames = request.getHeaderNames();
+            if (headerNames != null) {
+                while (headerNames.hasMoreElements()) {
+                    String name = headerNames.nextElement();
+                    String values = request.getHeader(name);
 
-          template.header(name, values);
+                    template.header(name, values);
+                }
+            }
         }
-      }
     }
-  }
 }

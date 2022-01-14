@@ -2,8 +2,9 @@ package top.kuanghua.khcomomon.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Component;
-import top.kuanghua.khcomomon.utils.IdWorker;;
+import top.kuanghua.khcomomon.utils.IdWorker;
+
+;
 
 /**
  * @Title: TyCommonConfig
@@ -18,7 +19,7 @@ public class TyCommonConfig {
      * @return
      */
     @Bean
-    public IdWorker idWorker(){
-        return new IdWorker(0,0);
+    public IdWorker idWorker() {
+        return new IdWorker(0, 0);
     }
 }

@@ -27,18 +27,18 @@ public class SendEmailController {
 
     @ApiOperation(value = "发送普通文本邮件")
     @GetMapping("sendEmailText")
-    public ResResult sendEmailText(@RequestParam(name = "subject",defaultValue = "这是主题") String subject,
-                                   @RequestParam(name = "text",defaultValue = "发送的文本(这是测试文本)") String text,
-                                   @RequestParam(name = "sendTo",defaultValue = "1319404169@qq.com") String sendTo) {
+    public ResResult sendEmailText(@RequestParam(name = "subject", defaultValue = "这是主题") String subject,
+                                   @RequestParam(name = "text", defaultValue = "发送的文本(这是测试文本)") String text,
+                                   @RequestParam(name = "sendTo", defaultValue = "1319404169@qq.com") String sendTo) {
         sendEmailService.sendEmailText(subject, text, sendTo);
         return new ResResult().success("发送邮件成功");
     }
 
     @ApiOperation(value = "发送文本邮件(可以带附件)", notes = "可以带附件 ")
     @PostMapping("sendMimeMail")
-    public ResResult sendMimeMail(@RequestParam(name = "subject",defaultValue = "这是主题") String subject,
-                                  @RequestParam(name = "text",defaultValue = "发送的文本(这是测试文本)") String text,
-                                  @RequestParam(name = "sendTo",defaultValue = "1319404169@qq.com") String sendTo,
+    public ResResult sendMimeMail(@RequestParam(name = "subject", defaultValue = "这是主题") String subject,
+                                  @RequestParam(name = "text", defaultValue = "发送的文本(这是测试文本)") String text,
+                                  @RequestParam(name = "sendTo", defaultValue = "1319404169@qq.com") String sendTo,
                                   MultipartFile file)
             throws IOException, MessagingException, InterruptedException {
         if (file.getOriginalFilename().isEmpty()) {
