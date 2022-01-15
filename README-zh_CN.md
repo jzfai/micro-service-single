@@ -10,7 +10,7 @@
 
 本架构为springCloud微服务架构，提供基本的jwt权限认证，token更新，以及各微服务之间调用，以及提供企业级的使用例子
 
-```yaml
+```text
 spring-boot:2.1.4.RELEASE
 spring-cloud:Greenwich.SR1
 spring-cloud-starter-gateway:2.1.1.RELEASE
@@ -119,7 +119,7 @@ ty-integration-front
 
 2.各微服务在调用期间，会将请求头的token进行转发。所以在用feign调用微服务时token也不会丢失。
 
-3.少于1天时间自动更新token，通过isNeedUpdateToken字段告诉前端需要更新token，实现了token续约的功能
+3.少于3天时间自动更新token，通过isNeedUpdateToken字段告诉前端需要更新token，实现了token续约的功能
 
 4.多环境随意切换。在根目录下的pom.xml配置了profiles可以根据你的需要进行切换环境
 

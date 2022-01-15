@@ -1,7 +1,7 @@
-spring:
-  main:
-    allow-bean-definition-overriding: true
-  #解决查询时间和返回的时间不一致问题
-  jackson:
-    date-format: yyyy-MM-dd HH:mm:ss
-    time-zone: GMT+8
+#spring:
+#  main:
+#    allow-bean-definition-overriding: true
+#  #解决查询时间和返回的时间不一致问题
+#  jackson:
+#    date-format: yyyy-MM-dd HH:mm:ss
+#    time-zone: GMT+8
