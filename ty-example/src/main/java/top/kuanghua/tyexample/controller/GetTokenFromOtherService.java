@@ -25,11 +25,11 @@ public class GetTokenFromOtherService {
     @Resource
     private TestGetTokenFeign testGetTokenFeign;
 
-    @ApiOperation(value = "上传图片或文件")
+    @ApiOperation(value = "获取token信息(需要配置gateway拦截，然后用postman在头部添加token进行测试，token可以从vue3-admin-plus中获取)")
     @PostMapping("getTokenFromService")
-    public void getTokenFromService() {
+    public ResResult getTokenFromService() {
         ResResult tokenInfo = testGetTokenFeign.getTokenInfo();
         log.info(tokenInfo.getData().toString());
-
+        return new ResResult<>().success(tokenInfo);
     }
 }

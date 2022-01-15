@@ -32,14 +32,15 @@ public class TestGetTokenController {
             @ApiIgnore @RequestHeader("TOKEN_INFO") String TOKEN_INFO,
             @ApiIgnore @RequestHeader("AUTHORIZE_TOKEN") String AUTHORIZE_TOKEN
     ) {
+        Map tokenInfo=null;
         try {
-            Map tokenInfo = JSON.parseObject(URLDecoder.decode(TOKEN_INFO, "utf-8"));
+            tokenInfo = JSON.parseObject(URLDecoder.decode(TOKEN_INFO, "utf-8"), Map.class);
             log.info(tokenInfo.toString());
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
         log.info(AUTHORIZE_TOKEN);
-        return new ResResult().success(TOKEN_INFO);
+        return new ResResult().success(tokenInfo.toString());
     }
 }
 
