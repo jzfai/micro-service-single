@@ -1,0 +1,10 @@
+package ${projectOrAuthor.packageName}.mapper;
+/**
+*  ${dbTableConfig.tableDesc}Mapper
+*
+* @author ${projectOrAuthor.author}
+* @since ${projectOrAuthor.dataTime}
+*/
+public interface ${dbTableConfig.tableNameCase}Mapper extends BaseMapper< ${dbTableConfig.tableNameCase} > {
+
+}

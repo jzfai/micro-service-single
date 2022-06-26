@@ -8,12 +8,12 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
-import top.kuanghua.feign.tyauth.feign.TokenFeign;
+import top.kuanghua.authpom.service.TokenService;
 import top.kuanghua.integrationfront.entity.User;
 import top.kuanghua.integrationfront.mapper.UserMapper;
-import top.kuanghua.khcomomon.entity.ResResult;
-import top.kuanghua.khcomomon.utils.CodecUtils;
-import top.kuanghua.khcomomon.utils.ObjectUtilsSelf;
+import top.kuanghua.integrationfront.utils.CodecUtils;
+import top.kuanghua.commonpom.utils.SelfObjUtils;
+
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -32,11 +32,10 @@ public class UserService {
     @Resource
     private UserMapper userMapper;
 
-//    @Resource
-//    private ExcelFeign excelFeign;
+    @Resource
+    private TokenService tokenService;
 
     @Resource
-    private TokenFeign tokenFeign;
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
 
@@ -105,7 +104,7 @@ public class UserService {
 //
 //        //去ty-execl中查询用户名是否存在
 //        ResResult resResult = excelFeign.selectExcelByUser(username);
-//        List list = ObjectUtilsSelf.parseResToList(resResult);
+//        List list = ObjSelfUtils.parseResToList(resResult);
 //        if (list.size() == 0) {
 //            throw new RuntimeException(MessageFormat.format("考勤表中不存在用户名【{0}】", username));
 //        }
@@ -113,7 +112,7 @@ public class UserService {
 //        //校验验证码
 //        String codeInfo = stringRedisTemplate.opsForValue().get("email.code.routing.name" + email);
 //        Map map = JSON.parseObject(codeInfo);
-//        if (ObjectUtilsSelf.isEmpty(map)) {
+//        if (ObjSelfUtils.isEmpty(map)) {
 //            throw new RuntimeException("验证码失效，请重新获取");
 //        }
 //        if (!Objects.equals(map.get("code"), code)) {
@@ -156,9 +155,8 @@ public class UserService {
         HashMap<String, Object> hm = new HashMap<>();
         hm.put("username", resUser.getUsername());
         hm.put("email", resUser.getEmail());
-        ResResult resResult = tokenFeign.generateToken(hm);
-
-        hm.put("jwtToken", resResult.getData());
+        String generateToken = tokenService.generateToken(hm);
+        hm.put("jwtToken", generateToken);
         return hm;
     }
 
@@ -169,7 +167,7 @@ public class UserService {
                 .eq("username", username);
 
         User resUser = this.userMapper.selectOne(qw);
-        if (ObjectUtilsSelf.isEmpty(resUser)) {
+        if (SelfObjUtils.isEmpty(resUser)) {
             throw new RuntimeException("用户不存在");
         }
         if (!resUser.getPassword().equals(CodecUtils.md5Hex(oldPassword, resUser.getSalt()))) {
@@ -198,7 +196,7 @@ public class UserService {
                 .eq("username", username);
 
         User resUser = this.userMapper.selectOne(qw);
-        if (ObjectUtilsSelf.isEmpty(resUser)) {
+        if (SelfObjUtils.isEmpty(resUser)) {
             //添加盐设置密码为md5
             User user = new User();
             user.setPassword("123456");

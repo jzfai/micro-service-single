@@ -1,0 +1,135 @@
+{
+    "projectOrAuthor": {
+        "author": "熊猫哥",
+        "packageName": "top.kuanghua.vg",
+        "serviceName": "integration-front",
+        "dataTime": "2021-09-15 11:54:49"
+    },
+    "commonConfig": {
+        "upFileApi": "/ty-example/upload/file",
+        "isAdd": true,
+        "isDelete": true,
+        "isMulDelete": true,
+        "isEdit": true,
+        "isPagination": true,
+        "isDetail": true,
+        "isTableMulChoose": true
+    },
+    "dbTableConfig":[
+        {
+            "tableName": "brand",
+            "originTableName": "tb_brand",
+            "tableDesc": "品牌表",
+            "tableNameCase": "Brand",
+            "uniKey": "id",
+            "associationKey": "sn"
+        }
+    ],
+    "apiConfig": {
+        "queryApi": "/integration-front/brand/selectPage",
+        "queryApiType": "get",
+        "insertApi": "/integration-front/brand/insert",
+        "insertApiType": "post",
+        "updateApi": "/integration-front/brand/updateById",
+        "updateApiType": "update",
+        "deleteApi": "/integration-front/brand/deleteById",
+        "deleteApiType": "delete",
+        "deleteMultiApi": "/integration-front/brand/deleteBatchIds",
+        "deleteMultiApiType": "delete",
+        "detailApi": "/integration-front/brand/selectById",
+        "detailApiType": "get"
+    },
+    "queryConfig": [
+        {
+            "field": "name",
+            "originField": "name",
+            "fieldCase": "Name",
+            "desc": "品牌名称",
+            "width": 100,
+            "componentType": "input"
+        }
+    ],
+    "tableConfig": [
+        {
+            "field": "name",
+            "desc": "品牌名称",
+            "width": 100,
+            "componentType": "input"
+        },
+        {
+            "field": "image",
+            "desc": "品牌图片地址",
+            "width": 140,
+            "componentType": "image"
+        },
+        {
+            "field": "letter",
+            "desc": "首字母",
+            "width": 80,
+            "componentType": "input"
+        },
+        {
+            "field": "seq",
+            "desc": "排序",
+            "width": 80,
+            "componentType": "input"
+        },
+        {
+            "field": "createTime",
+            "desc": "创建时间",
+            "width": 140,
+            "componentType": "input"
+        },
+        {
+            "field": "updateTime",
+            "desc": "更新时间",
+            "width": 140,
+            "componentType": "input"
+        }
+    ],
+    "formConfig": [
+        {
+            "field": "id",
+            "type": "Integer",
+            "originField": "id",
+            "desc": "主键",
+            "width": 100
+        },
+        {
+            "field": "name",
+            "type": "String",
+            "desc": "品牌名称",
+            "originField": "name",
+            "componentType": "input",
+            "rule": "isNotNull",
+            "width": 200
+        },
+        {
+            "field": "image",
+            "type": "String",
+            "desc": "品牌图片地址",
+            "originField": "image",
+            "componentType": "uploadImage",
+            "width": 200,
+            "rule": "isNotNull"
+        },
+        {
+            "field": "letter",
+            "type": "String",
+            "desc": "品牌的首字母",
+            "originField": "letter",
+            "componentType": "input",
+            "width": 200,
+            "rule": "isNotNull"
+        },
+        {
+            "field": "seq",
+            "type": "Integer",
+            "desc": "排序",
+            "originField": "seq",
+            "componentType": "textarea",
+            "width": 200,
+            "rule": "isNotNull"
+        }
+    ]
+}

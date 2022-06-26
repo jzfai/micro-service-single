@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
@@ -9,24 +9,20 @@
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
     <modules>
-        <module>ty-common</module>
-        <module>ty-gateway</module>
-        <module>ty-auth</module>
+        <module>auth-pom</module>
+        <module>common-pom</module>
+        <module>gateway</module>
         <module>integration-front</module>
-        <module>ty-example</module>
-        <!--<module>ty-upload</module>-->
-        <!--<module>ty-excel</module>-->
+        <module>basis-func</module>
     </modules>
-
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.1.4.RELEASE</version>
-        <relativePath/>
+        <version>2.4.13</version>
     </parent>
 
     <properties>
-        <spring-cloud.version>Greenwich.SR1</spring-cloud.version>
+        <spring-cloud.version>2020.0.5</spring-cloud.version>
     </properties>
 
     <dependencyManagement>
@@ -36,37 +32,32 @@
                 <artifactId>spring-cloud-dependencies</artifactId>
                 <version>${spring-cloud.version}</version>
                 <type>pom</type>
-                <!--版本引入-->
                 <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>com.alibaba.cloud</groupId>
                 <artifactId>spring-cloud-alibaba-dependencies</artifactId>
-                <version>2.1.3.RELEASE</version>
+                <version>2.2.3.RELEASE</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
 
-    <!--依赖包-->
     <dependencies>
-        <!--测试包-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
         </dependency>
-        <!--fastjson-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-bootstrap</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
-            <version>1.2.79</version>
-        </dependency>
-        <!--鉴权-->
-        <dependency>
-            <groupId>io.jsonwebtoken</groupId>
-            <artifactId>jjwt</artifactId>
-            <version>0.9.0</version>
+            <version>2.0.3</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -77,14 +68,18 @@
         <dependency>
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
+            <version>2.10.5</version>
         </dependency>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-        </dependency>
-        <!-- http://localhost:9011/swagger-ui.html  -->
+        <!--        <dependency>-->
+        <!--            <groupId>org.apache.commons</groupId>-->
+        <!--            <artifactId>commons-lang3</artifactId>-->
+        <!--            <version>3.8.1</version>-->
+        <!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.apache.httpcomponents</groupId>-->
+        <!--            <artifactId>httpclient</artifactId>-->
+        <!--        </dependency>-->
     </dependencies>
-    <!--统一配置测试开发生产环境-->
     <profiles>
         <profile>
             <id>dev</id>
@@ -102,7 +97,6 @@
         </profile>
         <profile>
             <id>test</id>
-            <!--default choose env-->
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
@@ -119,19 +113,19 @@
             </properties>
         </profile>
         <!--the prod env has been used online, don't choose it -->
-        <!--        <profile>-->
-        <!--            <id>prod</id>-->
-        <!--            <properties>-->
-        <!--                <activatedProperties>prod</activatedProperties>-->
-        <!--                <baseLinuxIp>8.135.1.141</baseLinuxIp>-->
-        <!--                <nacosIpPort>${baseLinuxIp}:8848</nacosIpPort>-->
-        <!--                <nacosWeight>1000</nacosWeight>-->
-        <!--                <nacosDiscoveryIp>127.0.0.1</nacosDiscoveryIp>-->
-        <!--                <nacosNamespace>df87d91b-b1ab-4720-8e1c-5a147edc6ddc</nacosNamespace>-->
-        <!--                <nacosGroup>nacos-group-${activatedProperties}</nacosGroup>-->
-        <!--                <nacosUsername>jzfai</nacosUsername>-->
-        <!--                <nacosPassword>123456</nacosPassword>-->
-        <!--            </properties>-->
-        <!--        </profile>-->
+        <profile>
+            <id>prod</id>
+            <properties>
+                <activatedProperties>prod</activatedProperties>
+                <baseLinuxIp>8.135.1.141</baseLinuxIp>
+                <nacosIpPort>${baseLinuxIp}:8848</nacosIpPort>
+                <nacosWeight>1000</nacosWeight>
+                <nacosDiscoveryIp>127.0.0.1</nacosDiscoveryIp>
+                <nacosNamespace>df87d91b-b1ab-4720-8e1c-5a147edc6ddc</nacosNamespace>
+                <nacosGroup>nacos-group-${activatedProperties}</nacosGroup>
+                <nacosUsername>jzfai</nacosUsername>
+                <nacosPassword>123456</nacosPassword>
+            </properties>
+        </profile>
     </profiles>
 </project>

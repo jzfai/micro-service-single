@@ -5,7 +5,7 @@ import com.alibaba.excel.metadata.GlobalConfiguration;
 import com.alibaba.excel.metadata.data.ReadCellData;
 import com.alibaba.excel.metadata.data.WriteCellData;
 import com.alibaba.excel.metadata.property.ExcelContentProperty;
-import top.kuanghua.khcomomon.utils.ObjectUtilsSelf;
+import top.kuanghua.commonpom.utils.SelfObjUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -22,7 +22,7 @@ public class VciTimeCv implements Converter<Date> {
 
     @Override
     public WriteCellData<String> convertToExcelData(Date value, ExcelContentProperty contentProperty, GlobalConfiguration globalConfiguration) throws Exception {
-        return new WriteCellData<>(ObjectUtilsSelf.formatDateTime(value));
+        return new WriteCellData<>(SelfObjUtils.formatDateTime(value));
     }
 
 }

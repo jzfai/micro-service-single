@@ -1,0 +1,8 @@
+spring:
+  rabbitmq:
+    host: ${envpt.rabbitIp}
+    port: ${envpt.rabbitPort}
+    username: Kuanghua8866
+    password: Kuanghua8866
+    virtual-host: /
+    publisher-confirm-type: correlated

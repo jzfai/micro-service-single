@@ -10,13 +10,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
-import top.kuanghua.feign.tyauth.feign.TokenFeign;
+import top.kuanghua.commonpom.entity.ResResult;
+import top.kuanghua.commonpom.entity.SelfCommonParams;
 import top.kuanghua.integrationfront.entity.User;
 import top.kuanghua.integrationfront.mapper.MultiPageMapper;
 import top.kuanghua.integrationfront.mapper.UserMapper;
 import top.kuanghua.integrationfront.service.UserService;
-import top.kuanghua.khcomomon.entity.KHCommonParams;
-import top.kuanghua.khcomomon.entity.ResResult;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
@@ -40,9 +39,6 @@ public class UserController {
     private MultiPageMapper multiPageMapper;
 
 
-    @Resource
-    private TokenFeign tokenFeign;
-
     /**
      * 分页查询所有数据
      *
@@ -51,7 +47,7 @@ public class UserController {
      */
     @GetMapping("selectPage")
     @ApiOperation(value = "分页查询数据")
-    public ResResult selectPage(User user, KHCommonParams commonParams) {
+    public ResResult selectPage(User user, SelfCommonParams commonParams) {
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         if (StringUtils.isNotEmpty(user.getUsername())) {
             queryWrapper.like("username", user.getUsername());

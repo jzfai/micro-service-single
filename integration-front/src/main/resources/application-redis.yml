@@ -1,0 +1,4 @@
+spring:
+  redis:
+    host: ${envpt.redisIp}
+    port: ${envpt.redisPort}

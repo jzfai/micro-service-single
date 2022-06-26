@@ -1,0 +1,2 @@
+server:
+  port: ${envpt.tomcatPortPre}0121

@@ -10,23 +10,16 @@ this architecture is the springCloud microservice architecture, which provides b
 token update, and calls between microservices, as well as enterprise-level usage examples.
 
 ```text
-spring-boot:2.1.4.RELEASE
-spring-cloud:Greenwich.SR1
-spring-cloud-starter-gateway:2.1.1.RELEASE
-nacos:2.1.3.RELEASE
+spring-boot:2.4.13
+spring-cloud:2020.0.5
 mybatis-plus: 3.3.2
-rabbitmq:3.7-management
-redis: 3.2.9
 mysql:5.7
-seata:1.4.2
-canal:1.2.1
+knife4j:2.0.9
 ```
 
 > some of the above versions will be upgraded in the future
 
-## Doc and Example
-
-[swager文档地址](http://8.135.1.141/micro-service-doc/swagger-ui.html)
+##  Example
 
 ![1642222390648](http://8.135.1.141/file/micro-service-assets/1642222390648.png)
 
@@ -54,10 +47,9 @@ to look doc ----
 
 ## Interface documentation and nacos address
 
-[swager文档地址](http://8.135.1.141/micro-service-doc/swagger-ui.html)
+[swager文档地址](https://github.jzfai.top/micro-service-doc/doc.html)
 
-[nacos地址](http://8.135.1.141:8848/nacos/)    
-
+[nacos地址](https://github.jzfai.top/nacos/)
 naocs:    用户名：jzfai; 密码：123456
 
 ## Online experience address
@@ -72,19 +64,19 @@ github 地址：  https://github.com/jzfai/micro-service-plus.git
 
 ## Introduction to Microservices
 
-##### ty-gateway-one：
+##### gateway：
 
 gateway Microservices. The spring-cloud-starter-gateway is used, which has better performance than the zull gateway. It
 mainly implements permission control and interception, jwt token parsing and verification, swagger file integration, and
 request current limiting using token technology. Can start multiple
 
-##### ty-auth：
+##### auth-pom：
 
 permission service. jwt token generation, parsing, verification, etc., the default configuration is valid for 3 days,
 and the contract is automatically renewed if it is less than one day (if you are interested here, you can view the
 source code)
 
-##### ty-example:
+##### basic-func:
 
 provide some examples. Including, rabbitmq delay queue, goFastDFS file upload, canal, seata partial transaction, SMS
 sending, mail sending, etc.
@@ -112,11 +104,12 @@ pnpm i
 pnpm run test
 
 #micro-service-plus At least need to run
-ty-auth
-ty-gateway-one
-ty-integration-front
+basic-func
+gateway
+integration-front
 
 The above three service
+建议先运行下 maven insall 避免出现依赖不在情况
 ```
 
 > Note: Select the environment in Maven Projects->Profies. Currently online is a package built in the prod environment, please do not select.
