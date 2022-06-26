@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: @project.artifactId@
+  profiles:
+    active: @activatedProperties@,main
+  cloud:
+    nacos:
+      discovery:
+        namespace: @nacosNamespace@
+        group: @nacosGroup@
+        username: @nacosUsername@
+        password: @nacosPassword@
+        server-addr: @nacosIpPort@
+        weight: @nacosWeight@
+        ip: @nacosDiscoveryIp@

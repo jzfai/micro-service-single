@@ -1,0 +1,214 @@
+##表格列项
+#macro(tableColumnItemTemp)
+    #if($commonConfig.isTableMulChoose)
+    <el-table-column type="selection" align="center" width="50"/>
+    #end
+    #foreach($item in $tableConfig)
+        #if($item.componentType=="input") ##input
+        <el-table-column align="center" prop="${item.field}" label="${item.desc}" min-width="${item.width}"/>
+        #elseif($item.componentType=="select") ##select
+        <el-table-column align="center" prop="${item.field}" label="${item.desc}" min-width="${item.width}">
+            <template #default="{ row }">
+                #foreach($enum in $item.optionDataArr)
+                    <span v-if="row.${item.field}==${enum.value}">${enum.label}</span>
+                #end
+            </template>
+        </el-table-column>
+        #elseif($item.componentType=="image") ##image
+        <el-table-column align="center" prop="${item.field}" label="${item.desc}" min-width="${item.width}">
+            <template #default="{ row }">
+                <img :src="row.${item.field}" style="border-radius:10px;width:${item.width}px;height:${item.width}px"/>
+            </template>
+        </el-table-column>
+        #end
+    #end
+#end
+
+##请求表格数据
+#macro(selectPageReq)
+let selectPageReq = () => {
+const data = Object.assign(searchForm, {
+pageNum: pageNum,
+pageSize: pageSize
+})
+let reqConfig = {
+url: '${apiConfig.queryApi}',
+method: '${apiConfig.queryApiType}',
+data,
+isParams: true
+}
+axiosReq(reqConfig).then((resData) => {
+usertableData = resData.data?.records
+totalPage = resData.data?.total
+})
+}
+#end
+##删除相关
+#macro(deleteByIdReq)
+    #if($commonConfig.isDelete)
+        let deleteByIdReq = (id) => {
+        return axiosReq({
+        url: '${apiConfig.deleteApi}',
+        data: { id: id },
+        isParams: true,
+        method: '${apiConfig.deleteApiType}',
+        bfLoading: true
+        })
+        }
+        let tableDelClick = (row) => {
+        elConfirm('确定', `您确定要删除【${row.name}】吗？`)
+        .then(() => {
+        deleteByIdReq(row.id).then(() => {
+        selectPageReq()
+        elMessage(`【${row.name}】删除成功`)
+        })
+        })
+        .catch(() => {})
+        }
+    #end
+#end
+##多个删除
+#macro(multiDelReq)
+    #if($commonConfig.isMulDelete)
+    const refuserTable = $ref(null)
+    const multiDelBtnClick = () => {
+    let rowDeleteIdArr = []
+    let deleteNameTitle = ''
+    rowDeleteIdArr = multipleSelection.map((mItem) => {
+    deleteNameTitle = deleteNameTitle + mItem.name + ','
+    return mItem.id
+    })
+    if (rowDeleteIdArr.length === 0) {
+    elMessage('表格选项不能为空', 'warning')
+    return
+    }
+    let stringLength = deleteNameTitle.length - 1
+    elConfirm('删除', `您确定要删除${deleteNameTitle}吗`)
+    .then(() => {
+    const data = rowDeleteIdArr
+    axiosReq({
+    url: `${apiConfig.deleteMultiApi}`,
+    data,
+    method: '${apiConfig.deleteMultiApiType}',
+    bfLoading: true
+    }).then((res) => {
+    elMessage('删除成功')
+    selectPageReq()
+    })
+    })
+    .catch(() => {})
+    }
+    #end
+#end
+##详情modal
+#macro(detailScript)
+    #if($commonConfig.isDetail)
+        let detailData = $ref({})
+        let dialogTitle =$ref("")
+        let detailDialog =$ref(false)
+        let tableDetailClick = (row) => {
+        dialogTitle = `详情【${row.name}】`
+        getDetailByIdReq(row.id).then((resData) => {
+        detailData = resData.data
+        detailDialog = true
+        })
+        }
+        let getDetailByIdReq = (id) => {
+        return axiosReq({
+        url: '${apiConfig.detailApi}',
+        data: { id },
+        isParams: true,
+        method: '${apiConfig.detailApiType}'
+        })
+        }
+    #end
+#end
+##table操作
+#macro(tableGlobalOperatorTemp)
+    #if($commonConfig.isAdd)
+    <el-button type="primary" @click="addBtnClick">
+        <el-icon style="vertical-align: middle">
+            <FolderAdd/>
+        </el-icon>
+        <span style="vertical-align: middle">增加</span>
+    </el-button>
+    #end
+    #if($commonConfig.isMulDelete)
+    <el-button type="primary" @click="multiDelBtnClick">
+        <el-icon style="vertical-align: middle">
+            <Delete/>
+        </el-icon>
+        <span style="vertical-align: middle">删除</span>
+    </el-button>
+    #end
+#end
+#macro(tableOperatorTemp)
+    #if($commonConfig.isEdit)
+    <el-button type="text" size="small" @click="tableEditClick(row)">编辑</el-button>
+    #end
+    #if($commonConfig.isDetail)
+    <el-button type="text" size="small" @click="tableDetailClick(row)">详情</el-button>
+    #end
+    #if($commonConfig.isDelete)
+    <el-button type="text" size="small" @click="tableDelClick(row)">删除</el-button>
+    #end
+#end
+##分页
+#macro(tablePaginationTemp)
+    #if($commonConfig.isPagination)
+    <div class="block columnCC mt-2">
+        <el-pagination
+                :current-page="pageNum"
+                :page-sizes="[10, 20, 50, 100]"
+                :page-size="pageSize"
+                layout="total, sizes, prev, pager, next, jumper"
+                :total="totalPage"
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+        />
+    </div>
+    #end
+#end
+##详情
+#macro(tableDetailTemp)
+    #if($commonConfig.isDetail)
+    <el-dialog v-model="detailDialog" :title="dialogTitle" width="500px" :close-on-click-modal="false">
+        #foreach($item in $formConfig)
+            <div class="detail-container rowBC">
+                <div class="detail-container-item">$item.desc：{{ detailData.$item.field }}</div>
+            </div>
+        #end
+        <template #footer>
+            <span class="dialog-footer">
+              <el-button type="primary" @click="detailDialog = false">确 定</el-button>
+            </span>
+        </template>
+    </el-dialog>
+    #end
+#end
+##编辑和添加
+#macro(tableAddEditScript)
+    #if($commonConfig.isEdit)
+    let tableEditClick = (row) => {
+    getDetailByIdReq(row.id).then((resData) => {
+    showFrom = true
+    nextTick(() => {
+    refCRUDForm.showModal(true, resData.data)
+    })
+    })
+    }
+    #end
+    #if($commonConfig.isAdd)
+    let showFrom = $ref(false)
+    const refCRUDForm = $ref(null)
+    let addBtnClick = () => {
+    showFrom = true
+    nextTick(() => {
+    refCRUDForm.showModal()
+    })
+    }
+    const hideComp = () => {
+    showFrom = false
+    }
+    #end
+#end

@@ -11,16 +11,11 @@
 本架构为springCloud微服务架构，提供基本的jwt权限认证，token更新，以及各微服务之间调用，以及提供企业级的使用例子
 
 ```text
-spring-boot:2.1.4.RELEASE
-spring-cloud:Greenwich.SR1
-spring-cloud-starter-gateway:2.1.1.RELEASE
-nacos:2.1.3.RELEASE
-mybatis-plus:3.3.2
-rabbitmq:3.7-management
-redis:3.2.9
+spring-boot:2.4.13
+spring-cloud:2020.0.5
+mybatis-plus: 3.3.2
 mysql:5.7
-seata:1.4.2
-canal:1.2.1  
+knife4j:2.0.9
 ```
 
 > 以上部分版本后续会升级
@@ -49,7 +44,7 @@ to look doc ----
 
 #### 开发接口和nacos地址
 
-[swager文档地址](http://8.135.1.141/micro-service-doc/swagger-ui.html)
+[swager文档地址](https://github.jzfai.top/micro-service-doc/doc.html)
 
 [nacos地址](http://8.135.1.141:8848/nacos/)  
 
@@ -67,16 +62,17 @@ github 地址：  https://github.com/jzfai/micro-service-plus.git
 
 #### 目前实现的微服务（后续还会新增新的微服务）
 
-##### ty - gateway - one
+##### gateway：
 
 网关微服务。使用的是spring - cloud - starter - gateway，相对于zull网关来说性能更好。主要实现了，权限控制和拦截，jwt token解析和校验,
 swagger文件整合，使用令牌技术请求限流等。可启动多个实例
 
-##### ty - auth
+
+##### auth-pom
 
 权限服务。jwt token生成，解析，校验等，默认配置3天有效期，少于一天自动续约
 
-##### ty - example
+##### basic-func:
 
 提供一些例子。包括，rabbitmq延时队列，goFastDFS文件上传，canal, seata分部式事务，短信发送，邮件发送等。
 
@@ -84,9 +80,9 @@ swagger文件整合，使用令牌技术请求限流等。可启动多个实例
 
 数据整合。vue3 - admin - plus 数据来源
 
-##### easycode - temp
+##### velocity-tmp-dir
 
-easycode前后端模板
+velocity 前后端模板
 
 #### 如何运行
 
@@ -95,6 +91,7 @@ easycode前后端模板
 ```
 git clone  https://github.com/jzfai/micro-service-plus.git
 //maven 下载依赖,即可运行
+建议先运行下 maven insall 避免出现依赖不在情况
 ```
 
 如何配合vue3-admin-plus ，前后端一起开发
@@ -107,9 +104,9 @@ pnpm i
 pnpm run test
 
 #micro-service-plus 至少需要运行
-ty-auth
-ty-gateway-one
-ty-integration-front
+basic-func
+gateway
+integration-front
 以上三个服务 
 ```
 

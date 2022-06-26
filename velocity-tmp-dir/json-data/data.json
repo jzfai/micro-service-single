@@ -1,0 +1,192 @@
+{
+  "projectOrAuthor": {
+    "author": "熊猫哥",
+    "dataTime": "2021-09-15 11:54:49"
+  },
+  "dbTableConfig": {
+    "tableName": "brand",
+    "originTableName": "tb_brand",
+    "tableDesc": "品牌表",
+    "tableNameCase": "Brand",
+    "uniKey": "id"
+  },
+  "commonConfig": {
+    "upFileApi": "/ty-example/upload/file",
+    "isAdd": true,
+    "isDelete": true,
+    "isMulDelete": true,
+    "isEdit": true,
+    "isPagination": true,
+    "isDetail": true,
+    "isTableMulChoose": true
+  },
+  "apiConfig": {
+    "queryApi": "/integration-front/brand/selectPage",
+    "queryApiType": "get",
+    "insertApi": "/integration-front/brand/insert",
+    "insertApiType": "post",
+    "updateApi": "/integration-front/brand/updateById",
+    "updateApiType": "update",
+    "deleteApi": "/integration-front/brand/deleteById",
+    "deleteApiType": "delete",
+    "deleteMultiApi": "/integration-front/brand/deleteBatchIds",
+    "deleteMultiApiType": "delete",
+    "detailApi": "/integration-front/brand/selectById",
+    "detailApiType": "get"
+  },
+  "queryConfig": [
+    {
+      "field": "name",
+      "originField": "name",
+      "fieldCase": "Name",
+      "desc": "品牌名字",
+      "width": 100,
+      "componentType": "input"
+    },
+    {
+      "field": "select",
+      "desc": "select",
+      "width": 100,
+      "componentType": "select",
+      "selectKey": "id",
+      "selectLabel": "label",
+      "queryApi": "/integration-front/VmsTemplate/selectApiDemo",
+      "queryApiType": "get"
+    },
+    {
+      "field": "selectApi",
+      "desc": "selectApi",
+      "width": 100,
+      "componentType": "selectApi",
+      "selectKey": "id",
+      "selectLabel": "label",
+      "queryApi": "/integration-front/VmsTemplate/selectApiDemo",
+      "queryApiType": "get"
+    },
+    {
+      "field": "cascader",
+      "desc": "cascader",
+      "width": 100,
+      "componentType": "cascader",
+      "value": "value",
+      "label": "label",
+      "children": "children",
+      "queryApi": "/integration-front/VmsTemplate/cascadeApiDemo",
+      "queryApiType": "get"
+    },
+    {
+      "field": "createTime",
+      "desc": "时间日期选择",
+      "width": 100,
+      "componentType": "datetimerange"
+    }
+  ],
+  "tableConfig": [
+    {
+      "field": "name",
+      "desc": "品牌名称",
+      "width": 100,
+      "componentType": "input"
+    },
+    {
+      "field": "image",
+      "desc": "品牌图片地址",
+      "width": 140,
+      "componentType": "image"
+    },
+    {
+      "field": "letter",
+      "desc": "首字母",
+      "width": 80,
+      "componentType": "input"
+    },
+    {
+      "field": "seq",
+      "desc": "排序",
+      "width": 80,
+      "componentType": "input"
+    },
+    {
+      "field": "createTime",
+      "desc": "创建时间",
+      "width": 140,
+      "componentType": "input"
+    },
+    {
+      "field": "updateTime",
+      "desc": "更新时间",
+      "width": 140,
+      "componentType": "input"
+    }
+  ],
+  "formConfig": [
+    {
+      "field": "selectApi",
+      "desc": "selectApi",
+      "width": 100,
+      "componentType": "selectApi",
+      "selectKey": "id",
+      "selectLabel": "label",
+      "queryApi": "/integration-front/VmsTemplate/selectApiDemo",
+      "queryApiType": "get",
+      "rule": "isNotNull"
+    },
+    {
+      "field": "cascader",
+      "desc": "cascader",
+      "width": 100,
+      "componentType": "cascader",
+      "value": "value",
+      "label": "label",
+      "children": "children",
+      "queryApi": "/integration-front/VmsTemplate/cascadeApiDemo",
+      "queryApiType": "get",
+      "rule": "isNotNull"
+    },
+    {
+      "field": "name",
+      "desc": "品牌名称",
+      "componentType": "input",
+      "rule": "isNotNull",
+      "width": 200
+    },
+    {
+      "field": "image",
+      "desc": "品牌图片地址",
+      "componentType": "uploadImage",
+      "width": 200,
+      "rule": "isNotNull"
+    },
+    {
+      "field": "carTypeList",
+      "desc": "可兼容车型",
+      "componentType": "select",
+      "optionDataArr": [
+        {
+          "desc": "未出库",
+          "value": "0"
+        },
+        {
+          "desc": "已出库",
+          "value": "1"
+        }
+      ],
+      "rule": "isNotNull",
+      "width": 200
+    },
+    {
+      "field": "letter",
+      "desc": "品牌的首字母",
+      "componentType": "input",
+      "width": 200,
+      "rule": "isNotNull"
+    },
+    {
+      "field": "seq",
+      "desc": "排序",
+      "componentType": "textarea",
+      "width": 200,
+      "rule": "isNotNull"
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.kuanghua.integrationfront.mapper.PairmentMapper">
+    <resultMap id="getPairmentRM" type="java.util.Map">
+        <result property="currentStatus" column="current_status"/>
+        <result property="recoveryDate" column="recovery_date"/>
+        <result property="contactInfo" column="contact_info"/>
+        <result property="equipType" column="equip_type"/>
+        <result property="depth" column="depth"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        repair
+        .
+        current_status
+        ,repair.recovery_date,repair.contact_info,repair.equip_type,replacement.depth
+    </sql>
+
+    <select id="selectPairment" resultMap="getPairmentRM">
+        select
+        <include refid="Base_Column_List"/>
+        FROM tb_repair repair
+        LEFT JOIN tb_replacement replacement
+        ON repair.sn=replacement.sn
+        <where>
+            <if test="params.currentStatus != null">
+                repair.current_status LIKE '%${params.currentStatus}%'
+            </if>
+            <if test="params.recoveryDate != null">
+                repair.recovery_date LIKE '%${params.recoveryDate}%'
+            </if>
+            <if test="params.contactInfo != null">
+                repair.contact_info LIKE '%${params.contactInfo}%'
+            </if>
+            <if test="params.equipType != null">
+                repair.equip_type LIKE '%${params.equipType}%'
+            </if>
+            <if test="params.depth != null">
+                replacement.depth LIKE '%${params.depth}%'
+            </if>
+        </where>
+    </select>
+
+
+    <select id="selectByKey" resultType="java.util.Map">
+        select
+        <include refid="Base_Column_List"/>
+        FROM tb_repair repair
+        LEFT JOIN tb_replacement replacement
+        ON repair.sn=replacement.sn
+        <where>
+            <if test="sn != null">
+                repair.sn LIKE '%${sn}%'
+            </if>
+        </where>
+    </select>
+</mapper>

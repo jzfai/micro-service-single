@@ -8,10 +8,10 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import top.kuanghua.commonpom.entity.ResResult;
+import top.kuanghua.commonpom.entity.SelfCommonParams;
 import top.kuanghua.integrationfront.entity.ErrorCollection;
 import top.kuanghua.integrationfront.service.ErrorCollectionService;
-import top.kuanghua.khcomomon.entity.KHCommonParams;
-import top.kuanghua.khcomomon.entity.ResResult;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -32,7 +32,7 @@ public class ErrorCollectionController {
      */
     @GetMapping("selectPage")
     @ApiOperation(value = "分页查询所有数据")
-    public ResResult selectPage(ErrorCollection errorCollection, KHCommonParams khCommonParams) {
+    public ResResult selectPage(ErrorCollection errorCollection, SelfCommonParams khCommonParams) {
         QueryWrapper<ErrorCollection> queryWrapper = new QueryWrapper<>();
         if (ObjectUtils.isNotEmpty(errorCollection.getErrorLog())) {
             queryWrapper.like("error_log", errorCollection.getErrorLog());

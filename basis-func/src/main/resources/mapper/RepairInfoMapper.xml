@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.kuanghua.vg.mapper.RepairInfoMapper">
+    <resultMap id="getStudentRM" type="java.util.Map">
+        <result property="newSnId" column="new_sn_id"/>
+        <result property="returnDate" column="return_date"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">rp
+    .
+    sn
+    ,rp.equip_type, rp.replacement_id, rp.express_id, rp.problem_classification_id
+    ,rp.current_status,  rp.problem_description,
+     rp.feedback_time, rp.proposer, rp.contact_info,  rp.recovery_date,
+     rp.return_date, rp.problems_analyzed, rp.reason, rp.processing_method, rp.remarks,
+     rm.new_sn_id
+    </sql>
+
+    <select id="queryRepairInfo" resultMap="getStudentRM">
+        select
+        <include refid="Base_Column_List"/>
+        FROM tb_repair rp
+        LEFT JOIN tb_replacement rm
+        ON rp.sn=rm.sn
+        <where>
+            <if test="params.sn != null">
+                rp.sn LIKE '%${params.sn}%'
+            </if>
+            <if test="params.expressId != null">
+                AND rp.express_id LIKE '%${params.expressId}%'
+            </if>
+            <if test="params.currentStatus != null">
+                AND rp.current_status LIKE '%${params.currentStatus}%'
+            </if>
+            <if test="params.proposer != null">
+                AND rp.proposer LIKE '%${params.proposer}%'
+            </if>
+            <if test="params.returnStartTime != null">
+                AND rp.return_date BETWEEN #{params.returnStartTime} AND #{params.returnEndTime}
+            </if>
+            <if test="params.recoveryStartTime != null">
+                AND rp.recovery_date BETWEEN #{params.recoveryStartTime} AND #{params.recoveryEndTime}
+            </if>
+            <if test="params.feedbackStartTime != null">
+                AND rp.feedback_time BETWEEN #{params.feedbackStartTime} AND #{params.feedbackEndTime}
+            </if>
+            <if test="params.updateStartTime != null">
+                AND rp.update_time BETWEEN #{params.updateStartTime} AND #{params.updateEndTime}
+            </if>
+            <if test="params.startTime != null">
+                AND rp.create_time BETWEEN #{params.startTime} AND #{params.endTime}
+            </if>
+        </where>
+    </select>
+
+
+    <select id="selectById" resultType="java.util.Map">
+        select
+        <include refid="Base_Column_List"/>
+        FROM tb_repair rp
+        LEFT JOIN tb_replacement rm
+        ON rp.sn=rm.sn
+        <where>
+            <if test="sn != null">
+                rp.sn LIKE '%${sn}%'
+            </if>
+        </where>
+    </select>
+</mapper>

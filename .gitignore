@@ -1,9 +1,11 @@
 .history
 .idea
+target
 node_modules
 .DS_Store
 dist
 dist-ssr
 *.local
-target
-*.iml
+yarn*
+pnpm*
+coverage

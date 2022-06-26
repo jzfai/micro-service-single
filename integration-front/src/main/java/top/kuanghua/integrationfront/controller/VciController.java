@@ -14,9 +14,10 @@ import top.kuanghua.integrationfront.entity.Vci;
 import top.kuanghua.integrationfront.excel.imp.VciExcelImp;
 import top.kuanghua.integrationfront.service.VciService;
 import top.kuanghua.integrationfront.vo.ExcelCheckResult;
-import top.kuanghua.khcomomon.entity.CommonParamsSelf;
-import top.kuanghua.khcomomon.entity.ResResult;
-import top.kuanghua.khcomomon.utils.ObjectUtilsSelf;
+import top.kuanghua.commonpom.entity.SelfCommonParams;
+import top.kuanghua.commonpom.entity.ResResult;
+import top.kuanghua.commonpom.utils.SelfObjUtils;
+
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
@@ -41,7 +42,7 @@ public class VciController {
      */
     @GetMapping("selectPage")
     @ApiOperation(value = "分页查询所有数据")
-    public ResResult selectPage(Vci vci, CommonParamsSelf commonParams) {
+    public ResResult selectPage(Vci vci, SelfCommonParams commonParams) {
         QueryWrapper<Vci> queryWrapper = new QueryWrapper<>();
         if (ObjectUtils.isNotEmpty(vci.getSn())) {
             queryWrapper.like("sn", vci.getSn());
@@ -144,7 +145,7 @@ public class VciController {
 
     @ApiOperation("导出excel")
     @GetMapping("exportExcel")
-    public void exportExcel(HttpServletResponse response, Vci vci, CommonParamsSelf commonParams) throws IOException {
+    public void exportExcel(HttpServletResponse response, Vci vci,  SelfCommonParams commonParams) throws IOException {
         QueryWrapper<Vci> queryWrapper = new QueryWrapper<>();
         if (ObjectUtils.isNotEmpty(vci.getSn())) {
             queryWrapper.like("sn", vci.getSn());
@@ -167,7 +168,7 @@ public class VciController {
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         response.setCharacterEncoding("utf-8");
 
-        String fileName = URLEncoder.encode("Vci导出数据", "UTF-8") + "-" + ObjectUtilsSelf.getCurrentDateTime();
+        String fileName = URLEncoder.encode("Vci导出数据", "UTF-8") + "-" + SelfObjUtils.getCurrentDateTime();
         response.setHeader("Access-Control-Expose-Headers", "exportFileName");
         response.setHeader("exportFileName", fileName + ".xlsx");
         EasyExcel.write(response.getOutputStream(), VciExcelImp.class).sheet("模板").doWrite(vciPage.getRecords());

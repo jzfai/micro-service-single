@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="top.kuanghua.integrationfront.mapper.AdminMapper">
-	<resultMap id="BaseResultMap" type="top.kuanghua.integrationfront.entity.Admin">
+    <resultMap id="BaseResultMap" type="top.kuanghua.integrationfront.entity.Admin">
         <id column="id" jdbcType="INTEGER" property="id"/>
-		<result column="id" jdbcType="INTEGER" property="id"/>
-		<result column="status" jdbcType="VARCHAR" property="status"/>
-		<result column="add_time" jdbcType="TIMESTAMP" property="addTime"/>
-		<result column="is_super" jdbcType="VARCHAR" property="isSuper"/>
-		<result column="username" jdbcType="VARCHAR" property="username"/>
-		<result column="password" jdbcType="VARCHAR" property="password"/>
-		<result column="is_delete" jdbcType="VARCHAR" property="isDelete"/>
-		<result column="mobile" jdbcType="INTEGER" property="mobile"/>
-		<result column="email" jdbcType="VARCHAR" property="email"/>
-		<result column="role_id" jdbcType="INTEGER" property="roleId"/>
-	</resultMap>
-	<sql id="Base_Column_List">
-        id,
+        <result column="id" jdbcType="INTEGER" property="id"/>
+        <result column="status" jdbcType="VARCHAR" property="status"/>
+        <result column="add_time" jdbcType="TIMESTAMP" property="addTime"/>
+        <result column="is_super" jdbcType="VARCHAR" property="isSuper"/>
+        <result column="username" jdbcType="VARCHAR" property="username"/>
+        <result column="password" jdbcType="VARCHAR" property="password"/>
+        <result column="is_delete" jdbcType="VARCHAR" property="isDelete"/>
+        <result column="mobile" jdbcType="INTEGER" property="mobile"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="role_id" jdbcType="INTEGER" property="roleId"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id
+        ,
 		status,
 		add_time,
 		is_super,
@@ -28,47 +29,47 @@
     </sql>
     <!-- resultMap="java.util.Map"-->
     <!--<select id="selectListAdmin" parameterType="top.kuanghua.tyuser.entity.Admin" resultType="java.util.Map" >-->
-        <!--select-->
-        <!--<include refid="Base_Column_List"/>-->
-        <!--from tb_admin-->
-        <!--where 1 = 1-->
-        <!--<if test="id != null">-->
-            <!--and id = #{id}-->
-        <!--</if>-->
-        <!--<if test="status != null">-->
-            <!--and status = #{status}-->
-        <!--</if>-->
-        <!--<if test="addTime != null">-->
-            <!--and add_time = #{addTime}-->
-        <!--</if>-->
-        <!--<if test="isSuper != null">-->
-            <!--and is_super = #{isSuper}-->
-        <!--</if>-->
-        <!--<if test="username != null">-->
-            <!--and username = #{username}-->
-        <!--</if>-->
-        <!--<if test="password != null">-->
-            <!--and password = #{password}-->
-        <!--</if>-->
-        <!--<if test="isDelete != null">-->
-            <!--and is_delete = #{isDelete}-->
-        <!--</if>-->
-        <!--<if test="mobile != null">-->
-            <!--and mobile = #{mobile}-->
-        <!--</if>-->
-        <!--<if test="email != null">-->
-            <!--and email = #{email}-->
-        <!--</if>-->
-        <!--<if test="roleId != null">-->
-            <!--and role_id = #{roleId}-->
-        <!--</if>-->
-        <!--order by id desc-->
-        <!--&lt;!&ndash;<if test="pageNum != null and pageSize != null">&ndash;&gt;-->
-            <!--&lt;!&ndash;limit #{pageNum}, #{pageSize}&ndash;&gt;-->
-        <!--&lt;!&ndash;</if>&ndash;&gt;-->
+    <!--select-->
+    <!--<include refid="Base_Column_List"/>-->
+    <!--from tb_admin-->
+    <!--where 1 = 1-->
+    <!--<if test="id != null">-->
+    <!--and id = #{id}-->
+    <!--</if>-->
+    <!--<if test="status != null">-->
+    <!--and status = #{status}-->
+    <!--</if>-->
+    <!--<if test="addTime != null">-->
+    <!--and add_time = #{addTime}-->
+    <!--</if>-->
+    <!--<if test="isSuper != null">-->
+    <!--and is_super = #{isSuper}-->
+    <!--</if>-->
+    <!--<if test="username != null">-->
+    <!--and username = #{username}-->
+    <!--</if>-->
+    <!--<if test="password != null">-->
+    <!--and password = #{password}-->
+    <!--</if>-->
+    <!--<if test="isDelete != null">-->
+    <!--and is_delete = #{isDelete}-->
+    <!--</if>-->
+    <!--<if test="mobile != null">-->
+    <!--and mobile = #{mobile}-->
+    <!--</if>-->
+    <!--<if test="email != null">-->
+    <!--and email = #{email}-->
+    <!--</if>-->
+    <!--<if test="roleId != null">-->
+    <!--and role_id = #{roleId}-->
+    <!--</if>-->
+    <!--order by id desc-->
+    <!--&lt;!&ndash;<if test="pageNum != null and pageSize != null">&ndash;&gt;-->
+    <!--&lt;!&ndash;limit #{pageNum}, #{pageSize}&ndash;&gt;-->
+    <!--&lt;!&ndash;</if>&ndash;&gt;-->
     <!--</select>-->
 
-    <select id="selectListAdmin" parameterType="top.kuanghua.integrationfront.entity.Admin" resultType="java.util.Map" >
+    <select id="selectListAdmin" parameterType="top.kuanghua.integrationfront.entity.Admin" resultType="java.util.Map">
         select
         <include refid="Base_Column_List"/>
         from tb_admin
