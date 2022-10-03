@@ -1,0 +1,18 @@
+import request from '@/lib/axios'
+
+
+##生成formItem里的api查询接口
+#foreach($item in $tableListConfig)
+        #if($item.compoentType=="selectApi") ##输入框 input
+        /**
+        *  ${item.desc}接口
+        * @param {*} data
+        */
+        export const ${item.field}Req = (data) => {
+                return request('${item.api}', {
+                        data,
+                        method: '${item.method}'
+                })
+        }
+        #end
+#end

@@ -1,0 +1,8 @@
+/**
+*${frontConfig.apiFileName}详情
+*/
+export const ${frontConfig.apiFileName}Detail = (id) => {
+        return request(`${apiConfig.detailApi}`, {
+        method: `${apiConfig.detailMethod}`
+        })
+}

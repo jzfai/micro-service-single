@@ -1,0 +1,96 @@
+#parse("formUtils.vm")
+<template>
+    <Dialog :title="title" :width="'50%'" :status="status" @close="handleClose">
+        <div slot="content" class="content add-model">
+            <el-form ref="ruleForm" :model="formData" :rules="rules" label-position="left" label-width="100px">
+                #formItemTemp()
+            </el-form>
+        </div>
+        <div slot="footer" class="footers">
+            <el-button size="small" @click="handleClose">取消</el-button>
+            <el-button type="primary" size="small" @click="handleSubmit">确定</el-button>
+        </div>
+    </Dialog>
+</template>
+
+<script>
+    import Dialog from "@/components/dialog";
+    export default {
+        components: {Dialog},
+        props: {
+            dialogValue: Object
+        },
+        data() {
+            return {
+                status: false,
+                title: "",
+                successStatus: false,
+                formData: {
+                    #fromKeyData()
+                },
+                carModelOptions: [],
+                rules: {
+                    #rulesData()
+                },
+                #formDataScript()
+            }
+        },
+        watch: {
+            dialogValue: {
+                handler(newData) {
+                    if (newData && newData.status) {
+                        this.title = newData.title;
+                        this.successStatus = false;
+                        if (this.title === "${frontConfig.title}详情") {
+                            // 编辑
+                            this.formData.${frontConfig.uniKey} = newData.value.${frontConfig.uniKey};
+                            this.getStationModelDetail(newData.value.${frontConfig.uniKey});
+                        } else {
+                            // 新增
+                            this.status = newData.status;
+                        }
+                    }
+                }
+            },
+            status(newData) {
+                if (!newData) {
+                    this.formData = {
+                        #fromKeyData()
+                    };
+                    this.$refs.ruleForm.resetFields();
+                    this.$emit("refresh", this.successStatus);
+                }
+            }
+        },
+        mounted() {
+            #formMountedScript()
+        },
+        methods: {
+            #formMethodScript()
+            // 关闭弹窗
+            handleClose() {
+                this.status = false;
+            },
+            // 获取换电站型号详情
+            getStationModelDetail(id) {
+                #detailReq()
+            },
+            // 保存操作
+            handleSubmit() {
+                // 校验必填
+                const refForm = this.$refs.ruleForm
+                refForm.validate((valid) => {
+                    if (valid) {
+                        #insertReq()
+                    }
+                });
+            }
+        }
+    };
+</script>
+
+<style lang="scss" scoped="scoped">
+    .add-model {
+        padding-top: 24px;
+    }
+</style>

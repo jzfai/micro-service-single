@@ -1,0 +1,170 @@
+#macro(subFormItemTmp)
+    #foreach($item in $tableList)
+        #if($item.componentType=="input") ##input
+        <el-form-item label="${item.desc}" prop="${item.field}" :rules="formRules.isNotNull('${item.desc}不能为空')">
+            <el-input v-model="subForm.${item.field}" class="w-${item.width}px" placeholder="${item.desc}"/>
+        </el-form-item>
+        #elseif($item.componentType=="textarea") ##textarea
+        <el-form-item label="${item.desc}" prop="${item.field}" :rules="formRules.isNotNull('${item.desc}不能为空')">
+            <el-input
+                    v-model="subForm.${item.field}"
+                    type="textarea"
+                    maxlength="100"
+                    show-word-limit="show-word-limit"
+                    autosize="autosize"
+                    resize="none"
+                    clearable="clearable"
+                    class="w-${item.width}px"
+                    placeholder="请输入${item.desc}"/>
+        </el-form-item>
+        #elseif($item.componentType=="select") ##select
+        <el-form-item label="${item.desc}" :rules="formRules.isNotNull('请选择${item.desc}')">
+            <el-select v-model="subForm.${item.field}" placeholder="${item.desc}" class="w-${item.width}px">
+                #foreach($enum in $item.optionDataArr)
+                    <el-option label="${enum.label}" value="${enum.value}"/>
+                #end
+            </el-select>
+        </el-form-item>
+        #elseif($item.componentType=="selectApi") ##selectApi
+        <el-form-item label="${item.desc}" :rules="formRules.isNotNull('请选择${item.desc}')">
+            <el-select v-model="subForm.${item.field}" placeholder="${item.desc}" class="w-${item.width}px">
+                <el-option
+                        v-for="item in select${item.fieldCase}"
+                        :key="item.${itemKey}"
+                        :label="item.${item.labelKey}"
+                        :value="item.${itemKey}"/>
+            </el-select>
+        </el-form-item>
+        #elseif($item.componentType=="radio") ##radio
+        <el-form-item label="${item.desc}" prop="${item.field}" :rules="formRules.isNotNull('请选择${item.desc}')">
+            <el-radio-group v-model="subForm.${item.field}">
+                #foreach($enum in $item.optionDataArr)
+                    <el-radio label="${enum.value}">${enum.label}</el-radio>
+                #end
+            </el-radio-group>
+        </el-form-item>
+        #elseif($item.componentType=="checkbox") ##checkbox
+        <el-form-item label="${item.desc}" prop="${item.field}" ::rules="formRules.isNotNull('请选择${item.desc}')">
+            <el-checkbox-group v-model="subForm.${item.field}">
+                #foreach($enum in $item.optionDataArr)
+                    <el-checkbox label="${enum.value}"/>
+                #end
+            </el-checkbox-group>
+        </el-form-item>
+        #elseif($item.componentType=="switch") ##switch
+        <el-form-item label="${item.desc}" prop="${item.field}" :rules="formRules.isNotNull('请选择${item.desc}')">
+            <el-switch
+                    v-model="subForm.${item.field}"
+                    inline-prompt="inline-prompt"
+                    active-color="#13ce66"
+                    inactive-color="#ff4949"
+                    active-text="0"
+                    inactive-text="1"/>
+        </el-form-item>
+        #elseif($item.componentType=="cascaderApi") ##cascader
+        <el-form-item label="${item.desc}" :rules="formRules.isNotNull('请选择${item.desc}')">
+            <el-cascader
+                    :options="cascade${item.fieldCase}"
+                    clearable
+                    filterable="filterable"
+                    :show-all-levels="false"
+                    class="w-${item.width}px"/>
+        </el-form-item>
+        #elseif($item.componentType=="daterange") ##datetime
+        <el-form-item  label="${item.desc}" prop="${item.field}" :rules="formRules.isNotNull('请选择${item.desc}')">
+            <el-date-picker
+                    v-model="subForm.${item.field}Arr"
+                    type="daterange"
+                    format="YYYY-MM-DD HH:mm:ss"
+                    value-format="YYYY-MM-DD HH:mm:ss"
+                    @change="dateRangePacking"
+                    start-placeholder="开始日期"
+                    end-placeholder="结束日期"
+                    class="w-${item.width}px"/>
+        </el-form-item>
+        #elseif($item.componentType=="date") ##date
+        <el-form-item label="${item.desc}" prop="${item.field}" :rules="formRules.isNotNull('请选择${item.desc}')">
+            <el-date-picker v-model="subForm.${item.field}" type="date" class="w-${item.width}px"/>
+        </el-form-item>
+        #elseif($item.componentType=="uploadImage")
+        <el-form-item label="${item.desc}" prop="${item.field}" :rules="formRules.isNotNull('请先上传${item.desc}')">
+            <div class="rowSE">
+                <img v-if="subForm.image" :src="subForm.image" class="w-120px h-120px" style="border-radius: 6px" />
+                <div :class="[subForm.image && 'ml-10px']" class="rowSS">
+                    <el-button type="primary" @click="${item.field}UploadFile">
+                        <i class="el-icon-upload2" />
+                        上传
+                        <input
+                                id="uploadFile"
+                                ref="${item.field}Ref"
+                                type="file"
+                                accept=".png, .jpg"
+                                style="display: none"
+                                @change="${item.field}UploadSave"
+                        />
+                    </el-button>
+                    <div class="ml-1">{{ chooseFileName }}</div>
+                </div>
+            </div>
+        </el-form-item>
+        #end
+    #end
+#end
+
+
+#*script*#
+#macro(onMountedScript)
+onMounted(()=>{
+    #foreach($item in $tableList)
+        #if($item.componentType=="selectApi")##selectApi
+            ${item.fieldCase}Req()
+        #end
+    #end
+})
+#end
+
+##api data
+#macro(apiDataScript)
+    #foreach($qcItem in $tableList)
+        #if($qcItem.componentType=="selectApi")
+        let  ${qcItem.field}Data=$ref([]),
+        #end
+    #end
+#end
+
+##api req
+#macro(apiReqScript)
+    #foreach($qcItem in $tableList)
+        #if($qcItem.componentType=="selectApi")
+            ${qcItem.fieldCase}Req()
+        #end
+    #end
+#end
+
+
+##form key
+#macro(formKeyScrpt)
+    #foreach($item in $tableList)
+        $item.field:"",
+        #if($qcItem.componentType=="daterange")
+            ${item.field}Arr:[],
+        #end
+    #end
+#end
+
+##上传文件
+#macro(uploadImageScript)
+    #foreach($item in $tableList)
+        #if($item.componentType=="uploadImage")
+            const ${item.field}Ref = $ref(null)
+            const ${item.field}UploadFile = () => {
+             ${item.field}Ref.click()
+            }
+            const ${item.field}UploadSave = async () => {
+            let { fileUrl } = await fileUpload(${item.field}Ref)
+              subForm.${item.field} = fileUrl
+            }
+        #end
+    #end
+  
+#end

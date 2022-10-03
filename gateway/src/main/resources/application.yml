@@ -3,19 +3,19 @@ server:
 spring:
   cloud:
     gateway:
-      #      globalcors:
-      #        corsConfigurations:
-      #          '[/**]':
-      #            allow-credentials: true
-      #            allowed-origin-patterns: "*"
-      #            allowed-headers: "*"
-      #            allowed-methods:
-      #              - OPTIONS
-      #              - GET
-      #              - POST
-      #              - PUT
-      #              - DELETE
-      #            #max-age: 3600
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allow-credentials: true
+            allowed-origin-patterns: "*"
+            allowed-headers: "*"
+            allowed-methods:
+              - OPTIONS
+              - GET
+              - POST
+              - PUT
+              - DELETE
+            #max-age: 3600
       routes:
         - id: integration-front
           uri: lb://integration-front

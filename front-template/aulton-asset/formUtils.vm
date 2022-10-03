@@ -1,0 +1,291 @@
+##生成form item
+#macro(formItemTemp)
+#foreach($item in $formConfig)
+    #if($item.componentType=="input") ##输入框 input
+        <el-form-item label="${item.desc}" prop="${item.field}">
+            <el-input
+                v-model="formData.${item.field}"
+                maxlength="16"
+                style="width: ${item.width}px;"
+                clearable="clearable"
+                placeholder="请输入${item.desc}名称"/>
+        </el-form-item>
+        #elseif($item.componentType=="textarea") ##多行文本框 textarea
+        <el-form-item label="${item.desc}" prop="${item.field}">
+            <el-input
+                v-model="formData.${item.field}"
+                type="textarea"
+                maxlength="200"
+                :rows="4"
+                show-word-limit="show-word-limit"
+                style="width: ${item.width}px;"
+                autosize="autosize"
+                resize="none"
+                clearable="clearable"
+                placeholder="请输入${item.desc}..."/>
+        </el-form-item>
+        #elseif($item.componentType=="radio") ##单选框 radio
+        <el-form-item label="${item.desc}" prop="${item.field}">
+            <el-radio-group v-model="formData.${item.field}">
+                #foreach($enum in $item.optionDataArr)
+                    <el-radio label="${enum.value}">${enum.label}</el-radio>
+                #end
+            </el-radio-group>
+        </el-form-item>
+        #elseif($item.componentType=="select") ##select
+        <el-form-item label="${item.desc}" prop="${item.field}">
+            <el-select v-model="formData.${item.field}" placeholder="${item.desc}">
+                #foreach($enum in $item.optionDataArr)
+                    <el-option label="${enum.label}" value="${enum.value}"/>
+                #end
+            </el-select>
+        </el-form-item>
+        #elseif($item.componentType=="selectApi") ##selectApi
+        <el-form-item label="${item.desc}" prop="${item.field}">
+            <el-select v-model="formData.${item.field}" placeholder="${item.desc}">
+                <el-option
+                    v-for="item in ${item.field}Data"
+                    :key="item"
+                    :label="item.${item.labelKey}"
+                    :value="item.${item.valueKey}"/>
+            </el-select>
+        </el-form-item>
+
+        #elseif($item.componentType=="checkbox") ##多选框 checkbox
+        <el-form-item label="${item.desc}" prop="${item.field}">
+            <el-checkbox-group v-model="formData.${item.field}">
+                #foreach($enum in $item.optionDataArr)
+                    <el-checkbox label="${enum.label}" :value="${enum.value}"/>
+                #end
+            </el-checkbox-group>
+        </el-form-item>
+        #elseif($item.componentType=="switch") ##开关 switch
+        <el-form-item label="${item.desc}" prop="${item.field}">
+            <el-switch
+                v-model="formData.${item.field}"
+                active-color="#13ce66"
+                inactive-color="#ff4949"
+                active-value="${item.activeValue}"
+                inactive-value="${item.inactiveValue}"></el-switch>
+        </el-form-item>
+        #elseif($item.componentType=="date") ##日期选择 datePicker
+        <el-form-item label="${item.desc}" prop="${item.field}">
+            <el-date-picker
+                style="width:${item.width}px"
+                v-model="formData.${item.field}"
+                type="date"
+                placeholder="请选择${item.desc}"></el-date-picker>
+        </el-form-item>
+        #elseif($item.componentType=="time") ##时间选择 timePicker
+        <el-form-item label="${item.desc}" prop="${item.field}">
+            <el-time-select
+                style="width:${item.width}px"
+                v-model="formData.${item.field}"
+                :picker-options="{
+                        start: '08:30',
+                        step: '00:15',
+                        end: '22:30'
+                      }"
+                placeholder="请选择${item.desc}"></el-time-select>
+        </el-form-item>
+        #elseif($item.componentType=="datetime") ##日期选择 dateTime
+        <el-form-item label="${item.desc}" prop="${item.field}">
+            <el-date-picker
+                style="width:${item.width}px"
+                v-model="formData.${item.field}"
+                type="datetime"
+                placeholder="请选择${item.desc}"></el-date-picker>
+        </el-form-item>
+        #elseif($item.componentType=="datetimerange") ##日期时间选择 dateTimePicker
+        <el-form-item label="${item.desc}" prop="${item.field}">
+            <el-date-picker
+                style="width:${item.width}px"
+                v-model="formData.${item.field}"
+                type="datetimerange"
+                range-separator="至"
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"></el-date-picker>
+        </el-form-item>
+        #elseif($item.componentType=="upload") ##上传组件 upload
+        <el-form-item label="${item.desc}" prop="${item.field}">
+            <card title="文件材料" class="agreement-card">
+                <card-form ref="fileForm" :options="fileOptions" label-width="135px">
+                    <template #uploadarea="#uploadArea">
+                        <el-button size="small" class="upload-button">
+                            <i class="iconfont icon-shangchuan"></i>上传文件
+                        </el-button>
+                        <div class="file-tip">单个文件不超过20M</div>
+                    </template>
+                </card-form>
+            </card>
+        </el-form-item>
+        #elseif($item.componentType=="specialDict") ##specialDict
+        <el-form-item label="${item.desc}" prop="${item.field}">
+            <dict-special-tag
+                v-model="formData.${item.field}"
+                dict-code="$!item.dictCode"
+                :filterable="true"
+                :select-props="{
+                                  value: 'code',
+                                  label: 'name'
+                              }"
+                placeholder="请选择${item.desc}"
+                type="$!item.type"
+                :is-show-total-option="false"
+                @change="${item.field}Change"/>
+        </el-form-item>
+        #elseif($item.componentType=="specialMulti") ##specialMulti
+        <el-form-item label="${item.desc}" prop="${item.field}">
+            <dict-special-tag
+                v-model="formData.${item.field}"
+                :select-props="{
+            value: 'code',
+            label: 'name'
+            }"
+                placeholder="请选择${item.desc}"
+                type="$!item.type"
+                :is-show-total-option="false"
+                @change="${item.field}Change"/>
+        </el-form-item>
+    #end
+#end
+#end
+##生成form key
+#macro(fromKeyData)
+#foreach($item in $formConfig)
+$item.field:"",
+#end
+#end
+##生成 rule校验
+#macro(rulesData)
+#foreach($item in $formConfig)
+#if($item.rule=="isNotNull")##必填
+$item.field:{required: true,message:"请输入${item.desc}",trigger:["blur", "change"]},
+#elseif ($item.rule=="positiveInteger")##整数
+$item.field:[{required: true, message: "请输入${item.desc}", trigger: "blur"},{pattern:
+/^[0-9]\d*$/,message: "${item.desc}为整数",trigger: "blur",}],
+#elseif ($item.rule=="positiveIntegerNotZero")##大于O的整数
+$item.field:[{required: true, message: "请输入${item.desc}", trigger: "blur"},{pattern:
+/^\+?[1-9]\d*$/,message: "${item.desc}为正整数",trigger: "blur",}],
+#elseif ($item.rule=="regEmail")##邮箱
+$item.field:[{required: true, message: "请输入${item.desc}", trigger: "blur"},{pattern:
+/^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/,message: "${item.desc}校验失败",trigger: "blur",}],
+#elseif ($item.rule=="idCardNumber")##身份证
+$item.field:[{required: true, message: "请输入${item.desc}", trigger: "blur"},{pattern:
+/(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/,message: "${item.desc}校验失败",trigger: "blur",}],
+#elseif ($item.rule=="mobilePhone")##手机号
+$item.field:[{required: true, message: "请输入${item.desc}", trigger: "blur"},{pattern:
+/^0?1[0-9]{10}$/,message: "${item.desc}校验失败",trigger: "blur",}],
+#elseif ($item.rule=="bankCardNo")##银行卡号
+$item.field:[{required: true, message: "请输入${item.desc}", trigger: "blur"},{pattern:
+/^\d{15,20}$/,message: "${item.desc}校验失败",trigger: "blur",}],
+
+#end
+#end
+#end
+##生成data
+#macro(formDataScript)
+#foreach($item in $formConfig)
+#if($item.componentType=="selectApi") ##输入框 input
+${item.field}Data:[],
+#elseif($item.componentType=="date") ##日期选择 datePicker
+#elseif($item.componentType=="time") ##时间选择 timePicker
+#elseif($item.componentType=="datetime") ##日期时间选择 dateTimePicker
+#elseif($item.componentType=="upload") ##上传组件 upload
+fileOptions: [
+        {
+        type: 'upload',
+        label: '合同正文',
+        prop: 'pic',
+        uploadAttrs: {
+        action: 'https://jsonplaceholder.typicode.com/posts/',
+        multiple: true,
+        limit: 3
+        },
+        rules: [
+        {
+        required: true,
+        message: '上传合同正文',
+        trigger: 'blur'
+        }
+        ]
+        },
+        #end
+    #end
+#end
+##生成method
+#macro(formMethodScript)
+    #foreach($item in $formConfig)
+        #if($item.compoentType=="selectApi") ##输入框 input
+         this.${item.field}Req(){
+           this.$api.${frontConfig.apiFileName}.${item.field}FormReq().then((response) => {
+                       this.${item.field}Data = response.data;
+            })
+         }
+        },
+        #elseif($item.componentType=="specialDict") ##specialDict
+            ${item.field}Change(code) {
+        const dictItem = getDictItemsFromCache('$!item.dictCode')
+        dictItem.map((item) => {
+        if (item.code === String(code)) {
+        this.form.${item.field} = item.name
+        }
+        })
+        },
+        #elseif($item.componentType=="specialMulti") ##specialMulti
+            ${item.field}Change(code) {
+        const dictItem = getDictItemsFromCache('$!item.dictCode')
+        dictItem.map((item) => {
+        if (item.code === String(code)) {
+        this.form.${item.field} = item.name
+        }
+        })
+        },
+        #elseif($item.componentType=="date") ##日期选择 datePicker
+        #elseif($item.componentType=="time") ##时间选择 timePicker
+        #elseif($item.componentType=="datetime") ##日期时间选择 dateTimePicker
+        #elseif($item.componentType=="upload") ##上传组件 upload
+        #end
+    #end
+#end
+##生成mounted
+#macro(formMountedScript)
+    #foreach($item in $formConfig)
+        #if($item.componentType=="selectApi") ##输入框 selectApi
+            this.${item.field}Req()
+        #elseif($item.componentType=="date") ##日期选择 datePicker
+        #elseif($item.componentType=="time") ##时间选择 timePicker
+        #elseif($item.componentType=="dateTime") ##日期时间选择 dateTimePicker
+        #elseif($item.componentType=="upload") ##上传组件 upload
+        #end
+    #end
+#end
+##生成详情请求接口
+#macro(detailReq)
+this.$api.${frontConfig.apiFileName}.${frontConfig.apiFileName}Detail(data).then((response) => {
+this.formData = response.data;
+this.status = true;
+}).catch(() => {
+});
+#end
+##生成保存请求接口
+#macro(insertReq)
+this.$api.${frontConfig.apiFileName}.${frontConfig.apiFileName}Insert(data).then((response) => {
+if (response.code === "200") {
+this.$message.success("保存成功");
+this.status = false;
+this.successStatus = true;
+}
+});
+#end
+
+##生成更新请求接口
+#macro(updateReq)
+this.$api.${frontConfig.apiFileName}.${frontConfig.apiFileName}Update(data).then((response) => {
+if (response.code === "200") {
+this.$message.success("更新成功");
+this.status = false;
+this.successStatus = true;
+}
+});
+#end

@@ -131,8 +131,6 @@ selectPageReq()
     #foreach($item in $queryConfig)
         #if($item.componentType=="selectApi")##selectApi
         select${item.fieldCase}Req()
-        #elseif($item.componentType=="cascaderApi") ##cascader
-        cascade${item.fieldCase}Req()
         #end
     #end
 })

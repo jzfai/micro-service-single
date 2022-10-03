@@ -29,7 +29,7 @@ import java.util.UUID;
 public class GeneratorTempUtils {
     //velocity tools配置文件路径
     public static final String ToolManagerConfigPath = "velocity-tools.xml";
-    public static final String VelocityTemplateDir = "D:\\github\\velocity-tmp-dir\\";
+    public static final String VelocityTemplateDir = "D:\\github\\micro-service-plus\\velocity-tmp-dir\\";
     public static final String VelocityTemplateDirMac = "/deploy/velocity-tmp-dir/";
     public static final String ElementPlusDir = "front-vms" + File.separator + "element-plus";
     public static final String MybatisPlusDir = "back-vms" + File.separator + "mybatis-plus";

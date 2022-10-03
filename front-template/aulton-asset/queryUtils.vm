@@ -1,0 +1,94 @@
+#parse("utils.vm")
+#groupArrByKey($queryConfig,"controlType")
+##queryItem
+#macro(queryItemScript)
+#foreach($entry in $gabkMap.entrySet())
+    #if($entry.key=="elDataPicker")
+        #set($evItem=$entry.value[0])
+        $entry.key:{
+        label: "$evItem.desc",
+                dateRange: ['', ''],
+                type: 'daterange',
+                beginDate: '$evItem.field',
+                //endDate: 'stationOpenEndDate'
+            },
+        #else
+            $entry.key:[
+            #foreach($item in $entry.value)
+                #if($item.componentType=="input")
+                {
+                label: "$item.desc",
+                key: "$item.field",
+                placeholder: "请输入${item.desc}",
+                },
+                #elseif($item.componentType=="select")
+                {
+                label: "$item.desc",
+                key: '$item.field',
+                option: [
+                    #foreach($odItem in $item.optionDataArr)
+                    {
+                    key: "$odItem.value",
+                    value: "$odItem.label"
+                    },
+                    #end
+                ]
+                },
+                #elseif($item.componentType=="selectApi")
+                {
+                label: "$item.desc",
+                key: '$item.field',
+                option: this.${item.field}Data
+                },
+                #elseif($item.componentType=="selectDict")
+                {
+                label: "$item.desc",
+                key: "$item.field",
+                componentType:"$item.componentType",
+                dictCode: "$!item.dictCode",
+                },
+                #elseif($item.componentType=="specialDict")
+                {
+                label: "$item.desc",
+                key: "$item.field",
+                type: '$!item.type',
+                componentType:"$item.componentType",
+                dictCode: "$!item.dictCode",
+                selectProps: {
+                value: 'name',
+                label: 'code'
+                }
+                },
+                #end
+            #end
+        ],
+        #end
+    #end
+#end
+##data
+#macro(queryDataScript)
+    #foreach($qcItem in $queryConfig)
+       #if($qcItem.componentType=="selectApi")
+           ${qcItem.field}Data:[],
+       #end
+    #end
+#end
+##method
+#macro(queryMethodScript)
+    #foreach($qcItem in $queryConfig)
+        #if($qcItem.componentType=="selectApi")
+             this.$api.${frontConfig.apiFileName}.${qcItem.fielnd}QueryReq().then((response) => {
+                this.${qcItem.field}Data = response.data;
+              }).catch(() => {});
+            },
+        #end
+    #end
+#end
+##mounted
+#macro(queryMountedScript)
+    #foreach($qcItem in $queryConfig)
+        #if($qcItem.componentType=="selectApi")
+            this.${qcItem.field}Req()
+        #end
+    #end
+#end

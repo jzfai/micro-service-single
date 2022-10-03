@@ -1,0 +1,89 @@
+{
+  "basicConfig": {
+    "author": "熊猫哥",
+    "apiFileName": "addEdit",
+    "dataTime": "2022-10-02 17:05:08"
+  },
+  "apiConfig": {
+    "insertApi": "/integration-front/brand/insert",
+    "insertMethod": "post",
+    "updateApi": "/integration-front/brand/updateById",
+    "updateMethod": "put",
+    "detailApi": "/integration-front/brand/selectById",
+    "detailMethod": "get"
+  },
+  "tableList": [
+    {
+      "columnName": "name",
+      "desc": "品牌名称",
+      "uuid": "6ce2098a-12fd-4fac-96ae-179923db0d57",
+      "field": "name",
+      "fieldCase": "Name",
+      "originField": "name",
+      "componentType": "input",
+      "rule": "isNotNull",
+      "children": "children",
+      "width": 300,
+      "api": "",
+      "method": "get",
+      "labelKey": "name",
+      "valueKey": "code",
+      "isTemplate": "false",
+      "controlType": "elInput"
+    },
+    {
+      "columnName": "image",
+      "desc": "品牌图片地址",
+      "uuid": "78984e33-c530-4bd6-87c9-f2eabd6cc78c",
+      "field": "image",
+      "fieldCase": "Image",
+      "originField": "image",
+      "componentType": "uploadImage",
+      "rule": "isNotNull",
+      "children": "children",
+      "width": 300,
+      "api": "",
+      "method": "get",
+      "labelKey": "name",
+      "valueKey": "code",
+      "isTemplate": "false",
+      "controlType": "elInput"
+    },
+    {
+      "columnName": "letter",
+      "desc": "品牌的首字母",
+      "uuid": "8dbcfb81-1d70-47b4-8535-651af2a0df06",
+      "field": "letter",
+      "fieldCase": "Letter",
+      "originField": "letter",
+      "componentType": "input",
+      "rule": "isNotNull",
+      "children": "children",
+      "width": 300,
+      "api": "",
+      "method": "get",
+      "labelKey": "name",
+      "valueKey": "code",
+      "isTemplate": "false",
+      "controlType": "elInput"
+    },
+    {
+      "columnName": "seq",
+      "desc": "排序",
+      "uuid": "3880b8b5-296c-414b-b991-97b983842555",
+      "field": "seq",
+      "fieldCase": "Seq",
+      "originField": "seq",
+      "componentType": "input",
+      "rule": "isNotNull",
+      "children": "children",
+      "width": 300,
+      "api": "",
+      "method": "get",
+      "labelKey": "name",
+      "valueKey": "code",
+      "isTemplate": "false",
+      "controlType": "elInput"
+    }
+  ]
+}
