@@ -1,0 +1,51 @@
+#parse("detailUtils.vm")
+<template>
+    <div class="billing-center-detail sub-form-style hide-table-hover">
+        #detailContainer()
+    </div>
+</template>
+
+<script>
+    import routerMixin from '@/mixins/routerMixin.js'
+    export default {
+        name: 'BillingCenterDetail',
+        mixins: [routerMixin],
+        data() {
+            return {
+                tableData: [],
+                spanArr: [],
+                detailData: {}
+            }
+        },
+        mounted() {
+            const {row} = this.queryParamsMixin()
+            if (row) {
+                this.${frontConfig.apiFileName}Detail(row.id)
+            }
+        },
+        methods: {
+            // 根据主键获取费用策略
+            ${frontConfig.apiFileName}Detail(id) {
+                this.globalApi.${frontConfig.apiFileName}.${frontConfig.apiFileName}Detail(id).then(({data}) => {
+                    this.detailData = data
+                })
+            }
+        }
+    }
+</script>
+
+<style lang="scss" scoped>
+    .detail-row-container:not(:last-child) {
+        margin-right: 76px;
+    }
+
+    .detail-item {
+        line-height: 22px;
+        color: #595959;
+    }
+
+    .detail-item> span {
+         display: inline-block;
+     }
+
+</style>

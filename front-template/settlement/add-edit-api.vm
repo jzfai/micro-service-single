@@ -1,0 +1,54 @@
+import request from '@/lib/axios'
+/**
+*
+*${frontConfig.apiFileName}新增
+*/
+export const ${frontConfig.apiFileName}Insert = (data) => {
+        return request('${apiConfig.insertApi}', {
+        data: data,
+        method: '${apiConfig.insertMethod}'
+        })
+}
+
+/**
+*${frontConfig.apiFileName}更新
+* @param {*} data json数据
+*/
+export const ${frontConfig.apiFileName}Update = (data) => {
+        return request('${apiConfig.updateApi}', {
+        data: data,
+        method: '${apiConfig.updateMethod}'
+        })
+}
+##生成queryItem里的api查询接口
+#foreach($item in $queryConfig)
+        #if($item.componentType=="selectApi") ##输入框 input
+        /**
+        *  ${item.desc}接口
+        * @param {*} params
+        */
+        export const ${item.field}Req = (data) => {
+                return request('${item.api}', {
+                        data,
+                        method: '${item.method}'
+                })
+        }
+        #end
+#end
+
+
+##生成formItem里的api查询接口
+#foreach($item in $formConfig)
+        #if($item.compoentType=="selectApi") ##输入框 input
+        /**
+        *  ${item.desc}接口
+        * @param {*} data
+        */
+        export const ${item.field}Req = (data) => {
+                return request('${item.api}', {
+                        data,
+                        method: '${item.method}'
+                })
+        }
+        #end
+#end

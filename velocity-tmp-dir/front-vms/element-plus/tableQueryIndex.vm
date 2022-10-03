@@ -1,0 +1,2 @@
+import component from './${basicConfig.apiFileNameFirstCase}TableQuery.vue'
+export default component

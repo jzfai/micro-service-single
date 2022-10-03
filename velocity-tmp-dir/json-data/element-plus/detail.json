@@ -1,0 +1,156 @@
+{
+  "basicConfig": {
+    "author": "熊猫哥",
+    "apiFileName": "detail",
+    "dataTime": "2022-10-02 17:57:59"
+  },
+  "apiConfig": {
+    "detailApi": "/integration-front/brand/selectById",
+    "detailMethod": "get"
+  },
+  "tableConfigArr": [
+    {
+      "direction": "2",
+      "splitNum": 2,
+      "cartTitle": "品牌详情",
+      "columnArr": [
+        {
+          "columnName": "name",
+          "desc": "品牌名称",
+          "uuid": "9ff5263a-10c1-4359-b9fa-8cc5bc1d7198",
+          "field": "name",
+          "fieldCase": "Name",
+          "originField": "name",
+          "componentType": "input",
+          "rule": "isNotNull",
+          "children": "children",
+          "api": "",
+          "method": "get",
+          "labelKey": "name",
+          "valueKey": "code",
+          "width": "150"
+        },
+        {
+          "columnName": "image",
+          "desc": "品牌图片地址",
+          "uuid": "9da7427a-a096-4160-a952-0aeadbcfbe59",
+          "field": "image",
+          "fieldCase": "Image",
+          "originField": "image",
+          "componentType": "image",
+          "rule": "isNotNull",
+          "children": "children",
+          "api": "",
+          "method": "get",
+          "labelKey": "name",
+          "valueKey": "code",
+          "width": "150"
+        },
+        {
+          "columnName": "letter",
+          "desc": "品牌的首字母",
+          "uuid": "4bb9c154-d51c-4086-893d-fd4f09d297b5",
+          "field": "letter",
+          "fieldCase": "Letter",
+          "originField": "letter",
+          "componentType": "input",
+          "rule": "isNotNull",
+          "children": "children",
+          "api": "",
+          "method": "get",
+          "labelKey": "name",
+          "valueKey": "code",
+          "width": "150"
+        },
+        {
+          "columnName": "seq",
+          "desc": "排序",
+          "uuid": "3c3fa900-7140-43c3-94d2-d545b254b1ba",
+          "field": "seq",
+          "fieldCase": "Seq",
+          "originField": "seq",
+          "componentType": "input",
+          "rule": "isNotNull",
+          "children": "children",
+          "api": "",
+          "method": "get",
+          "labelKey": "name",
+          "valueKey": "code",
+          "width": "150"
+        }
+      ],
+      "dillColumnArr": [
+        [
+          {
+            "columnName": "name",
+            "desc": "品牌名称",
+            "uuid": "9ff5263a-10c1-4359-b9fa-8cc5bc1d7198",
+            "field": "name",
+            "fieldCase": "Name",
+            "originField": "name",
+            "componentType": "input",
+            "rule": "isNotNull",
+            "children": "children",
+            "api": "",
+            "method": "get",
+            "labelKey": "name",
+            "valueKey": "code",
+            "width": "150"
+          },
+          {
+            "columnName": "image",
+            "desc": "品牌图片地址",
+            "uuid": "9da7427a-a096-4160-a952-0aeadbcfbe59",
+            "field": "image",
+            "fieldCase": "Image",
+            "originField": "image",
+            "componentType": "image",
+            "rule": "isNotNull",
+            "children": "children",
+            "api": "",
+            "method": "get",
+            "labelKey": "name",
+            "valueKey": "code",
+            "width": "150"
+          }
+        ],
+        [
+          {
+            "columnName": "letter",
+            "desc": "品牌的首字母",
+            "uuid": "4bb9c154-d51c-4086-893d-fd4f09d297b5",
+            "field": "letter",
+            "fieldCase": "Letter",
+            "originField": "letter",
+            "componentType": "input",
+            "rule": "isNotNull",
+            "children": "children",
+            "api": "",
+            "method": "get",
+            "labelKey": "name",
+            "valueKey": "code",
+            "width": "150"
+          },
+          {
+            "columnName": "seq",
+            "desc": "排序",
+            "uuid": "3c3fa900-7140-43c3-94d2-d545b254b1ba",
+            "field": "seq",
+            "fieldCase": "Seq",
+            "originField": "seq",
+            "componentType": "input",
+            "rule": "isNotNull",
+            "children": "children",
+            "api": "",
+            "method": "get",
+            "labelKey": "name",
+            "valueKey": "code",
+            "width": "150"
+          }
+        ],
+        []
+      ],
+      "leftWidth": "150"
+    }
+  ]
+}

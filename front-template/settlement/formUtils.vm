@@ -1,0 +1,156 @@
+##生成form item
+#macro(formItemTemp)
+#foreach($item in $tableList)
+    #if($item.componentType=="input") ##输入框 input
+        <el-form-item label="${item.desc}" prop="${item.field}" :rules="rulesMixin.${item.rule}('${item.desc}')">
+            <el-input
+                v-model="subForm.${item.field}"
+                class="w${item.width}"
+                placeholder="请输入${item.desc}"/>
+        </el-form-item>
+        #elseif($item.componentType=="textarea") ##多行文本框 textarea
+        <el-form-item label="${item.desc}" prop="${item.field}" :rules="rulesMixin.${item.rule}('${item.desc}')">
+            <el-input
+                v-model="subForm.${item.field}"
+                type="textarea"
+                maxlength="200"
+                class="w${item.width}"
+                :rows="4"
+                show-word-limit="show-word-limit"
+                class="w${item.width}"
+                autosize="autosize"
+                resize="none"
+                clearable="clearable"
+                placeholder="请输入${item.desc}..."/>
+        </el-form-item>
+        #elseif($item.componentType=="radio") ##单选框 radio
+        <el-form-item label="${item.desc}" prop="${item.field}" :rules="rulesMixin.${item.rule}('${item.desc}')">
+            <el-radio-group v-model="subForm.${item.field}">
+                #foreach($enum in $item.optionDataArr)
+                    <el-radio label="${enum.value}">${enum.label}</el-radio>
+                #end
+            </el-radio-group>
+        </el-form-item>
+        #elseif($item.componentType=="select") ##select
+        <el-form-item label="${item.desc}" prop="${item.field}" :rules="rulesMixin.${item.rule}('${item.desc}')">
+            <el-select class="w${item.width}" v-model="subForm.${item.field}" placeholder="${item.desc}">
+                #foreach($enum in $item.optionDataArr)
+                    <el-option label="${enum.label}" value="${enum.value}"/>
+                #end
+            </el-select>
+        </el-form-item>
+        #elseif($item.componentType=="selectApi") ##selectApi
+        <el-form-item label="${item.desc}" prop="${item.field}" :rules="rulesMixin.${item.rule}('${item.desc}')">
+            <el-select class="w${item.width}"  v-model="subForm.${item.field}" placeholder="${item.desc}">
+                <el-option
+                    v-for="item in ${item.field}Data"
+                    :key="item"
+                    :label="item.${item.labelKey}"
+                    :value="item.${item.valueKey}"/>
+            </el-select>
+        </el-form-item>
+
+        #elseif($item.componentType=="checkbox") ##多选框 checkbox
+        <el-form-item label="${item.desc}" prop="${item.field}" :rules="rulesMixin.${item.rule}('${item.desc}')">
+            <el-checkbox-group v-model="subForm.${item.field}">
+                #foreach($enum in $item.optionDataArr)
+                    <el-checkbox label="${enum.label}" :value="${enum.value}"/>
+                #end
+            </el-checkbox-group>
+        </el-form-item>
+        #elseif($item.componentType=="switch") ##开关 switch
+        <el-form-item label="${item.desc}" prop="${item.field}" :rules="rulesMixin.${item.rule}('${item.desc}')">
+            <el-switch
+                v-model="subForm.${item.field}"
+                active-color="#13ce66"
+                inactive-color="#ff4949"
+                active-value="${item.activeValue}"
+                inactive-value="${item.inactiveValue}"></el-switch>
+        </el-form-item>
+        #elseif($item.componentType=="date") ##日期选择 datePicker
+        <el-form-item label="${item.desc}" prop="${item.field}" :rules="rulesMixin.${item.rule}('${item.desc}')">
+            <el-date-picker
+                class="w${item.width}"
+                v-model="subForm.${item.field}"
+                type="date"
+                placeholder="请选择${item.desc}"></el-date-picker>
+        </el-form-item>
+        #elseif($item.componentType=="daterange") ##日期时间选择 dateTimePicker
+        <el-form-item  class="w${item.width}" label="${item.desc}" prop="${item.field}" :rules="rulesMixin.${item.rule}('${item.desc}')">
+            <el-date-picker
+                v-model="subForm.${item.field}"
+                type="daterange"
+                range-separator="-"
+                start-placeholder="开始日期"
+                @change="subDataRangePackingMixin"
+                end-placeholder="结束日期"/>
+        </el-form-item>
+        #elseif($item.componentType=="uploadImage") ##上传组件 upload
+        <el-form-item label="${item.desc}" prop="${item.field}" :rules="rulesMixin.${item.rule}('${item.desc}')">
+            <UploadImgMul ref="refImgUploadMul" :img-url-list="[]" />
+        </el-form-item>
+        #elseif($item.componentType=="table") ##上传组件 upload
+        <el-form-item label="${item.desc}" prop="${item.field}" :rules="rulesMixin.${item.rule}('${item.desc}')">
+            <AddEditTable ref="refAddEditTable"/>
+        </el-form-item>
+    #end
+#end
+#end
+##生成form key
+#macro(fromKeyData)
+    #foreach($item in $tableList)
+         $item.field:"", //$item.desc
+    #end
+#end
+
+##生成import
+#macro(subFormImport)
+    #foreach($item in $tableList)
+        #if($item.componentType=="table") ##输入框 input
+        import AddEditTable from './add-edit-table.vue'
+        #end
+    #end
+#end
+
+##生成component
+#macro(subFormComponent)
+    #foreach($item in $tableList)
+        #if($item.componentType=="table") ##输入框 input
+          AddEditTable,
+        #end
+    #end
+#end
+
+##生成data
+#macro(formDataScript)
+    #foreach($item in $tableList)
+        #if($item.componentType=="selectApi") ##输入框 input
+            ${item.field}Data:[],
+            ##elseif($item.componentType=="date") ##日期选择 datePicker
+            ##elseif($item.componentType=="time") ##时间选择 timePicker
+        #end
+    #end
+#end
+
+
+##生成method
+#macro(formMethodScript)
+    #foreach($item in $tableList)
+        #if($item.componentType=="selectApi")
+          ${item.field}Req(){
+           this.globalApi.${frontConfig.apiFileName}.${item.field}Req().then(({data}) => {
+                this.${item.field}Data = data
+            })
+           },
+        #end
+    #end
+#end
+##生成mounted
+#macro(formMountedScript)
+    #foreach($item in $tableList)
+        #if($item.componentType=="selectApi") ##输入框 selectApi
+            this.${item.field}Req()
+        #end
+    #end
+#end
+

@@ -1,0 +1,82 @@
+import request from '@/lib/axios'
+/**
+*${frontConfig.apiFileName}查询数据
+* @param {*} params
+*/
+export const ${frontConfig.apiFileName}Query = (params) => {
+return request('${apiConfig.queryApi}', {
+params: params,
+method: '${apiConfig.queryApiType}'
+})
+}
+/**
+*
+* @param {*} data
+*/
+export const ${frontConfig.apiFileName}Insert = (data) => {
+return request('${apiConfig.insertApi}', {
+data: data,
+method: '${apiConfig.insertApiType}'
+})
+}
+
+/**
+*${frontConfig.apiFileName}更新接口
+* @param {*} data json数据
+*/
+export const ${frontConfig.apiFileName}Update = (data) => {
+return request('${apiConfig.updateApi}', {
+data: data,
+method: '${apiConfig.updateApiType}'
+})
+}
+/**
+*${frontConfig.apiFileName}详情
+* @param {*} params
+*/
+export const ${frontConfig.apiFileName}Detail = (params) => {
+return request('${apiConfig.detailApi}', {
+params: params,
+method: '${apiConfig.detailApiType}'
+})
+}
+/**
+*  ${frontConfig.apiFileName}删除接口
+* @param {*} params
+*/
+export const ${frontConfig.apiFileName}Delete = (params) => {
+return request('${apiConfig.deleteApi}', {
+params: params,
+method: '${apiConfig.deleteApiType}'
+})
+}
+##生成queryItem里的api查询接口
+#foreach($item in $queryConfig)
+        #if($item.compoentType=="selectApi") ##输入框 input
+        /**
+        *  ${item.desc}接口
+        * @param {*} params
+        */
+        export const ${item.fielnd}QueryReq = () => {
+        return request('${item.api}', {
+        //params: params,
+        method: '${item.method}'
+        })
+        }
+        #end
+#end
+##生成formItem里的api查询接口
+#foreach($item in $formConfig)
+        #if($item.compoentType=="selectApi") ##输入框 input
+        /**
+        *  ${item.desc}接口
+        * @param {*} params
+        */
+        export const ${item.fielnd}FormReq = () => {
+        return request('${item.api}', {
+        //params: params,
+        method: '${item.requestType}'
+        })
+        }
+        #end
+#end

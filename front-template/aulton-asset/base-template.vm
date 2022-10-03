@@ -1,0 +1,55 @@
+#parse("queryUtils.vm")
+#parse("tableUtils.vm")
+#parse("formUtils.vm")
+<template>
+    <!-- 生成form item-->
+    #formItemTemp()
+</template>
+<script>
+    export default {
+        data() {
+            return {
+                #formDataScript()
+                //生成form key
+                formKey: {
+                    #fromKeyData()
+                },
+                datasource: {
+                    #tableDataSourceTool()
+                },
+                //生成表格列项
+                tableData: [#tableColumnScript()],
+                //生成查询表单item
+                #queryItemScript()#queryDataScript()
+                //生成 rule校验
+                #rulesData()
+            }
+        },
+        methods: {
+            #queryMethodScript()#tableExportMethod()#formMethodScript()tableDataReq() {
+                //请求表格数据
+                #tableDataReq()
+            },
+            //生成详情请求接口
+            infoReq() {
+                #detailReq()
+            },
+            //生成保存请求接口
+            insertReq() {
+                #insertReq()
+            },
+            //生成更新请求接口
+            updateReq() {
+                #updateReq()
+            },
+            //生成删除请求接口
+            deleteReq() {
+                #deleteReq()
+            }
+        },
+        mounted() {
+            #queryMountedScript()
+            #formMountedScript()
+        }
+    }
+</script>
