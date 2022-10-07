@@ -1,10 +1,12 @@
-package ${projectOrAuthor.packageName}.mapper;
+package ${basicConfig.packageName}.mapper;
+import ${basicConfig.packageName}.entity.${dbTableConfig.tableNameCase};
 /**
 *  ${dbTableConfig.tableDesc}Mapper
 *
-* @author ${projectOrAuthor.author}
-* @since ${projectOrAuthor.dataTime}
+* @author ${basicConfig.author}
+* @since ${basicConfig.dataTime}
 */
+
 public interface ${dbTableConfig.tableNameCase}Mapper extends BaseMapper< ${dbTableConfig.tableNameCase} > {
 
 }

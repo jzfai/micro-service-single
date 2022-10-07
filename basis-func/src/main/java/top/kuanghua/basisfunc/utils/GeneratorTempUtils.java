@@ -33,7 +33,7 @@ public class GeneratorTempUtils {
     public static final String VelocityTemplateDirMac = "/deploy/velocity-tmp-dir/";
     public static final String ElementPlusDir = "front-vms" + File.separator + "element-plus";
     public static final String MybatisPlusDir = "back-vms" + File.separator + "mybatis-plus";
-    public static final String MybatisPlusMulTbDir = "back-vms" + File.separator + "mybatis-plus-multb";
+    public static final String MybatisPlusMulTbDir = "back-vms" + File.separator + "mybatis-plus-multi";
 
     //win
     public static final String ExportFileDir = "D:\\temp-dir\\export-dir\\";
@@ -73,13 +73,13 @@ public class GeneratorTempUtils {
         return fileMkdir(path);
     }
 
-    public static String getExportMybatisPlusDir(String dir) {
+    public static String getExportMybatisPlusDir(String exportDir,String dir) {
         String os = System.getProperty("os.name");
         String path = "";
         if (os.toLowerCase().startsWith("win")) {
-            path = ExportFileDir + "mybatis-plus" + File.separator + dir + File.separator;
+            path = ExportFileDir + exportDir + File.separator + dir + File.separator;
         } else {
-            path = MacExportFileDir + "mybatis-plus" + File.separator + dir + File.separator;
+            path = MacExportFileDir + exportDir + File.separator + dir + File.separator;
         }
         return fileMkdir(path);
     }

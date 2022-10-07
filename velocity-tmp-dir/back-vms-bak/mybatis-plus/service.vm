@@ -1,0 +1,42 @@
+package ${projectOrAuthor.packageName}.service;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+/**
+*  ${dbTableConfig.tableDesc}Service
+*
+* @author ${projectOrAuthor.author}
+* @since ${projectOrAuthor.dataTime}
+*/
+@Service
+public class ${dbTableConfig.tableNameCase}Service {
+
+@Resource
+private ${dbTableConfig.tableNameCase}Mapper ${dbTableConfig.tableName}Mapper;
+
+public Page< ${dbTableConfig.tableNameCase} > selectPage(${dbTableConfig.uniKeyType} pageNum, ${dbTableConfig.uniKeyType} pageSize, QueryWrapper< ${dbTableConfig.tableNameCase} > queryWrapper) {
+return this.${dbTableConfig.tableName}Mapper.selectPage(new Page< ${dbTableConfig.tableNameCase} >(pageNum, pageSize), queryWrapper);
+}
+
+public ${dbTableConfig.tableNameCase} selectById(${dbTableConfig.uniKeyType} id) {
+return this.${dbTableConfig.tableName}Mapper.selectById(id);
+}
+
+public List< ${dbTableConfig.tableNameCase} > selectBatchIds(List< ${dbTableConfig.uniKeyType} > idList) {
+return this.${dbTableConfig.tableName}Mapper.selectBatchIds(idList);
+}
+
+public int insert(${dbTableConfig.tableNameCase} ${dbTableConfig.tableName}) {
+return this.${dbTableConfig.tableName}Mapper.insert(${dbTableConfig.tableName});
+}
+
+public int updateById(${dbTableConfig.tableNameCase} ${dbTableConfig.tableName}) {
+return this.${dbTableConfig.tableName}Mapper.updateById(${dbTableConfig.tableName});
+}
+
+public int deleteById(${dbTableConfig.uniKeyType} id) {
+return this.${dbTableConfig.tableName}Mapper.deleteById(id);
+}
+
+public int deleteBatchIds(List< ${dbTableConfig.uniKeyType} > idList) {
+return this.${dbTableConfig.tableName}Mapper.deleteBatchIds(idList);
+}
+}

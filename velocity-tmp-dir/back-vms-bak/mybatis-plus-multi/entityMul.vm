@@ -1,16 +1,17 @@
-package ${basicConfig.packageName}.entity;
-import java.util.Date;
+package ${projectOrAuthor.packageName}.entity;
+import java.util.*;
 /**
 *  ${dbTableConfig.tableDesc}实体类
 *
-* @author ${basicConfig.author}
-* @since ${basicConfig.dataTime}
+* @author ${projectOrAuthor.author}
+* @since ${projectOrAuthor.dataTime}
 */
 @Data
 @ApiModel("${dbTableConfig.tableDesc}")
 @TableName(value = "${dbTableConfig.originTableName}")
-public class ${dbTableConfig.tableNameCase} extends Model< ${dbTableConfig.tableNameCase} > {
-    #foreach($item in $formConfig)
+public class ${dbTableConfig.multiTableNameCase}{
+#foreach($mtcItem in $multiTableConfig)
+    #foreach($item in $mtcItem.tableFieldArr)
         #if($item.field=="createTime")
         @ApiModelProperty(value = "$item.desc",hidden = true)
         @TableField(fill = FieldFill.INSERT)
@@ -20,18 +21,9 @@ public class ${dbTableConfig.tableNameCase} extends Model< ${dbTableConfig.table
         @TableField(fill = FieldFill.UPDATE)
         private ${item.type} $item.field;
         #else
-        @ApiModelProperty(value = "$item.desc",hidden=$item.isNotShowSwagger)
+        @ApiModelProperty(value = "$item.desc")
         private ${item.type} $item.field;
         #end
     #end
-
-    /**
-    * 获取主键值
-    *
-    * @return 主键值
-    */
-    @Override
-    protected Serializable pkVal() {
-      return this.${dbTableConfig.uniKey};
-    }
+#end
 }

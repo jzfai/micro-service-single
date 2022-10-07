@@ -93,35 +93,35 @@ public class GeneratorService {
     /**
      * Mybatis-plus单表生成模版
      */
-    public void generatorMybatisPlusTemp(Map jsonData) {
-        try {
-            Context context = getContext(jsonData);
-            Map<String, Object> dbTableConfig = JSON.parseObject(JSON.toJSONString(jsonData.get("dbTableConfig")), Map.class);
-            String tbName = dbTableConfig.get("tableNameCase").toString();
-            //entity
-            Template entityTemp = GeneratorTempUtils.getMybatisPlusTemp("entity.vm");
-            FileWriter entityWriter = new FileWriter(GeneratorTempUtils.getExportMybatisPlusDir("entity") + tbName + ".java");
-            entityTemp.merge(context, entityWriter);
-            entityWriter.close();
-            //controller
-            Template controllerTemp = GeneratorTempUtils.getMybatisPlusTemp("controller.vm");
-            FileWriter controllerWriter = new FileWriter(GeneratorTempUtils.getExportMybatisPlusDir("controller") + tbName + "Controller.java");
-            controllerTemp.merge(context, controllerWriter);
-            controllerWriter.close();
-            //service
-            Template serviceTemp = GeneratorTempUtils.getMybatisPlusTemp("service.vm");
-            FileWriter serviceWriter = new FileWriter(GeneratorTempUtils.getExportMybatisPlusDir("service") + tbName + "Service.java");
-            serviceTemp.merge(context, serviceWriter);
-            serviceWriter.close();
-            //mapper
-            Template mapperTemp = GeneratorTempUtils.getMybatisPlusTemp("mapper.vm");
-            FileWriter mapperWriter = new FileWriter(GeneratorTempUtils.getExportMybatisPlusDir("mapper") + tbName + "Mapper.java");
-            mapperTemp.merge(context, mapperWriter);
-            mapperWriter.close();
-        } catch (IOException e) {
-            throw new RuntimeException("Mybatis-plus单表生成模版报错" + e);
-        }
-    }
+//    public void generatorMybatisPlusTemp(Map jsonData) {
+//        try {
+//            Context context = getContext(jsonData);
+//            Map<String, Object> dbTableConfig = JSON.parseObject(JSON.toJSONString(jsonData.get("dbTableConfig")), Map.class);
+//            String tbName = dbTableConfig.get("tableNameCase").toString();
+//            //entity
+//            Template entityTemp = GeneratorTempUtils.getMybatisPlusTemp("entity.vm");
+//            FileWriter entityWriter = new FileWriter(GeneratorTempUtils.getExportMybatisPlusDir("entity") + tbName + ".java");
+//            entityTemp.merge(context, entityWriter);
+//            entityWriter.close();
+//            //controller
+//            Template controllerTemp = GeneratorTempUtils.getMybatisPlusTemp("controller.vm");
+//            FileWriter controllerWriter = new FileWriter(GeneratorTempUtils.getExportMybatisPlusDir("controller") + tbName + "Controller.java");
+//            controllerTemp.merge(context, controllerWriter);
+//            controllerWriter.close();
+//            //service
+//            Template serviceTemp = GeneratorTempUtils.getMybatisPlusTemp("service.vm");
+//            FileWriter serviceWriter = new FileWriter(GeneratorTempUtils.getExportMybatisPlusDir("service") + tbName + "Service.java");
+//            serviceTemp.merge(context, serviceWriter);
+//            serviceWriter.close();
+//            //mapper
+//            Template mapperTemp = GeneratorTempUtils.getMybatisPlusTemp("mapper.vm");
+//            FileWriter mapperWriter = new FileWriter(GeneratorTempUtils.getExportMybatisPlusDir("mapper") + tbName + "Mapper.java");
+//            mapperTemp.merge(context, mapperWriter);
+//            mapperWriter.close();
+//        } catch (IOException e) {
+//            throw new RuntimeException("Mybatis-plus单表生成模版报错" + e);
+//        }
+//    }
 
     /**
      * element-plus多表生成模版
@@ -156,7 +156,7 @@ public class GeneratorService {
             generatorMybatisPlusMulTemp(jsonData);
         } else {
             /*单表*/
-            generatorMybatisPlusTemp(jsonData);
+//            generatorMybatisPlusTemp(jsonData);
         }
         String exportFilePath = GeneratorTempUtils.getOutputZipPath() + ObjSelfUtils.getCurrentDateTimeTrim() + ".zip";
         //生成zip包
@@ -205,7 +205,7 @@ public class GeneratorService {
             //生成前端模板
             generatorElementPlusTemp(jsonData);
             //生成后端模板
-            generatorMybatisPlusTemp(jsonData);
+//            generatorMybatisPlusTemp(jsonData);
         }
 
         String exportFilePath = GeneratorTempUtils.getOutputZipPath() + ObjSelfUtils.getCurrentDateTimeTrim() + ".zip";

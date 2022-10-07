@@ -5,11 +5,11 @@ spring:
     username: root
     password: root123
     hikari:
-      connection-timeout: 2000 #最大超时时间
+      connection-timeout: 6000 #最大超时时间
       maximum-pool-size: 100 #连接数
-      max-lifetime: 1800000 #控制池中连接的最大生存期
+      max-lifetime: 18000 #控制池中连接的最大生存期
       minimum-idle: 10 #此属性控制 HikariCP尝试在池中维护的最小空闲连接数
-      validation-timeout: 1000 #此属性控制测试连接是否活跃的最长时间。此值必须小于 connectionTimeout
+      validation-timeout: 5500 #此属性控制测试连接是否活跃的最长时间。此值必须小于 connectionTimeout
       idle-timeout: 60000 #此属性控制允许连接在池中处于空闲状态的最长时间
 
 mybatis-plus:

@@ -1,0 +1,6 @@
+#macro(getOriginField)
+    #foreach($item in $formConfig)$item.originField,#end
+#end
+#set($originFieldString="#getOriginField()")
+#set($lenth=$originFieldString.length() - 1)
+#set($selectString=$originFieldString.substring(0,$lenth))

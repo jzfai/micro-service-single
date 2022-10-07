@@ -4,3 +4,28 @@
 #set($originFieldString="#getOriginField()")
 #set($lenth=$originFieldString.length() - 1)
 #set($selectString=$originFieldString.substring(0,$lenth))
+
+#macro(getQueryField)
+    #foreach($item in $queryConfig)
+        #if($item.isNeedInput=="true")
+        @ApiIgnore  @RequestParam("$item.field") String $item.field,
+        #else
+        @RequestParam("$item.field") String $item.field,
+        #end
+    #end
+#end
+
+
+#macro(getSwaggerParam)
+@ApiImplicitParams({
+    #foreach($item in $queryConfig)
+        #if($item.isNotShowSwagger=="false")
+            #if($item.isNeedInput=="true")
+            @ApiImplicitParam(name = "$item.field", value = "$item.desc", required = true),
+            #else
+            @ApiImplicitParam(name = "$item.field", value = "$item.desc"),
+            #end
+        #end
+    #end
+})
+#end
