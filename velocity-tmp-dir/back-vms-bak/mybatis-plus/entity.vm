@@ -1,0 +1,37 @@
+package ${projectOrAuthor.packageName}.entity;
+import java.util.Date;
+/**
+*  ${dbTableConfig.tableDesc}实体类
+*
+* @author ${projectOrAuthor.author}
+* @since ${projectOrAuthor.dataTime}
+*/
+@Data
+@ApiModel("${dbTableConfig.tableDesc}")
+@TableName(value = "${dbTableConfig.originTableName}")
+public class ${dbTableConfig.tableNameCase} extends Model< ${dbTableConfig.tableNameCase} > {
+#foreach($item in $dbTableConfig.tableFieldArr)
+    #if($item.field=="createTime")
+    @ApiModelProperty(value = "$item.desc",hidden = true)
+    @TableField(fill = FieldFill.INSERT)
+    private ${item.type} $item.field;
+    #elseif($item.field=="updateTime")
+    @ApiModelProperty(value = "$item.desc",hidden = true)
+    @TableField(fill = FieldFill.UPDATE)
+    private ${item.type} $item.field;
+    #else
+    @ApiModelProperty(value = "$item.desc")
+    private ${item.type} $item.field;
+    #end
+#end
+
+/**
+* 获取主键值
+*
+* @return 主键值
+*/
+@Override
+protected Serializable pkVal() {
+return this.${dbTableConfig.uniKey};
+}
+}

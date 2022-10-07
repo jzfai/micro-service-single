@@ -12,7 +12,7 @@
         <el-form-item prop="${item.field}">
             <el-select
                     v-model="searchForm.${item.field}"
-                    clearable="clearable"
+                    clearable
                     class="w-${item.width}px"
                     placeholder="${item.desc}">
                 #foreach($enum in $item.optionDataArr)
@@ -24,7 +24,7 @@
         <el-form-item prop="${item.field}">
             <el-select
                     v-model="searchForm.${item.fieldCase}"
-                    clearable="clearable"
+                    clearable
                     placeholder="${item.desc}"
                     class="w-${item.width}px">
                 <el-option

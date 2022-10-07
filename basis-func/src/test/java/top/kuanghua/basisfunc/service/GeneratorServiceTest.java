@@ -108,73 +108,73 @@ public class GeneratorServiceTest {
     /**
      * element-plus单表生成模版
      */
-    @Test
-    public void generatorMybatisPlusTemp() throws IOException {
-        String string = GeneratorTempUtils.readFileToString("D:\\github\\velocity-tmp-dir\\json-data\\" + "tb_brand.json");
-        Map<String, Object> jsonData = JSON.parseObject(string, Map.class);
-
-        Context context = GeneratorTempUtils.getVelocityContext();
-        context.put("configData", jsonData);
-        context.put("projectOrAuthor", jsonData.get("projectOrAuthor"));
-        context.put("dbTableConfig", jsonData.get("dbTableConfig"));
-        context.put("apiConfig", jsonData.get("apiConfig"));
-        context.put("queryConfig", jsonData.get("queryConfig"));
-        context.put("tableConfig", jsonData.get("tableConfig"));
-        context.put("formConfig", jsonData.get("formConfig"));
-        context.put("commonConfig", jsonData.get("commonConfig"));
-
-
-        Map<String, Object> dbTableConfig = JSON.parseObject(JSON.toJSONString(jsonData.get("dbTableConfig")), Map.class);
-
-        String tbName = dbTableConfig.get("tableNameCase").toString();
-        //entity
-        Template entityTemp = GeneratorTempUtils.getMybatisPlusTemp("entity.vm");
-        FileWriter entityWriter = new FileWriter(GeneratorTempUtils.getExportMybatisPlusDir("entity") + tbName + ".java");
-        entityTemp.merge(context, entityWriter);
-        entityWriter.close();
-        //controller
-        Template controllerTemp = GeneratorTempUtils.getMybatisPlusTemp("controller.vm");
-        FileWriter controllerWriter = new FileWriter(GeneratorTempUtils.getExportMybatisPlusDir("controller") + tbName + "Controller.java");
-        controllerTemp.merge(context, controllerWriter);
-        controllerWriter.close();
-        //service
-        Template serviceTemp = GeneratorTempUtils.getMybatisPlusTemp("service.vm");
-        FileWriter serviceWriter = new FileWriter(GeneratorTempUtils.getExportMybatisPlusDir("service") + tbName + "Service.java");
-        serviceTemp.merge(context, serviceWriter);
-        serviceWriter.close();
-        //mapper
-        Template mapperTemp = GeneratorTempUtils.getMybatisPlusTemp("mapper.vm");
-        FileWriter mapperWriter = new FileWriter(GeneratorTempUtils.getExportMybatisPlusDir("mapper") + tbName + "Mapper.java");
-        mapperTemp.merge(context, mapperWriter);
-        mapperWriter.close();
-    }
-
-
-    /**
-     * element-plus多表生成模版
-     */
-    @Test
-    public void generatorElementPlusTemp() throws IOException {
-        String string = GeneratorTempUtils.readFileToString("D:\\github\\velocity-tmp-dir\\json-data\\" + "tb_brand.json");
-        Map<String, Object> jsonData = JSON.parseObject(string, Map.class);
-        Context context = GeneratorTempUtils.getVelocityContext();
-        context.put("configData", jsonData);
-        context.put("companyOrAuthor", jsonData.get("companyOrAuthor"));
-        context.put("dbTableConfig", jsonData.get("dbTableConfig"));
-        context.put("apiConfig", jsonData.get("apiConfig"));
-        context.put("queryConfig", jsonData.get("queryConfig"));
-        context.put("tableConfig", jsonData.get("tableConfig"));
-        context.put("formConfig", jsonData.get("formConfig"));
-        context.put("commonConfig", jsonData.get("commonConfig"));
-        Template template = GeneratorTempUtils.getElementPlusTemp("CRUD.vm");
-        FileWriter fileWriter = new FileWriter(GeneratorTempUtils.getExportElementPlusDir("") + "CRUD.vue");
-        template.merge(context, fileWriter);
-        fileWriter.close();
-        //第二个模板
-        Template addModal = GeneratorTempUtils.getElementPlusTemp("CRUDForm.vm");
-        FileWriter addModalWriter = new FileWriter(GeneratorTempUtils.getExportElementPlusDir("") + "CRUDForm.vue");
-        addModal.merge(context, addModalWriter);
-        addModalWriter.close();
-    }
+//    @Test
+//    public void generatorMybatisPlusTemp() throws IOException {
+//        String string = GeneratorTempUtils.readFileToString("D:\\github\\velocity-tmp-dir\\json-data\\" + "tb_brand.json");
+//        Map<String, Object> jsonData = JSON.parseObject(string, Map.class);
+//
+//        Context context = GeneratorTempUtils.getVelocityContext();
+//        context.put("configData", jsonData);
+//        context.put("projectOrAuthor", jsonData.get("projectOrAuthor"));
+//        context.put("dbTableConfig", jsonData.get("dbTableConfig"));
+//        context.put("apiConfig", jsonData.get("apiConfig"));
+//        context.put("queryConfig", jsonData.get("queryConfig"));
+//        context.put("tableConfig", jsonData.get("tableConfig"));
+//        context.put("formConfig", jsonData.get("formConfig"));
+//        context.put("commonConfig", jsonData.get("commonConfig"));
+//
+//
+//        Map<String, Object> dbTableConfig = JSON.parseObject(JSON.toJSONString(jsonData.get("dbTableConfig")), Map.class);
+//
+//        String tbName = dbTableConfig.get("tableNameCase").toString();
+//        //entity
+//        Template entityTemp = GeneratorTempUtils.getMybatisPlusTemp("entity.vm");
+//        FileWriter entityWriter = new FileWriter(GeneratorTempUtils.getExportMybatisPlusDir("entity") + tbName + ".java");
+//        entityTemp.merge(context, entityWriter);
+//        entityWriter.close();
+//        //controller
+//        Template controllerTemp = GeneratorTempUtils.getMybatisPlusTemp("controller.vm");
+//        FileWriter controllerWriter = new FileWriter(GeneratorTempUtils.getExportMybatisPlusDir("controller") + tbName + "Controller.java");
+//        controllerTemp.merge(context, controllerWriter);
+//        controllerWriter.close();
+//        //service
+//        Template serviceTemp = GeneratorTempUtils.getMybatisPlusTemp("service.vm");
+//        FileWriter serviceWriter = new FileWriter(GeneratorTempUtils.getExportMybatisPlusDir("service") + tbName + "Service.java");
+//        serviceTemp.merge(context, serviceWriter);
+//        serviceWriter.close();
+//        //mapper
+//        Template mapperTemp = GeneratorTempUtils.getMybatisPlusTemp("mapper.vm");
+//        FileWriter mapperWriter = new FileWriter(GeneratorTempUtils.getExportMybatisPlusDir("mapper") + tbName + "Mapper.java");
+//        mapperTemp.merge(context, mapperWriter);
+//        mapperWriter.close();
+//    }
+//
+//
+//    /**
+//     * element-plus多表生成模版
+//     */
+//    @Test
+//    public void generatorElementPlusTemp() throws IOException {
+//        String string = GeneratorTempUtils.readFileToString("D:\\github\\velocity-tmp-dir\\json-data\\" + "tb_brand.json");
+//        Map<String, Object> jsonData = JSON.parseObject(string, Map.class);
+//        Context context = GeneratorTempUtils.getVelocityContext();
+//        context.put("configData", jsonData);
+//        context.put("companyOrAuthor", jsonData.get("companyOrAuthor"));
+//        context.put("dbTableConfig", jsonData.get("dbTableConfig"));
+//        context.put("apiConfig", jsonData.get("apiConfig"));
+//        context.put("queryConfig", jsonData.get("queryConfig"));
+//        context.put("tableConfig", jsonData.get("tableConfig"));
+//        context.put("formConfig", jsonData.get("formConfig"));
+//        context.put("commonConfig", jsonData.get("commonConfig"));
+//        Template template = GeneratorTempUtils.getElementPlusTemp("CRUD.vm");
+//        FileWriter fileWriter = new FileWriter(GeneratorTempUtils.getExportElementPlusDir("") + "CRUD.vue");
+//        template.merge(context, fileWriter);
+//        fileWriter.close();
+//        //第二个模板
+//        Template addModal = GeneratorTempUtils.getElementPlusTemp("CRUDForm.vm");
+//        FileWriter addModalWriter = new FileWriter(GeneratorTempUtils.getExportElementPlusDir("") + "CRUDForm.vue");
+//        addModal.merge(context, addModalWriter);
+//        addModalWriter.close();
+//    }
 
 }

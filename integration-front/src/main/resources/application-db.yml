@@ -6,7 +6,7 @@ spring:
     password: root123
     hikari:
       connection-timeout: 60000
-      validation-timeout: 3000
+      validation-timeout: 6000
       idle-timeout: 60000
       login-timeout: 5
       max-lifetime: 60000
