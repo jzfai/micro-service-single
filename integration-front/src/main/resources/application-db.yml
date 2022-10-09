@@ -4,15 +4,11 @@ spring:
     url: jdbc:p6spy:mysql://${envpt.mysqlIp}:${envpt.mysqlPort}/micro-service-plus?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf8&useSSL=false
     username: root
     password: root123
-    hikari:
-      connection-timeout: 60000
-      validation-timeout: 6000
-      idle-timeout: 60000
-      login-timeout: 5
-      max-lifetime: 60000
-      maximum-pool-size: 10
-      minimum-idle: 10
-      read-only: false
+    #hikari:
+      #最大连接数
+      #maximum-pool-size: 50
+      #最大超时时间
+      #connection-timeout: 600000
 
 mybatis-plus:
   mapper-locations: classpath:/mapper/*Mapper.xml
