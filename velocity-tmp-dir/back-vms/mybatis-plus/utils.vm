@@ -5,15 +5,34 @@
 #set($lenth=$originFieldString.length() - 1)
 #set($selectString=$originFieldString.substring(0,$lenth))
 
-#macro(getQueryField)
-    #foreach($item in $queryConfig)
-        #if($item.isNeedInput=="true")
-        @ApiIgnore  @RequestParam("$item.field") String $item.field,
-        #else
-        @RequestParam("$item.field") String $item.field,
-        #end
+
+#macro(getValid $item)
+    #if($item.isNeedInput=="true")
+    @NotEmpty(message = "${item.field}不能为空")
+    #end
+    #if($item.rule=="upZeroInt")
+    @Pattern(regexp = "^\+?[1-9]\d*$",message = "${item.field}输入有误-正整数")
+    #elseif($item.rule=="zeroInt")
+    @Pattern(regexp = "^\+?[0-9]\d*$",message = "${item.field}输入有误-正整数包括0")
+    #elseif($item.rule=="phone")
+    @Pattern(regexp = "^0?1[0-9]{10}$",message = "${item.field}输入有误-手机号}")
+    #elseif($item.rule=="money")
+    @Pattern(regexp = "((^[1-9]\d*)|^0)(\.\d{0,2}){0,1}$",message = "${item.field}输入有误-金额")
+    #elseif($item.rule=="email")
+    @Pattern(regexp = "(^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4}))$",message = "${item.field}输入有误-邮箱")
+    #elseif($item.rule=="idCard")
+    @Pattern(regexp = "(^\\d{15}$)|(^\\d{18}$)|(^\\d{17}(\\d|X|x)$)",message = "${item.field}输入有误-身份证")
     #end
 #end
+
+
+#macro(getQueryField)
+    #foreach($item in $queryConfig)
+        #if($item.isNotShowSwagger=="true")@ApiIgnore()#end #getValid($item)  String $item.field,
+    #end
+#end
+
+
 
 
 #macro(getSwaggerParam)
@@ -21,9 +40,9 @@
     #foreach($item in $queryConfig)
         #if($item.isNotShowSwagger=="false")
             #if($item.isNeedInput=="true")
-            @ApiImplicitParam(name = "$item.field", value = "$item.desc", required = true),
+            @ApiImplicitParam(name = "$item.field", value = "$item.desc",paramType = "query", required = true),
             #else
-            @ApiImplicitParam(name = "$item.field", value = "$item.desc"),
+            @ApiImplicitParam(name = "$item.field", value = "$item.desc",paramType = "query"),
             #end
         #end
     #end
