@@ -94,6 +94,7 @@ public class UserController {
      */
     @ApiOperation(value = "新增数据")
     @PostMapping("insert")
+
     public ResResult insert(@Valid @RequestBody User user) {
         //List<UserInfo> userInfos = userInfoMapper.selectList(new EntityWrapper<>(userInfo).like("firstname", name)
         //                .like("lastname", name));52

@@ -1,0 +1,57 @@
+package ${basicConfig.packageName}.service;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import java.util.*;
+import com.alibaba.fastjson.JSON;
+/**
+*  ${dbTableConfig.multiTableDesc}Service
+*
+* @author ${basicConfig.author}
+* @since ${basicConfig.dataTime}
+*/
+@Service
+public class ${dbTableConfig.multiTableNameCase}Service {
+
+@Resource
+private ${dbTableConfig.multiTableNameCase}Mapper ${dbTableConfig.multiTableName}Mapper;
+
+#foreach( $mtcItem in $multiTableConfig)
+@Resource
+private ${mtcItem.tableNameCase}Mapper ${mtcItem.tableName}Mapper;
+#end
+
+public Page< Map > select${dbTableConfig.multiTableNameCase}(SelfCommonParams commonParams, Map repairVo) {
+return ${dbTableConfig.multiTableName}Mapper.select${dbTableConfig.multiTableNameCase}(new Page< Map >(commonParams.getPageNum(), commonParams.getPageSize()), repairVo);
+}
+
+public Map selectByKey(String ${dbTableConfig.multiTableName}) {
+return ${dbTableConfig.multiTableName}Mapper.selectByKey(${dbTableConfig.multiTableName});
+}
+
+@Transactional
+public void insert(${dbTableConfig.multiTableNameCase} ${dbTableConfig.multiTableName}) {
+#foreach( $mtcItem in $multiTableConfig)
+this.${mtcItem.tableName}Mapper.insert(JSON.parseObject(JSON.toJSONString(${dbTableConfig.multiTableName}), ${mtcItem.tableNameCase}.class));
+#end
+}
+
+@Transactional
+public void updateByKey(${dbTableConfig.multiTableNameCase} ${dbTableConfig.multiTableName}) {
+#foreach( $mtcItem in $multiTableConfig)
+//${mtcItem.tableDesc}
+    ${mtcItem.tableNameCase} ${mtcItem.tableName} = JSON.parseObject(JSON.toJSONString(${dbTableConfig.multiTableName}), ${mtcItem.tableNameCase}.class);
+QueryWrapper<${mtcItem.tableNameCase}> ${mtcItem.tableName}Wrapper = new QueryWrapper<>();
+    ${mtcItem.tableName}Wrapper.eq("sn", ${dbTableConfig.multiTableName}.getSn());
+this.${mtcItem.tableName}Mapper.update(${mtcItem.tableName}, ${mtcItem.tableName}Wrapper);
+#end
+}
+
+@Transactional
+public void deleteByKey(${dbTableConfig.associationKeyType} ${dbTableConfig.associationKey}) {
+#foreach( $mtcItem in $multiTableConfig)
+//${mtcItem.tableName}
+QueryWrapper<${mtcItem.tableNameCase}> ${mtcItem.tableName}Wrapper = new QueryWrapper<>();
+    ${mtcItem.tableName}Wrapper.eq("${dbTableConfig.orgAssociationKey}", ${dbTableConfig.associationKey});
+this.${mtcItem.tableName}Mapper.delete(${mtcItem.tableName}Wrapper);
+#end
+}
+}

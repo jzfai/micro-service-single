@@ -1,0 +1,60 @@
+#parse("utils.vm")
+#set($firstTbConfig=$multiTableConfig[0])
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="${basicConfig.packageName}.mapper.${dbTableConfig.multiTableNameCase}Mapper">
+    <resultMap id="get${dbTableConfig.multiTableNameCase}RM" type="java.util.Map">
+        #foreach($fItem in $multiTableConfig)
+            #foreach($tableShowArrItem in ${fItem.tableShowArr})
+                <result property="${tableShowArrItem.field}" column="${tableShowArrItem.originField}"/>
+            #end
+        #end
+    </resultMap>
+    <sql id="Base_Column_List">
+        ${xmlSelectString}
+    </sql>
+    <select id="select${dbTableConfig.multiTableNameCase}" resultMap="get${dbTableConfig.multiTableNameCase}RM">
+        select
+        <include refid="Base_Column_List"/>
+        FROM ${firstTbConfig.originTableName}  ${firstTbConfig.tableName}
+        #foreach($fItem in $multiTableConfig.subList(1,$multiTableConfig.size()))
+            LEFT JOIN ${fItem.originTableName} ${fItem.tableName}
+            ON  ${firstTbConfig.tableName}.${firstTbConfig.orgAssociationKey}=${fItem.tableName}.${fItem.associationKey}
+        #end
+        <where>
+            #foreach($mtcItem in $multiTableConfig)
+                #foreach($tqrItem in ${mtcItem.tableQueryArr})
+                    #if($tqrItem.field.indexOf("time")!=-1)
+                        <if test="params.${tqrItem.field} != null">
+                            AND ${mtcItem.tableName}.${tqrItem.originField}
+                            BETWEEN #{params.${tqrItem.originField}Start} AND #{params.${tqrItem.field}End}
+                        </if>
+                    #else
+                        <if test="params.${tqrItem.field} != null">
+                            #set($likePre='%${params')
+                            #set($likeParam="$likePre.${tqrItem.field}}%")
+                            ${mtcItem.tableName}.${tqrItem.originField} LIKE '$likeParam'
+                        </if>
+                    #end
+                #end
+            #end
+        </where>
+    </select>
+
+    <select id="selectByKey" resultType="java.util.Map">
+        select
+        <include refid="Base_Column_List"/>
+        FROM ${firstTbConfig.originTableName}  ${firstTbConfig.tableName}
+        #foreach($fItem in $multiTableConfig.subList(1,$multiTableConfig.size()))
+            LEFT JOIN ${fItem.originTableName} ${fItem.tableName}
+            ON  ${firstTbConfig.tableName}.${firstTbConfig.orgAssociationKey}=${fItem.tableName}.${fItem.associationKey}
+        #end
+        <where>
+            <if test="${firstTbConfig.associationKey} != null">
+                #set($likePre='%${')
+                #set($likeParam="$likePre${firstTbConfig.associationKey}}%")
+                ${firstTbConfig.tableName}.${firstTbConfig.orgAssociationKey} LIKE '$likeParam'
+            </if>
+        </where>
+    </select>
+</mapper>

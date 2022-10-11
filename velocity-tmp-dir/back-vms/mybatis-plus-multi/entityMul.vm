@@ -1,29 +1,31 @@
-package ${projectOrAuthor.packageName}.entity;
+#parse("utils.vm")
+package ${basicConfig.packageName}.entity;
 import java.util.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
+
 /**
 *  ${dbTableConfig.tableDesc}实体类
 *
-* @author ${projectOrAuthor.author}
-* @since ${projectOrAuthor.dataTime}
+* @author ${basicConfig.author}
+* @since ${basicConfig.dataTime}
 */
 @Data
-@ApiModel("${dbTableConfig.tableDesc}")
-@TableName(value = "${dbTableConfig.originTableName}")
+@ApiModel("${dbTableConfig.multiTableDesc}")
 public class ${dbTableConfig.multiTableNameCase}{
-#foreach($mtcItem in $multiTableConfig)
-    #foreach($item in $mtcItem.tableFieldArr)
-        #if($item.field=="createTime")
-        @ApiModelProperty(value = "$item.desc",hidden = true)
-        @TableField(fill = FieldFill.INSERT)
-        private ${item.type} $item.field;
-        #elseif($item.field=="updateTime")
-        @ApiModelProperty(value = "$item.desc",hidden = true)
-        @TableField(fill = FieldFill.UPDATE)
-        private ${item.type} $item.field;
-        #else
-        @ApiModelProperty(value = "$item.desc")
-        private ${item.type} $item.field;
-        #end
+#foreach($item in $formConfig)
+    #if($item.field=="createTime")
+    @ApiModelProperty(value = "$item.desc",hidden = true)
+    @TableField(fill = FieldFill.INSERT)
+    private ${item.type} $item.field;
+    #elseif($item.field=="updateTime")
+    @ApiModelProperty(value = "$item.desc",hidden = true)
+    @TableField(fill = FieldFill.UPDATE)
+    private ${item.type} $item.field;
+    #else
+    @ApiModelProperty(value = "$item.desc")
+        #getValid($item)
+    private ${item.type} $item.frontField;
     #end
 #end
 }

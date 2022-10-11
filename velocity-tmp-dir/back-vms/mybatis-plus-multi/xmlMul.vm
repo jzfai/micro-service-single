@@ -1,14 +1,22 @@
 #parse("utils.vm")
-#set($firstTbConfig=$multiTableConfig[0])
+#if($multiTableConfig.size()==2)
+    #set($fTbCfg=$multiTableConfig[0])
+    #set($sTbCfg=$multiTableConfig[1])
+#end
+
+#if($multiTableConfig.size()==3)
+    #set($fTbCfg=$multiTableConfig[0])
+    #set($sTbCfg=$multiTableConfig[1])
+    #set($tTbCfg=$multiTableConfig[2])
+#end
+
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="${projectOrAuthor.packageName}.mapper.${dbTableConfig.multiTableNameCase}Mapper">
+<mapper namespace="${basicConfig.packageName}.mapper.${dbTableConfig.multiTableNameCase}Mapper">
     <resultMap id="get${dbTableConfig.multiTableNameCase}RM" type="java.util.Map">
-        #foreach($fItem in $multiTableConfig)
-            #foreach($tableShowArrItem in ${fItem.tableShowArr})
-                <result property="${tableShowArrItem.field}" column="${tableShowArrItem.originField}"/>
-            #end
-        #end
+        ##        #foreach($tableShowArrItem in ${fItem.tableShowArr})
+        ##            <result property="${tableShowArrItem.field}" column="${tableShowArrItem.originField}"/>
+        ##        #end
     </resultMap>
     <sql id="Base_Column_List">
         ${xmlSelectString}
@@ -16,26 +24,33 @@
     <select id="select${dbTableConfig.multiTableNameCase}" resultMap="get${dbTableConfig.multiTableNameCase}RM">
         select
         <include refid="Base_Column_List"/>
-        FROM ${firstTbConfig.originTableName}  ${firstTbConfig.tableName}
-        #foreach($fItem in $multiTableConfig.subList(1,$multiTableConfig.size()))
-            LEFT JOIN ${fItem.originTableName} ${fItem.tableName}
-            ON  ${firstTbConfig.tableName}.${firstTbConfig.orgAssociationKey}=${fItem.tableName}.${fItem.associationKey}
+        FROM ${fTbCfg.originTableName}  ${fTbCfg.originTableName}
+        #if($multiTableConfig.size()==2)
+            LEFT JOIN ${sTbCfg.originTableName} ${sTbCfg.originTableName}
+            ON ${fTbCfg.originTableName}.${fTbCfg.orgAssociationKey[0]}=
+            ${sTbCfg.originTableName}.${sTbCfg.orgAssociationKey[0]}
+        #end
+        #if($multiTableConfig.size()==3)
+            LEFT JOIN ${sTbCfg.originTableName} ${sTbCfg.originTableName}
+            ON ${fTbCfg.originTableName}.${fTbCfg.orgAssociationKey[0]}=
+            ${sTbCfg.originTableName}.${sTbCfg.orgAssociationKey[0]}
+            LEFT JOIN ${tTbCfg.originTableName} ${tTbCfg.originTableName}
+            ON ${sTbCfg.originTableName}.${sTbCfg.orgAssociationKey[1]}=
+            ${tTbCfg.originTableName}.${tTbCfg.orgAssociationKey[0]}
         #end
         <where>
-            #foreach($mtcItem in $multiTableConfig)
-                #foreach($tqrItem in ${mtcItem.tableQueryArr})
-                    #if($tqrItem.field.indexOf("time")!=-1)
-                        <if test="params.${tqrItem.field} != null">
-                            AND ${mtcItem.tableName}.${tqrItem.originField}
-                            BETWEEN #{params.${tqrItem.originField}Start} AND #{params.${tqrItem.field}End}
-                        </if>
-                    #else
-                        <if test="params.${tqrItem.field} != null">
-                            #set($likePre='%${params')
-                            #set($likeParam="$likePre.${tqrItem.field}}%")
-                            ${mtcItem.tableName}.${tqrItem.originField} LIKE '$likeParam'
-                        </if>
-                    #end
+            #foreach($tqrItem in $queryConfig)
+                #if($tqrItem.field.indexOf("time")!=-1)
+                    <if test="params.${tqrItem.field} != null">
+                        AND ${tqrItem.tableName}.${tqrItem.originField}
+                        BETWEEN #{params.${tqrItem.originField}Start} AND #{params.${tqrItem.field}End}
+                    </if>
+                #else
+                    <if test="params.${tqrItem.frontField} != null">
+                        #set($likePre='%${params')
+                        #set($likeParam="$likePre.${tqrItem.frontField}}%")
+                        ${tqrItem.tableName}.${tqrItem.originField} LIKE '$likeParam'
+                    </if>
                 #end
             #end
         </where>
@@ -44,16 +59,25 @@
     <select id="selectByKey" resultType="java.util.Map">
         select
         <include refid="Base_Column_List"/>
-        FROM ${firstTbConfig.originTableName}  ${firstTbConfig.tableName}
-        #foreach($fItem in $multiTableConfig.subList(1,$multiTableConfig.size()))
-            LEFT JOIN ${fItem.originTableName} ${fItem.tableName}
-            ON  ${firstTbConfig.tableName}.${firstTbConfig.orgAssociationKey}=${fItem.tableName}.${fItem.associationKey}
+        FROM ${fTbCfg.originTableName}  ${fTbCfg.originTableName}
+        #if($multiTableConfig.size()==2)
+            LEFT JOIN ${sTbCfg.originTableName} ${sTbCfg.originTableName}
+            ON ${fTbCfg.originTableName}.${fTbCfg.orgAssociationKey[0]}=
+            ${sTbCfg.originTableName}.${sTbCfg.orgAssociationKey[0]}
+        #end
+        #if($multiTableConfig.size()==3)
+            LEFT JOIN ${sTbCfg.originTableName} ${sTbCfg.originTableName}
+            ON ${fTbCfg.originTableName}.${fTbCfg.orgAssociationKey[0]}=
+            ${sTbCfg.originTableName}.${sTbCfg.orgAssociationKey[0]}
+            LEFT JOIN ${tTbCfg.originTableName} ${tTbCfg.originTableName}
+            ON ${sTbCfg.originTableName}.${sTbCfg.orgAssociationKey[1]}=
+            ${tTbCfg.originTableName}.${tTbCfg.orgAssociationKey[0]}
         #end
         <where>
-            <if test="${firstTbConfig.associationKey} != null">
+            <if test="${fTbCfg.associationKey} != null">
                 #set($likePre='%${')
-                #set($likeParam="$likePre${firstTbConfig.associationKey}}%")
-                ${firstTbConfig.tableName}.${firstTbConfig.orgAssociationKey} LIKE '$likeParam'
+                #set($likeParam="$likePre${fTbCfg.associationKey}}%")
+                ${fTbCfg.originTableName}.${fTbCfg.associationKey} LIKE '$likeParam'
             </if>
         </where>
     </select>

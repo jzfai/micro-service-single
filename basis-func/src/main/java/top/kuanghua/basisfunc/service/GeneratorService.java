@@ -26,26 +26,26 @@ public class GeneratorService {
         Context context = getContext(jsonData);
         Map<String, Object> dbTableConfig = ObjSelfUtils.changeToMap(jsonData.get("dbTableConfig"));
         ArrayList<Map<String, Object>> multiTableConfig = ObjSelfUtils.changeToArrayMap(jsonData.get("multiTableConfig"));
-        multiTableConfig.forEach((fItem) -> {
-            //entity
-            FileWriter entityWriter = null;
-            try {
-                Template entityTemp = GeneratorTempUtils.getMybatisPlusMulTbTemp("entity.vm");
-                context.put("currentTbConfig", fItem);
-                context.put("tableFieldArr", fItem.get("tableFieldArr"));
-                entityWriter = new FileWriter(GeneratorTempUtils.getExportMybatisPlusMulDir("entity") + fItem.get("tableNameCase") + ".java");
-                entityTemp.merge(context, entityWriter);
-                entityWriter.close();
-
-                //single-mapper
-                Template mapperTemp = GeneratorTempUtils.getMybatisPlusMulTbTemp("mapper.vm");
-                FileWriter mapperWriter = new FileWriter(GeneratorTempUtils.getExportMybatisPlusMulDir("mapper") + fItem.get("tableNameCase") + "Mapper.java");
-                mapperTemp.merge(context, mapperWriter);
-                mapperWriter.close();
-            } catch (IOException e) {
-                throw new RuntimeException(" mybatis-plus多表生成模版报错" + e);
-            }
-        });
+//        multiTableConfig.forEach((fItem) -> {
+//            //entity
+//            FileWriter entityWriter = null;
+//            try {
+//                Template entityTemp = GeneratorTempUtils.getMybatisPlusMulTbTemp("entity.vm");
+//                context.put("currentTbConfig", fItem);
+//                context.put("tableFieldArr", fItem.get("tableFieldArr"));
+//                entityWriter = new FileWriter(GeneratorTempUtils.getExportMybatisPlusMulDir("entity") + fItem.get("tableNameCase") + ".java");
+//                entityTemp.merge(context, entityWriter);
+//                entityWriter.close();
+//
+//                //single-mapper
+//                Template mapperTemp = GeneratorTempUtils.getMybatisPlusMulTbTemp("mapper.vm");
+//                FileWriter mapperWriter = new FileWriter(GeneratorTempUtils.getExportMybatisPlusMulDir("mapper") + fItem.get("tableNameCase") + "Mapper.java");
+//                mapperTemp.merge(context, mapperWriter);
+//                mapperWriter.close();
+//            } catch (IOException e) {
+//                throw new RuntimeException(" mybatis-plus多表生成模版报错" + e);
+//            }
+//        });
         String tbName = dbTableConfig.get("multiTableNameCase").toString();
         try {
             //controller

@@ -73,7 +73,19 @@ public class GeneratorTempUtils {
         return fileMkdir(path);
     }
 
-    public static String getExportMybatisPlusDir(String exportDir,String dir) {
+    public static String getExportMybatisPlusMulQueryDir(String dir) {
+        String os = System.getProperty("os.name");
+        String path = "";
+        if (os.toLowerCase().startsWith("win")) {
+            path = ExportFileDir + "mybatis-plus-multi-query" + File.separator + dir + File.separator;
+        } else {
+            path = MacExportFileDir + "mybatis-plus-multi-query" + File.separator + dir + File.separator;
+        }
+        return fileMkdir(path);
+    }
+
+
+    public static String getExportMybatisPlusDir(String exportDir, String dir) {
         String os = System.getProperty("os.name");
         String path = "";
         if (os.toLowerCase().startsWith("win")) {
