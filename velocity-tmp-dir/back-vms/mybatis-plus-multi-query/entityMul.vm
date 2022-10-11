@@ -1,0 +1,29 @@
+package ${basicConfig.packageName}.entity;
+import java.util.*;
+/**
+*  ${dbTableConfig.tableDesc}实体类
+*
+* @author ${basicConfig.author}
+* @since ${basicConfig.dataTime}
+*/
+@Data
+@ApiModel("${dbTableConfig.tableDesc}")
+@TableName(value = "${dbTableConfig.originTableName}")
+public class ${dbTableConfig.multiTableNameCase}{
+#foreach($mtcItem in $multiTableConfig)
+    #foreach($item in $mtcItem.tableFieldArr)
+        #if($item.field=="createTime")
+        @ApiModelProperty(value = "$item.desc",hidden = true)
+        @TableField(fill = FieldFill.INSERT)
+        private ${item.type} $item.field;
+        #elseif($item.field=="updateTime")
+        @ApiModelProperty(value = "$item.desc",hidden = true)
+        @TableField(fill = FieldFill.UPDATE)
+        private ${item.type} $item.field;
+        #else
+        @ApiModelProperty(value = "$item.desc")
+        private ${item.type} $item.field;
+        #end
+    #end
+#end
+}

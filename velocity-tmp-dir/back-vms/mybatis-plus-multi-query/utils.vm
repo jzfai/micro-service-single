@@ -1,0 +1,8 @@
+#macro(getOriginField)
+    #foreach($fItem in $multiTableConfig)
+        #foreach($tableShowArrItem in ${fItem.tableShowArr})${fItem.tableName}.${tableShowArrItem.originField},#end
+    #end
+#end
+#set($originFieldString="#getOriginField()")
+#set($lenth=$originFieldString.length() - 1)
+#set($xmlSelectString=$originFieldString.substring(0,$lenth))

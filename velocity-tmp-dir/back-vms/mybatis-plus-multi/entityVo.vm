@@ -1,19 +1,21 @@
-package ${projectOrAuthor.packageName}.entity;
+#parse("utils.vm")
+package ${basicConfig.packageName}.vo;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
 import java.util.*;
 /**
 *  ${dbTableConfig.multiTableDesc}实体类
 *
-* @author ${projectOrAuthor.author}
-* @since ${projectOrAuthor.dataTime}
+* @author ${basicConfig.author}
+* @since ${basicConfig.dataTime}
 */
 @Data
 @ApiModel("${dbTableConfig.multiTableDesc}")
 public class ${dbTableConfig.multiTableNameCase}Vo  {
-#foreach($mtcItem in $multiTableConfig)
-    #foreach( $tfItem in $mtcItem.tableFormArr)
-    @ApiModelProperty(value = "$tfItem.desc")
-    private ${tfItem.type} $tfItem.field;
-    #end
+#foreach( $qItem in $queryConfig)
+@ApiModelProperty(value = "$qItem.desc")
+    #getValid($qItem)
+private ${qItem.type} $qItem.frontField;
 #end
 
 }

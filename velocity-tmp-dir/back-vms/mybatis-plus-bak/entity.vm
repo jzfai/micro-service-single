@@ -1,19 +1,16 @@
-#parse("utils.vm")
-package ${basicConfig.packageName}.entity;
+package ${projectOrAuthor.packageName}.entity;
 import java.util.*;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Pattern;
 /**
 *  ${currentTbConfig.tableDesc}实体类
 *
-* @author ${basicConfig.author}
-* @since ${basicConfig.dataTime}
+* @author ${projectOrAuthor.author}
+* @since ${projectOrAuthor.dataTime}
 */
 @Data
 @ApiModel("${currentTbConfig.tableDesc}")
 @TableName(value = "${currentTbConfig.originTableName}")
 public class ${currentTbConfig.tableNameCase} extends Model< ${currentTbConfig.tableNameCase} > {
-#foreach($item in $tableFormArr)
+#foreach($item in $dbTableConfig.tableFieldArr)
     #if($item.field=="createTime")
     @ApiModelProperty(value = "$item.desc",hidden = true)
     @TableField(fill = FieldFill.INSERT)
@@ -24,7 +21,6 @@ public class ${currentTbConfig.tableNameCase} extends Model< ${currentTbConfig.t
     private ${item.type} $item.field;
     #else
     @ApiModelProperty(value = "$item.desc")
-        #getValid($item)
     private ${item.type} $item.field;
     #end
 #end

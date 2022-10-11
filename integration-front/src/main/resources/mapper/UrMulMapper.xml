@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.kuanghua.integrationfront.mapper.UrMulMapper">
+    <resultMap id="getUrMulRM" type="java.util.Map">
+    </resultMap>
+    <sql id="Base_Column_List">
+        t_role
+        .
+        id
+        as id,t_role.parent_id as parentId,t_role.code as code,t_role.name as roleName,t_role.intro as intro,t_user.id as userId,t_user.state as state,t_user.name as userName,t_user.head_img_url as headImgUrl,t_user.phone as phone,t_user.create_time as userCreateTime,t_role.create_time as roleCreateTime
+    </sql>
+    <select id="selectUrMul" resultMap="getUrMulRM">
+        select
+        <include refid="Base_Column_List"/>
+        FROM t_user t_user
+        LEFT JOIN t_user_role t_user_role
+        ON t_user.id=
+        t_user_role.user_id
+        LEFT JOIN t_role t_role
+        ON t_user_role.role_id=
+        t_role.id
+        <where>
+            <if test="params.roleId != null">
+                t_role.id LIKE '%${params.roleId}%'
+            </if>
+            <if test="params.roleName != null">
+                t_role.name LIKE '%${params.roleName}%'
+            </if>
+            <if test="params.userId != null">
+                t_user.id LIKE '%${params.userId}%'
+            </if>
+            <if test="params.userName != null">
+                t_user.name LIKE '%${params.userName}%'
+            </if>
+        </where>
+    </select>
+
+    <select id="selectByKey" resultType="java.util.Map">
+        select
+        <include refid="Base_Column_List"/>
+        FROM t_user t_user
+        LEFT JOIN t_user_role t_user_role
+        ON t_user.id=
+        t_user_role.user_id
+        LEFT JOIN t_role t_role
+        ON t_user_role.role_id=
+        t_role.id
+        <where>
+            <if test="id != null">
+                t_user.id LIKE '%${id}%'
+            </if>
+        </where>
+    </select>
+</mapper>

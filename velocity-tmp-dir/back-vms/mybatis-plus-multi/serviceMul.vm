@@ -1,57 +1,93 @@
-package ${projectOrAuthor.packageName}.service;
+package ${basicConfig.packageName}.service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import java.util.*;
 import com.alibaba.fastjson.JSON;
+
+#if($multiTableConfig.size()==2)
+    #set($fTbCfg=$multiTableConfig[0])
+    #set($sTbCfg=$multiTableConfig[1])
+#end
+
+#if($multiTableConfig.size()==3)
+    #set($fTbCfg=$multiTableConfig[0])
+    #set($sTbCfg=$multiTableConfig[1])
+    #set($tTbCfg=$multiTableConfig[2])
+#end
+
+
 /**
 *  ${dbTableConfig.multiTableDesc}Service
 *
-* @author ${projectOrAuthor.author}
-* @since ${projectOrAuthor.dataTime}
+* @author ${basicConfig.author}
+* @since ${basicConfig.dataTime}
 */
 @Service
 public class ${dbTableConfig.multiTableNameCase}Service {
-
 @Resource
 private ${dbTableConfig.multiTableNameCase}Mapper ${dbTableConfig.multiTableName}Mapper;
 
-#foreach( $mtcItem in $multiTableConfig)
+#foreach($mtcItem in $multiTableConfig)
 @Resource
 private ${mtcItem.tableNameCase}Mapper ${mtcItem.tableName}Mapper;
 #end
 
-public Page< Map > select${dbTableConfig.multiTableNameCase}(SelfCommonParams commonParams, Map repairVo) {
-    return ${dbTableConfig.multiTableName}Mapper.select${dbTableConfig.multiTableNameCase}(new Page< Map >(commonParams.getPageNum(), commonParams.getPageSize()), repairVo);
+public Page< Map > select${dbTableConfig.multiTableNameCase}(SelfCommonParams commonParams, ${dbTableConfig.multiTableNameCase}Vo ${dbTableConfig.multiTableName}Vo) {
+return ${dbTableConfig.multiTableName}Mapper.select${dbTableConfig.multiTableNameCase}(new Page< Map >(commonParams.getPageNum(), commonParams.getPageSize()), ${dbTableConfig.multiTableName}Vo);
 }
 
-public Map selectByKey(String ${dbTableConfig.multiTableName}) {
-    return ${dbTableConfig.multiTableName}Mapper.selectByKey(${dbTableConfig.multiTableName});
+public Map selectByKey(${dbTableConfig.associationKeyType} ${dbTableConfig.associationKey}) {
+return ${dbTableConfig.multiTableName}Mapper.selectByKey(${dbTableConfig.associationKey});
 }
 
 @Transactional
 public void insert(${dbTableConfig.multiTableNameCase} ${dbTableConfig.multiTableName}) {
-    #foreach( $mtcItem in $multiTableConfig)
-    this.${mtcItem.tableName}Mapper.insert(JSON.parseObject(JSON.toJSONString(${dbTableConfig.multiTableName}), ${mtcItem.tableNameCase}.class));
+//${fTbCfg.tableDesc}
+${fTbCfg.tableNameCase} ${fTbCfg.tableName} = new ${fTbCfg.tableNameCase}();
+#foreach( $lItem in ${fTbCfg.tableFormArr})
+    #if($lItem.isNotShowSwagger=="false")
+        ${fTbCfg.tableName}.set${lItem.fieldCase}(${dbTableConfig.multiTableName}.get${lItem.frontFieldCase}());
     #end
+#end
+this.${fTbCfg.tableName}Mapper.insert(${fTbCfg.tableName});
+
+//${sTbCfg.tableDesc}
+${sTbCfg.tableNameCase} ${sTbCfg.tableName} = new ${sTbCfg.tableNameCase}();
+#foreach( $lItem in ${sTbCfg.tableFormArr})
+    ${sTbCfg.tableName}.set${lItem.fieldCase}(${dbTableConfig.multiTableName}.get${lItem.frontFieldCase}());
+#end
+this.${sTbCfg.tableName}Mapper.insert(${sTbCfg.tableName});
 }
 
 @Transactional
 public void updateByKey(${dbTableConfig.multiTableNameCase} ${dbTableConfig.multiTableName}) {
-#foreach( $mtcItem in $multiTableConfig)
-    //${mtcItem.tableDesc}
-    ${mtcItem.tableNameCase} ${mtcItem.tableName} = JSON.parseObject(JSON.toJSONString(${dbTableConfig.multiTableName}), ${mtcItem.tableNameCase}.class);
-    QueryWrapper<${mtcItem.tableNameCase}> ${mtcItem.tableName}Wrapper = new QueryWrapper<>();
-    ${mtcItem.tableName}Wrapper.eq("sn", ${dbTableConfig.multiTableName}.getSn());
-    this.${mtcItem.tableName}Mapper.update(${mtcItem.tableName}, ${mtcItem.tableName}Wrapper);
+//${fTbCfg.tableDesc}
+${fTbCfg.tableNameCase} ${fTbCfg.tableName} = new ${fTbCfg.tableNameCase}();
+#foreach( $lItem in ${fTbCfg.tableFormArr})
+    #if($lItem.isNotShowSwagger=="false")
+        ${fTbCfg.tableName}.set${lItem.fieldCase}(${dbTableConfig.multiTableName}.get${lItem.frontFieldCase}());
+    #end
 #end
+this.${fTbCfg.tableName}Mapper.updateById(${fTbCfg.tableName});
+
+//${sTbCfg.tableDesc}
+${sTbCfg.tableNameCase} ${sTbCfg.tableName} = new ${sTbCfg.tableNameCase}();
+#foreach( $lItem in ${sTbCfg.tableFormArr})
+    ${sTbCfg.tableName}.set${lItem.fieldCase}(${dbTableConfig.multiTableName}.get${lItem.frontFieldCase}());
+#end
+this.${sTbCfg.tableName}Mapper.updateById(${sTbCfg.tableName});
 }
 
 @Transactional
 public void deleteByKey(${dbTableConfig.associationKeyType} ${dbTableConfig.associationKey}) {
-    #foreach( $mtcItem in $multiTableConfig)
-        //${mtcItem.tableName}
-        QueryWrapper<${mtcItem.tableNameCase}> ${mtcItem.tableName}Wrapper = new QueryWrapper<>();
-        ${mtcItem.tableName}Wrapper.eq("${dbTableConfig.orgAssociationKey}", ${dbTableConfig.associationKey});
-        this.${mtcItem.tableName}Mapper.delete(${mtcItem.tableName}Wrapper);
-        #end
-    }
+//${fTbCfg.tableName}
+QueryWrapper<${fTbCfg.tableNameCase}> ${fTbCfg.tableName}Wrapper = new QueryWrapper<>();
+${fTbCfg.tableName}Wrapper.eq("${dbTableConfig.orgAssociationKey[0]}", ${dbTableConfig.associationKey});
+this.${fTbCfg.tableName}Mapper.delete(${fTbCfg.tableName}Wrapper);
+
+
+//${sTbCfg.tableName}
+QueryWrapper<${sTbCfg.tableNameCase}> ${sTbCfg.tableName}Wrapper = new QueryWrapper<>();
+${sTbCfg.tableName}Wrapper.eq("${dbTableConfig.orgAssociationKey[0]}", ${dbTableConfig.associationKey});
+this.${sTbCfg.tableName}Mapper.delete(${sTbCfg.tableName}Wrapper);
+}
 }

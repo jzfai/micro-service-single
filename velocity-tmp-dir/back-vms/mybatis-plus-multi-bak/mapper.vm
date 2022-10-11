@@ -1,9 +1,9 @@
-package ${basicConfig.packageName}.mapper;
+package ${projectOrAuthor.packageName}.mapper;
 /**
 *  ${currentTbConfig.tableDesc}Mapper
 *
-* @author ${basicConfig.author}
-* @since ${basicConfig.dataTime}
+* @author ${projectOrAuthor.author}
+* @since ${projectOrAuthor.dataTime}
 */
 public interface ${currentTbConfig.tableNameCase}Mapper extends BaseMapper< ${currentTbConfig.tableNameCase} > {
 

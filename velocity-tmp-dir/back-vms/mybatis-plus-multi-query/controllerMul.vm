@@ -1,8 +1,5 @@
-#parse("utils.vm")
 package ${basicConfig.packageName}.controller;
 import java.util.Map;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Pattern;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 /**
 *  ${dbTableConfig.multiTableDesc}Controller
@@ -10,7 +7,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 * @author ${basicConfig.author}
 * @since ${basicConfig.dataTime}
 */
-@Api(tags = "${dbTableConfig.multiTableDesc}")
+@Api(tags = "维修信息")
 @RestController
 @RequestMapping("${dbTableConfig.multiTableName}")
 public class ${dbTableConfig.multiTableNameCase}Controller {
@@ -18,10 +15,10 @@ public class ${dbTableConfig.multiTableNameCase}Controller {
 private ${dbTableConfig.multiTableNameCase}Service ${dbTableConfig.multiTableName}Service;
 
 @ApiOperation(value = "分页查询${dbTableConfig.multiTableDesc}")
-
 @GetMapping("select${dbTableConfig.multiTableNameCase}")
-public Page< Map > select${dbTableConfig.multiTableNameCase}(@Validated ${dbTableConfig.multiTableNameCase}Vo ${dbTableConfig.multiTableName}Vo,SelfCommonParams commonParams) {
-return ${dbTableConfig.multiTableName}Service.select${dbTableConfig.multiTableNameCase}(commonParams, ${dbTableConfig.multiTableName}Vo);
+public Page< Map > select${dbTableConfig.multiTableNameCase}(SelfCommonParams commonParams, ${dbTableConfig.multiTableNameCase}Vo ${dbTableConfig.multiTableName}Vo) {
+Map ${dbTableConfig.multiTableName}Map = JSON.parseObject(JSON.toJSONString(${dbTableConfig.multiTableName}Vo), Map.class);
+return ${dbTableConfig.multiTableName}Service.select${dbTableConfig.multiTableNameCase}(commonParams, ${dbTableConfig.multiTableName}Map);
 }
 
 /**
@@ -32,7 +29,7 @@ return ${dbTableConfig.multiTableName}Service.select${dbTableConfig.multiTableNa
 */
 @ApiOperation(value = "新增${dbTableConfig.multiTableDesc}")
 @PostMapping("insert")
-public ResResult insert(@Validated @RequestBody ${dbTableConfig.multiTableNameCase} ${dbTableConfig.multiTableName}) {
+public ResResult insert(@RequestBody ${dbTableConfig.multiTableNameCase} ${dbTableConfig.multiTableName}) {
 this.${dbTableConfig.multiTableName}Service.insert(${dbTableConfig.multiTableName});
 return new ResResult().success();
 }
@@ -58,7 +55,7 @@ return new ResResult().success(${dbTableConfig.multiTableName}Service.selectByKe
 */
 @ApiOperation(value = "根据${dbTableConfig.associationKey}修改数据")
 @PutMapping("updateByKey")
-public ResResult updateByKey(@Validated @RequestBody ${dbTableConfig.multiTableNameCase} ${dbTableConfig.multiTableName}) {
+public ResResult updateByKey(@RequestBody ${dbTableConfig.multiTableNameCase} ${dbTableConfig.multiTableName}) {
 this.${dbTableConfig.multiTableName}Service.updateByKey(${dbTableConfig.multiTableName});
 return new ResResult().success();
 }
