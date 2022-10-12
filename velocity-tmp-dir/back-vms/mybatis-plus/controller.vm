@@ -29,7 +29,7 @@ private ${dbTableConfig.tableNameCase}Service ${dbTableConfig.tableName}Service;
 @ApiOperation(value = "分页查询所有数据")
 
 #getSwaggerParam()
-public ResResult selectPage(#getQueryField()  SelfCommonParams commonParams) {
+public ResResult< List<${dbTableConfig.tableNameCase}> > selectPage(#getQueryField()  SelfCommonParams commonParams) {
 QueryWrapper <${dbTableConfig.tableNameCase}> queryWrapper = new QueryWrapper<>();
 #foreach($item in $queryConfig)
     #if(${item.originField}=="create_time")
@@ -60,7 +60,7 @@ return new ResResult().success(${dbTableConfig.tableName}Page);
 */
 @GetMapping("selectById")
 @ApiOperation(value = "通过id主键查询单条数据")
-public ResResult selectById(@RequestParam("id") ${dbTableConfig.uniKeyType} id) {
+public ResResult<${dbTableConfig.tableNameCase}> selectById(@RequestParam("id") ${dbTableConfig.uniKeyType} id) {
 return new ResResult().success(this.${dbTableConfig.tableName}Service.selectById(id));
 }
 
@@ -71,7 +71,7 @@ return new ResResult().success(this.${dbTableConfig.tableName}Service.selectById
 */
 @ApiOperation(value = "根据id数组查询列表")
 @PostMapping("selectBatchIds")
-public ResResult selectBatchIds(@RequestParam("idList") List< ${dbTableConfig.uniKeyType}  > idList) {
+public ResResult< List<${dbTableConfig.tableNameCase}> > selectBatchIds(@RequestParam("idList") List< ${dbTableConfig.uniKeyType}  > idList) {
 return new ResResult().success(this.${dbTableConfig.tableName}Service.selectBatchIds(idList));
 }
 

@@ -31,8 +31,8 @@ private ${dbTableConfig.multiTableNameCase}Mapper ${dbTableConfig.multiTableName
 private ${mtcItem.tableNameCase}Mapper ${mtcItem.tableName}Mapper;
 #end
 
-public Page< Map > select${dbTableConfig.multiTableNameCase}(SelfCommonParams commonParams, ${dbTableConfig.multiTableNameCase}Vo ${dbTableConfig.multiTableName}Vo) {
-return ${dbTableConfig.multiTableName}Mapper.select${dbTableConfig.multiTableNameCase}(new Page< Map >(commonParams.getPageNum(), commonParams.getPageSize()), ${dbTableConfig.multiTableName}Vo);
+public Page< Map > select${dbTableConfig.multiTableNameCase}(SelfCommonParams commonParams, ${dbTableConfig.multiTableNameCase}Query ${dbTableConfig.multiTableName}Query) {
+return ${dbTableConfig.multiTableName}Mapper.select${dbTableConfig.multiTableNameCase}(new Page< Map >(commonParams.getPageNum(), commonParams.getPageSize()), ${dbTableConfig.multiTableName}Query);
 }
 
 public Map selectByKey(${dbTableConfig.associationKeyType} ${dbTableConfig.associationKey}) {

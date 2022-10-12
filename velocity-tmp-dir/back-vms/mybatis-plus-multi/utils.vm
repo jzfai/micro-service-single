@@ -8,11 +8,11 @@
 #macro(getValid $item)
     #if($item.isNeedInput=="true")
         #if(${item.type}=="Long")
-        @NotNull(message = "userId不能为空")
+        @NotNull(message = "${item.field}不能为空")
         #elseif(${item.type}=="Integer")
-        @NotNull(message = "userId不能为空")
+        @NotNull(message = "${item.field}不能为空")
         #elseif(${item.type}=="String")
-        @NotBlank(message = "userId不能为空")
+        @NotBlank(message = "${item.field}不能为空")
         #elseif(${item.type}=="List")
         @NotEmpty(message = "${item.field}不能为空")
         #end
@@ -32,15 +32,11 @@
     #end
 #end
 
-
 #macro(getQueryField)
     #foreach($item in $queryConfig)
         #if($item.isNotShowSwagger=="true")@ApiIgnore()#end #getValid($item)  String $item.field,
     #end
 #end
-
-
-
 
 #macro(getSwaggerParam)
 @ApiImplicitParams({

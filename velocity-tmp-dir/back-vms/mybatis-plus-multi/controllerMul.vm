@@ -20,8 +20,8 @@ private ${dbTableConfig.multiTableNameCase}Service ${dbTableConfig.multiTableNam
 @ApiOperation(value = "分页查询${dbTableConfig.multiTableDesc}")
 
 @GetMapping("select${dbTableConfig.multiTableNameCase}")
-public Page< Map > select${dbTableConfig.multiTableNameCase}(@Validated ${dbTableConfig.multiTableNameCase}Vo ${dbTableConfig.multiTableName}Vo,SelfCommonParams commonParams) {
-return ${dbTableConfig.multiTableName}Service.select${dbTableConfig.multiTableNameCase}(commonParams, ${dbTableConfig.multiTableName}Vo);
+public Page< ${dbTableConfig.multiTableNameCase}Query > select${dbTableConfig.multiTableNameCase}(@Validated ${dbTableConfig.multiTableNameCase}Query ${dbTableConfig.multiTableName}Query,SelfCommonParams commonParams) {
+return ${dbTableConfig.multiTableName}Service.select${dbTableConfig.multiTableNameCase}(commonParams, ${dbTableConfig.multiTableName}Query);
 }
 
 /**
@@ -46,7 +46,7 @@ return new ResResult().success();
 */
 @GetMapping("selectByKey")
 @ApiOperation(value = "通过联合key查询详情")
-public ResResult selectByKey(@RequestParam("${dbTableConfig.associationKey}") ${dbTableConfig.associationKeyType} ${dbTableConfig.associationKey}) {
+public ResResult< ${dbTableConfig.multiTableNameCase}Query > selectByKey(@RequestParam("${dbTableConfig.associationKey}") ${dbTableConfig.associationKeyType} ${dbTableConfig.associationKey}) {
 return new ResResult().success(${dbTableConfig.multiTableName}Service.selectByKey(${dbTableConfig.associationKey}));
 }
 

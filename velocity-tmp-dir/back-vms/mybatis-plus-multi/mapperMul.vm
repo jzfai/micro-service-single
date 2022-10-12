@@ -10,7 +10,7 @@ import java.util.*;
 * @since ${basicConfig.dataTime}
 */
 public interface ${dbTableConfig.multiTableNameCase}Mapper {
-Page< Map > select${dbTableConfig.multiTableNameCase}(Page< Map > pagination,@Param("params") ${dbTableConfig.multiTableNameCase}Vo params);
+Page< Map > select${dbTableConfig.multiTableNameCase}(Page< Map > pagination,@Param("params") ${dbTableConfig.multiTableNameCase}Query params);
 
 Map selectByKey(@Param("${firstTbConfig.associationKey}") ${firstTbConfig.associationKeyType} ${firstTbConfig.associationKey});
 }

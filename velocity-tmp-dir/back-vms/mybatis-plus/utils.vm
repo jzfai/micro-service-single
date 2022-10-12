@@ -3,17 +3,18 @@
 #end
 #set($originFieldString="#getOriginField()")
 #set($lenth=$originFieldString.length() - 1)
-#set($selectString=$originFieldString.substring(0,$lenth))
-
+#if($lenth>0)
+    #set($selectString=$originFieldString.substring(0,$lenth))
+#end
 
 #macro(getValid $item)
     #if($item.isNeedInput=="true")
         #if(${item.type}=="Long")
-        @NotNull(message = "userId不能为空")
+        @NotNull(message = "${item.field}不能为空")
         #elseif(${item.type}=="Integer")
-        @NotNull(message = "userId不能为空")
+        @NotNull(message = "${item.field}不能为空")
         #elseif(${item.type}=="String")
-        @NotBlank(message = "userId不能为空")
+        @NotBlank(message = "${item.field}不能为空")
         #elseif(${item.type}=="List")
         @NotEmpty(message = "${item.field}不能为空")
         #end
