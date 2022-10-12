@@ -43,16 +43,25 @@ public class MybatisPlusGeneratorService {
             FileWriter entityWriter = new FileWriter(GeneratorTempUtils.getExportMybatisPlusDir(packagePath, "entity") + tbName + ".java");
             entityTemp.merge(context, entityWriter);
             entityWriter.close();
+
+            //vo
+            Template voTemp = GeneratorTempUtils.getMybatisPlusTemp("vo.vm");
+            FileWriter voWriter = new FileWriter(GeneratorTempUtils.getExportMybatisPlusDir(packagePath, "vo") + tbName + "Vo.java");
+            voTemp.merge(context, voWriter);
+            voWriter.close();
+
             //controller
             Template controllerTemp = GeneratorTempUtils.getMybatisPlusTemp("controller.vm");
             FileWriter controllerWriter = new FileWriter(GeneratorTempUtils.getExportMybatisPlusDir(packagePath, "controller") + tbName + "Controller.java");
             controllerTemp.merge(context, controllerWriter);
             controllerWriter.close();
+
             //service
             Template serviceTemp = GeneratorTempUtils.getMybatisPlusTemp("service.vm");
             FileWriter serviceWriter = new FileWriter(GeneratorTempUtils.getExportMybatisPlusDir(packagePath, "service") + tbName + "Service.java");
             serviceTemp.merge(context, serviceWriter);
             serviceWriter.close();
+
             //mapper
             Template mapperTemp = GeneratorTempUtils.getMybatisPlusTemp("mapper.vm");
             FileWriter mapperWriter = new FileWriter(GeneratorTempUtils.getExportMybatisPlusDir(packagePath, "mapper") + tbName + "Mapper.java");
@@ -72,8 +81,10 @@ public class MybatisPlusGeneratorService {
 
     /**
      * Mybatis-plus  多表生成
+     *
+     * @return
      */
-    public void generatorMybatisPlusMulTemp(Map jsonData) {
+    public String generatorMybatisPlusMulTemp(Map<String, Object> jsonData) {
         Context context = GeneratorTempUtils.getVelocityContext();
         context.put("totalData", jsonData);
         context.put("basicConfig", jsonData.get("basicConfig"));
@@ -131,11 +142,17 @@ public class MybatisPlusGeneratorService {
             mapperMulTemp.merge(context, mapperMulWriter);
             mapperMulWriter.close();
 
-            //entity-vo
-            Template entityVoTemp = GeneratorTempUtils.getMybatisPlusMulTbTemp("entityVo.vm");
-            FileWriter entityVoWriter = new FileWriter(GeneratorTempUtils.getExportMybatisPlusDir(packagePath, "vo") + tbName + "Vo.java");
-            entityVoTemp.merge(context, entityVoWriter);
-            entityVoWriter.close();
+            //query
+            Template queryTemp = GeneratorTempUtils.getMybatisPlusMulTbTemp("query.vm");
+            FileWriter queryWriter = new FileWriter(GeneratorTempUtils.getExportMybatisPlusDir(packagePath, "query") + tbName + "Query.java");
+            queryTemp.merge(context, queryWriter);
+            queryWriter.close();
+
+            //vo
+            Template voTemp = GeneratorTempUtils.getMybatisPlusTemp("vo.vm");
+            FileWriter voWriter = new FileWriter(GeneratorTempUtils.getExportMybatisPlusDir(packagePath, "vo") + tbName + "Vo.java");
+            voTemp.merge(context, voWriter);
+            voWriter.close();
 
             //entity-mul
             Template entityMulTemp = GeneratorTempUtils.getMybatisPlusMulTbTemp("entityMul.vm");
@@ -151,6 +168,9 @@ public class MybatisPlusGeneratorService {
             String exportFilePath = GeneratorTempUtils.getOutputZipPath() + ObjSelfUtils.getCurrentDateTimeTrim() + ".zip";
             //生成zip包
             GeneratorTempUtils.createZipFile(exportFilePath, GeneratorTempUtils.getNeedZipDir());
+
+
+            return exportFilePath;
         } catch (IOException e) {
             throw new RuntimeException("生成实体类报错" + e);
         }

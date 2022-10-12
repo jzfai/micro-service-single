@@ -1,28 +1,32 @@
 {
-    path: '/${basicConfig.routerParentDir}',
-    component: Layout,
-    meta: { title: '${basicConfig.routerParentDir}', elSvgIcon: 'Fold' },
-    alwaysShow: true,
-    children: [
-        {
-            path: '${basicConfig.apiFileName}-table-query',
-            component: () => import('@/views/${basicConfig.routerParentDir}/${basicConfig.apiFileName}/${basicConfig.apiFileNameFirstCase}TableQuery.vue'),
-            name: '${basicConfig.apiFileNameFirstCase}TableQuery',
-            meta: { title: '${basicConfig.apiFileName}列表' }
-        },
-        {
-            path: '${basicConfig.apiFileName}-add-edit',
-            component: () => import('@/views/${basicConfig.routerParentDir}/${basicConfig.apiFileName}/${basicConfig.apiFileNameFirstCase}AddEdit.vue'),
-            name: '${basicConfig.apiFileNameFirstCase}AddEdit',
-            hidden: true,
-            meta: { title: '新增编辑', activeMenu: '/${basicConfig.routerParentDir}/${basicConfig.apiFileName}-table-query' }
-        },
-        {
-            path: '${basicConfig.apiFileName}-detail',
-            component: () => import('@/views/${basicConfig.routerParentDir}/${basicConfig.apiFileName}/${basicConfig.apiFileNameFirstCase}Detail.vue'),
-            name: '${basicConfig.apiFileNameFirstCase}Detail',
-            hidden: true,
-            meta: { title: '详情', activeMenu: '/${basicConfig.routerParentDir}/${basicConfig.apiFileName}-table-query' }
-        }
-    ]
+path: '/${basicConfig.routerParentDir}',
+component: Layout,
+meta: { title: '${basicConfig.routerParentDir}', elSvgIcon: 'Fold' },
+alwaysShow: true,
+children: [
+{
+path: '${basicConfig.apiFileName}-table-query',
+component: () => import('@/views/${basicConfig.routerParentDir}/${basicConfig.apiFileName}/${basicConfig.apiFileNameFirstCase}TableQuery.vue'),
+name: '${basicConfig.apiFileNameFirstCase}TableQuery',
+meta: { title: '${basicConfig.apiFileName}列表' }
+},
+#if($commonConfig.isAdd||$commonConfig.isEdit)
+{
+path: '${basicConfig.apiFileName}-add-edit',
+component: () => import('@/views/${basicConfig.routerParentDir}/${basicConfig.apiFileName}/${basicConfig.apiFileNameFirstCase}AddEdit.vue'),
+name: '${basicConfig.apiFileNameFirstCase}AddEdit',
+hidden: true,
+meta: { title: '新增编辑', activeMenu: '/${basicConfig.routerParentDir}/${basicConfig.apiFileName}-table-query' }
+},
+#end
+#if($commonConfig.isDetail)
+{
+path: '${basicConfig.apiFileName}-detail',
+component: () => import('@/views/${basicConfig.routerParentDir}/${basicConfig.apiFileName}/${basicConfig.apiFileNameFirstCase}Detail.vue'),
+name: '${basicConfig.apiFileNameFirstCase}Detail',
+hidden: true,
+meta: { title: '详情', activeMenu: '/${basicConfig.routerParentDir}/${basicConfig.apiFileName}-table-query' }
 }
+]
+}
+#end

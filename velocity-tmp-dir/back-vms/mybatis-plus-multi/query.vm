@@ -11,11 +11,10 @@ import java.util.*;
 */
 @Data
 @ApiModel("${dbTableConfig.multiTableDesc}")
-public class ${dbTableConfig.multiTableNameCase}Vo  {
+public class ${dbTableConfig.multiTableNameCase}Query  {
 #foreach( $qItem in $queryConfig)
 @ApiModelProperty(value = "$qItem.desc")
     #getValid($qItem)
 private ${qItem.type} $qItem.frontField;
 #end
-
 }
