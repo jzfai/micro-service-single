@@ -1,11 +1,11 @@
 #macro(subFormItemTmp)
     #foreach($item in $tableList)
         #if($item.componentType=="input") ##input
-        <el-form-item label="${item.desc}" prop="${item.field}" :rules="formRules.isNotNull('${item.desc}不能为空')">
+        <el-form-item label="${item.desc}" prop="${item.field}" :rules="formRules.${item.rule}('${item.desc}不能为空')">
             <el-input v-model="subForm.${item.field}" class="w-${item.width}px" placeholder="${item.desc}"/>
         </el-form-item>
         #elseif($item.componentType=="textarea") ##textarea
-        <el-form-item label="${item.desc}" prop="${item.field}" :rules="formRules.isNotNull('${item.desc}不能为空')">
+        <el-form-item label="${item.desc}" prop="${item.field}" :rules="formRules.${item.rule}('${item.desc}不能为空')">
             <el-input
                     v-model="subForm.${item.field}"
                     type="textarea"
@@ -18,7 +18,7 @@
                     placeholder="请输入${item.desc}"/>
         </el-form-item>
         #elseif($item.componentType=="select") ##select
-        <el-form-item label="${item.desc}" :rules="formRules.isNotNull('请选择${item.desc}')">
+        <el-form-item label="${item.desc}" :rules="formRules.${item.rule}('请选择${item.desc}')">
             <el-select v-model="subForm.${item.field}" placeholder="${item.desc}" class="w-${item.width}px">
                 #foreach($enum in $item.optionDataArr)
                     <el-option label="${enum.label}" value="${enum.value}"/>
@@ -26,25 +26,25 @@
             </el-select>
         </el-form-item>
         #elseif($item.componentType=="selectApi") ##selectApi
-        <el-form-item label="${item.desc}" :rules="formRules.isNotNull('请选择${item.desc}')">
+        <el-form-item label="${item.desc}" :rules="formRules.${item.rule}('请选择${item.desc}')">
             <el-select v-model="subForm.${item.field}" placeholder="${item.desc}" class="w-${item.width}px">
                 <el-option
-                        v-for="item in select${item.fieldCase}"
-                        :key="item.${itemKey}"
+                        v-for="item in ${item.field}Data"
+                        :key="item.${item.valueKey}"
                         :label="item.${item.labelKey}"
-                        :value="item.${itemKey}"/>
+                        :value="item.${item.valueKey}"/>
             </el-select>
         </el-form-item>
         #elseif($item.componentType=="radio") ##radio
-        <el-form-item label="${item.desc}" prop="${item.field}" :rules="formRules.isNotNull('请选择${item.desc}')">
+        <el-form-item label="${item.desc}" prop="${item.field}" :rules="formRules.${item.rule}('请选择${item.desc}')">
             <el-radio-group v-model="subForm.${item.field}">
                 #foreach($enum in $item.optionDataArr)
-                    <el-radio label="${enum.value}">${enum.label}</el-radio>
+                    <el-radio :label="${enum.value}">${enum.label}</el-radio>
                 #end
             </el-radio-group>
         </el-form-item>
         #elseif($item.componentType=="checkbox") ##checkbox
-        <el-form-item label="${item.desc}" prop="${item.field}" ::rules="formRules.isNotNull('请选择${item.desc}')">
+        <el-form-item label="${item.desc}" prop="${item.field}" ::rules="formRules.${item.rule}('请选择${item.desc}')">
             <el-checkbox-group v-model="subForm.${item.field}">
                 #foreach($enum in $item.optionDataArr)
                     <el-checkbox label="${enum.value}"/>
@@ -52,7 +52,7 @@
             </el-checkbox-group>
         </el-form-item>
         #elseif($item.componentType=="switch") ##switch
-        <el-form-item label="${item.desc}" prop="${item.field}" :rules="formRules.isNotNull('请选择${item.desc}')">
+        <el-form-item label="${item.desc}" prop="${item.field}" :rules="formRules.${item.rule}('请选择${item.desc}')">
             <el-switch
                     v-model="subForm.${item.field}"
                     inline-prompt="inline-prompt"
@@ -62,7 +62,7 @@
                     inactive-text="1"/>
         </el-form-item>
         #elseif($item.componentType=="cascaderApi") ##cascader
-        <el-form-item label="${item.desc}" :rules="formRules.isNotNull('请选择${item.desc}')">
+        <el-form-item label="${item.desc}" :rules="formRules.${item.rule}('请选择${item.desc}')">
             <el-cascader
                     :options="cascade${item.fieldCase}"
                     clearable
@@ -71,7 +71,7 @@
                     class="w-${item.width}px"/>
         </el-form-item>
         #elseif($item.componentType=="daterange") ##datetime
-        <el-form-item  label="${item.desc}" prop="${item.field}" :rules="formRules.isNotNull('请选择${item.desc}')">
+        <el-form-item  label="${item.desc}" prop="${item.field}" :rules="formRules.${item.rule}('请选择${item.desc}')">
             <el-date-picker
                     v-model="subForm.${item.field}Arr"
                     type="daterange"
@@ -83,11 +83,11 @@
                     class="w-${item.width}px"/>
         </el-form-item>
         #elseif($item.componentType=="date") ##date
-        <el-form-item label="${item.desc}" prop="${item.field}" :rules="formRules.isNotNull('请选择${item.desc}')">
+        <el-form-item label="${item.desc}" prop="${item.field}" :rules="formRules.${item.rule}('请选择${item.desc}')">
             <el-date-picker v-model="subForm.${item.field}" type="date" class="w-${item.width}px"/>
         </el-form-item>
         #elseif($item.componentType=="uploadImage")
-        <el-form-item label="${item.desc}" prop="${item.field}" :rules="formRules.isNotNull('请先上传${item.desc}')">
+        <el-form-item label="${item.desc}" prop="${item.field}" :rules="formRules.${item.rule}('请先上传${item.desc}')">
             <div class="rowSE">
                 <img v-if="subForm.image" :src="subForm.image" class="w-120px h-120px" style="border-radius: 6px" />
                 <div :class="[subForm.image && 'ml-10px']" class="rowSS">
@@ -117,7 +117,7 @@
 onMounted(()=>{
     #foreach($item in $tableList)
         #if($item.componentType=="selectApi")##selectApi
-            ${item.fieldCase}Req()
+            ${item.field}Req()
         #end
     #end
 })
@@ -134,9 +134,17 @@ onMounted(()=>{
 
 ##api req
 #macro(apiReqScript)
-    #foreach($qcItem in $tableList)
-        #if($qcItem.componentType=="selectApi")
-            ${qcItem.fieldCase}Req()
+    #foreach($item in $tableList)
+        #if($item.componentType=="selectApi")##selectApi
+        let ${item.field}Data = $ref([])
+        const ${item.field}Req = () => {
+        let reqConfig = {
+        url: '${item.api}',
+        method: '${item.method}',
+        }
+        axiosReq(reqConfig).then(({data}) => {
+            ${item.field}Data = data.records
+        })}
         #end
     #end
 #end
@@ -144,6 +152,7 @@ onMounted(()=>{
 
 ##form key
 #macro(formKeyScrpt)
+id: '',
     #foreach($item in $tableList)
         $item.field:"",
         #if($qcItem.componentType=="daterange")
@@ -166,5 +175,4 @@ onMounted(()=>{
             }
         #end
     #end
-  
 #end

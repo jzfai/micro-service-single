@@ -1,20 +1,17 @@
 #parse("tableQueryUtils.vm")
 <template>
     <div class="mt-10px query-page-style">
-        <!--操作-->
-        <div class="rowBS">
-            <div class="rowSS mr-30px">
-                #tableGlobalOperatorTmp()
-            </div>
-            <div class="rowSS">
-                <!--条件搜索-->
-                <el-form ref="refSearchForm" :inline="true" :model="searchForm">
-                    #queryFormItemTmp()
-                </el-form>
+        <!--条件搜索-->
+        <el-form ref="refSearchForm" :inline="true" :model="searchForm">
+            #queryFormItemTmp()
+            <el-form-item>
                 <!--查询按钮-->
-                <el-button type="primary" @click="resetBtnClick">查询</el-button>
-                <el-button type="primary" @click="resetForm()">重置</el-button>
-            </div>
+                <el-button type="primary" @click="resetPageReq">查询</el-button>
+                <el-button type="primary" @click="resetForm">重置</el-button>
+            </el-form-item>
+        </el-form>
+        <div class="rowES mb-10px">
+            #tableGlobalOperatorTmp()
         </div>
         <!--表格和分页-->
         <el-table
@@ -40,15 +37,13 @@
     </div>
 </template>
 <script setup lang="ts">
-    defineOptions({ name: 'Brand' })
+    defineOptions({ name: '${basicConfig.apiFileName}' })
     import { useTable } from '@/hooks/global/useTable'
     import { Delete, FolderAdd } from '@element-plus/icons-vue'
     import settings from '@/settings'
-
     let searchForm = reactive({
        #formKeyScrpt()
     })
-
     const selectPageReq = () => {
         const reqConfig = {
             url: '${apiConfig.queryApi}',
@@ -56,12 +51,12 @@
         }
         tableListReq(reqConfig)
     }
-
-
     //重置
     const refSearchForm = $ref(null)
     const resetForm = () => {
         refSearchForm.resetFields()
+        dateRangePacking(['', ''])
+        resetPageReq()
     }
 
     //批量删除
@@ -98,10 +93,9 @@
         routerPush('${basicConfig.apiFileNameFirstCase}Detail', { isDetail: true, row})
     }
     #onMountedScript()
-    #apiDataScript()
     #apiReqScript()
 
-    //引入table-query相关的hooks
+    //引入table-query相关的hooks 方法
     let {
         pageNum,
         pageSize,
@@ -112,7 +106,7 @@
         handleSelectionChange,
         handleCurrentChange,
         handleSizeChange,
-        resetBtnClick,
+        resetPageReq,
         multiDelBtnDill,
         tableDelDill
     } = useTable(searchForm, selectPageReq)

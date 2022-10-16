@@ -23,15 +23,15 @@
         #elseif($item.componentType=="selectApi") ##selectApi
         <el-form-item prop="${item.field}">
             <el-select
-                    v-model="searchForm.${item.fieldCase}"
+                    v-model="searchForm.${item.field}"
                     clearable
                     placeholder="${item.desc}"
                     class="w-${item.width}px">
                 <el-option
-                        v-for="item in select${item.fieldCase}"
-                        :key="item.${itemKey}"
+                        v-for="item in ${item.field}Data"
+                        :key="item.${item.valueKey}"
                         :label="item.${item.labelKey}"
-                        :value="item.${itemKey}"/>
+                        :value="item.${item.valueKey}"/>
             </el-select>
         </el-form-item>
         #elseif($item.componentType=="daterange") ##datetimerange
@@ -143,26 +143,25 @@ onMounted(()=>{
     selectPageReq()
     #foreach($item in $queryConfig)
         #if($item.componentType=="selectApi")##selectApi
-            ${item.fieldCase}Req()
+            ${item.field}Req()
         #end
     #end
 })
 #end
 
-##api data
-#macro(apiDataScript)
-    #foreach($qcItem in $queryConfig)
-        #if($qcItem.componentType=="selectApi")
-            let  ${qcItem.field}Data=$ref([]),
-        #end
-    #end
-#end
-
 ##api req
 #macro(apiReqScript)
-    #foreach($qcItem in $queryConfig)
-        #if($qcItem.componentType=="selectApi")
-            ${qcItem.fieldCase}Req()
+    #foreach($item in $queryConfig)
+        #if($item.componentType=="selectApi")##selectApi
+        let ${item.field}Data = $ref([])
+        const ${item.field}Req = () => {
+        let reqConfig = {
+        url: '${item.api}',
+        method: '${item.method}',
+        }
+        axiosReq(reqConfig).then(({data}) => {
+            ${item.field}Data = data.records
+        })}
         #end
     #end
 #end

@@ -10,7 +10,7 @@ component: () => import('@/views/${basicConfig.routerParentDir}/${basicConfig.ap
 name: '${basicConfig.apiFileNameFirstCase}TableQuery',
 meta: { title: '${basicConfig.apiFileName}列表' }
 },
-#if($commonConfig.isAdd||$commonConfig.isEdit)
+#if($tableConfig.isAdd||$tableConfig.isEdit)
 {
 path: '${basicConfig.apiFileName}-add-edit',
 component: () => import('@/views/${basicConfig.routerParentDir}/${basicConfig.apiFileName}/${basicConfig.apiFileNameFirstCase}AddEdit.vue'),
@@ -19,7 +19,7 @@ hidden: true,
 meta: { title: '新增编辑', activeMenu: '/${basicConfig.routerParentDir}/${basicConfig.apiFileName}-table-query' }
 },
 #end
-#if($commonConfig.isDetail)
+#if($tableConfig.isDetail)
 {
 path: '${basicConfig.apiFileName}-detail',
 component: () => import('@/views/${basicConfig.routerParentDir}/${basicConfig.apiFileName}/${basicConfig.apiFileNameFirstCase}Detail.vue'),
@@ -27,6 +27,6 @@ name: '${basicConfig.apiFileNameFirstCase}Detail',
 hidden: true,
 meta: { title: '详情', activeMenu: '/${basicConfig.routerParentDir}/${basicConfig.apiFileName}-table-query' }
 }
+#end
 ]
 }
-#end
