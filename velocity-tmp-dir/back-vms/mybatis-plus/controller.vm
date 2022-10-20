@@ -75,6 +75,7 @@ public ResResult< List<${dbTableConfig.tableNameCase}> > selectBatchIds(@Request
 return new ResResult().success(this.${dbTableConfig.tableName}Service.selectBatchIds(idList));
 }
 
+
 /**
 * 新增数据
 *

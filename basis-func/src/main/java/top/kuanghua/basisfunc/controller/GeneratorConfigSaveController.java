@@ -22,7 +22,6 @@ import java.util.List;
  */
 @Api(tags = "配置信息")
 @RestController
-@CrossOrigin
 @RequestMapping("generatorConfigSave")
 public class GeneratorConfigSaveController {
 

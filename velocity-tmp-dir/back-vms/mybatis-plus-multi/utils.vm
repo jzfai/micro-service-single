@@ -17,6 +17,7 @@
         @NotEmpty(message = "${item.field}不能为空")
         #end
     #end
+
     #if($item.rule=="upZeroInt")
     @Pattern(regexp = "^\+?[1-9]\d*$",message = "${item.field}输入有误-正整数")
     #elseif($item.rule=="zeroInt")
