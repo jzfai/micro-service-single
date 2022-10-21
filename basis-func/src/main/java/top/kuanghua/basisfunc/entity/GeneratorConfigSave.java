@@ -20,13 +20,12 @@ import java.io.Serializable;
 @ApiModel("代码生成配置保存")
 @TableName(value = "t_config_save")
 public class GeneratorConfigSave extends Model<GeneratorConfigSave> {
-    @ApiModelProperty(value = "")
+    @ApiModelProperty(value = "id")
     private Integer id;
     @ApiModelProperty(value = "选中的字段配置")
     private String name;
     @ApiModelProperty(value = "生成的配置")
     private String generatorConfig;
-
     @ApiModelProperty(value = "是否删除", hidden = true)
     @TableLogic
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
