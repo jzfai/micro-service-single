@@ -130,6 +130,22 @@ public class UserController {
         return new ResResult().success(this.userMapper.deleteById(id));
     }
 
+
+
+    @PostMapping("multiPageTest")
+    @ApiOperation(value = "多分页测试")
+    public Page<Map<String, Object>> multiPageTest() {
+        Page<Map<String, Object>> mapPage = multiPageMapper.queryAllUsers(new Page<>(1, 5));
+        return mapPage;
+    }
+//
+//    @PostMapping("userRegister")
+//    @ApiOperation(value = "用户注册")
+//    public ResResult userRegister(String email,String code,String username,String password){
+//        this.userService.userRegister(email,code,username,password);
+//        return new ResResult().success();
+//    }
+
     @PostMapping("registry")
     @ApiOperation(value = "用户注册")
     public ResResult registry(User user, String code, String password) throws Exception {
@@ -152,20 +168,6 @@ public class UserController {
         return new ResResult().success();
     }
 
-    @PostMapping("multiPageTest")
-    @ApiOperation(value = "多分页测试")
-    public Page<Map<String, Object>> multiPageTest() {
-        Page<Map<String, Object>> mapPage = multiPageMapper.queryAllUsers(new Page<>(1, 5));
-        return mapPage;
-    }
-//
-//    @PostMapping("userRegister")
-//    @ApiOperation(value = "用户注册")
-//    public ResResult userRegister(String email,String code,String username,String password){
-//        this.userService.userRegister(email,code,username,password);
-//        return new ResResult().success();
-//    }
-
     @PostMapping("changePassword")
     @ApiOperation(value = "修改密码")
     public ResResult changePassword(
@@ -182,6 +184,15 @@ public class UserController {
         Map tokenInfo = JSON.parseObject(URLDecoder.decode(TOKEN_INFO, "utf-8"));
         return new ResResult().success(tokenInfo);
     }
+    /**
+     * 重置用用户名：如果用用户存在先删除原有用户在新增一个用户，没有则新建用户
+     */
+    @PostMapping("resetUser")
+    @ApiOperation(value = "重置用户(有则删除在新增)")
+    public ResResult resetUser(String username) {
+        this.userService.resetUser(username);
+        return new ResResult().success();
+    }
 
 
     @PostMapping("insertUser")
@@ -192,13 +203,5 @@ public class UserController {
     }
 
 
-    /**
-     * 重置用用户名：如果用用户存在先删除原有用户在新增一个用户，没有则新建用户
-     */
-    @PostMapping("resetUser")
-    @ApiOperation(value = "重置用户(有则删除在新增)")
-    public ResResult resetUser(String username) {
-        this.userService.resetUser(username);
-        return new ResResult().success();
-    }
+
 }

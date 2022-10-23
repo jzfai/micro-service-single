@@ -1,0 +1,13 @@
+package top.kuanghua.basisfunc.mapper;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import top.kuanghua.basisfunc.entity.User;
+/**
+*  用户Mapper
+*
+* @author 熊猫哥
+* @since 2022-10-07 16:33:13
+*/
+
+public interface UserMapper extends BaseMapper< User > {
+
+}

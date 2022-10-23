@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ComponentScan(basePackages = {
         "top.kuanghua.commonpom",
+        "top.kuanghua.authpom",
         "top.kuanghua.basisfunc"
 })
 @MapperScan(basePackages = {"top.kuanghua.basisfunc.mapper"})

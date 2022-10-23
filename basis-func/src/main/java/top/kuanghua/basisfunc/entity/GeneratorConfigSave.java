@@ -30,7 +30,6 @@ public class GeneratorConfigSave extends Model<GeneratorConfigSave> {
     @TableLogic
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String deleted;
-
     /**
      * 获取主键值
      *

@@ -10,10 +10,7 @@ import top.kuanghua.commonpom.utils.ObjSelfUtils;
 import top.kuanghua.commonpom.utils.SelfObjUtils;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -43,11 +40,25 @@ public class PermissionService {
         return  newPage;
     }
 
+    /*传入plateFormId 返回 permissionArr*/
+    public List<PermissionVo> selectList(Integer plateFormId) {
+        QueryWrapper<Permission> wrapper = new QueryWrapper<>();
+        wrapper.eq("plate_form_id",plateFormId);
+        wrapper.eq("parent_id",0).orderByDesc("sort");
+        List<Permission> permissionList = this.permissionMapper.selectList(wrapper);
+        List<PermissionVo> arrayList = JSON.parseArray(JSON.toJSONString(permissionList), PermissionVo.class);
+        arrayList.forEach((listItem) -> {
+            List<PermissionVo> childrenArr =getPermissionList(listItem.getId());
+            listItem.setChildren(childrenArr);
+        });
+        return  arrayList;
+    }
+
     /*递归查询children数据*/
     public List<PermissionVo> getPermissionList(Long parentId) {
         QueryWrapper<Permission> queryWrapper = new QueryWrapper<>();
         //权限ID
-        queryWrapper.eq("parent_id",parentId);
+        queryWrapper.eq("parent_id",parentId).orderByDesc("sort");
         List<Permission> parentList = this.permissionMapper.selectList(queryWrapper);
         List<PermissionVo> permissionVoList = parentList.stream().map(mItem -> {
             PermissionVo permissionVo = JSON.parseObject(JSON.toJSONString(mItem), PermissionVo.class);
@@ -69,7 +80,12 @@ public class PermissionService {
     }
 
     public int insert(Permission permission) {
-    return this.permissionMapper.insert(permission);
+        if (SelfObjUtils.isNotEmpty(permission.getParentId())) {
+            Permission parentInfo = this.permissionMapper.selectById(permission.getParentId());
+            parentInfo.setParentNode(1L);
+            this.permissionMapper.updateById(parentInfo);
+        }
+        return this.permissionMapper.insert(permission);
     }
 
     public int updateById(Permission permission) {
