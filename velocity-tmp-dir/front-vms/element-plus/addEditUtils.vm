@@ -89,8 +89,8 @@
         #elseif($item.componentType=="uploadImage")
         <el-form-item label="${item.desc}" prop="${item.field}" :rules="formRules.${item.rule}('请先上传${item.desc}')">
             <div class="rowSE">
-                <img v-if="subForm.image" :src="subForm.image" class="w-120px h-120px" style="border-radius: 6px" />
-                <div :class="[subForm.image && 'ml-10px']" class="rowSS">
+                <img v-if="subForm.${item.field}" :src="subForm.${item.field}" class="w-120px h-120px" style="border-radius: 6px" />
+                <div :class="[subForm.${item.field} && 'ml-10px']" class="rowSS">
                     <el-button type="primary" @click="${item.field}UploadFile">
                         <i class="el-icon-upload2" />
                         上传

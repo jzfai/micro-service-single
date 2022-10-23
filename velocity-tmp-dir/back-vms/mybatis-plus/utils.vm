@@ -51,7 +51,7 @@
             #if($item.isNeedInput=="true")
             @ApiImplicitParam(name = "$item.field", value = "$item.desc",paramType = "query", required = true),
             #else
-            @ApiImplicitParam(name = "$item.field", value = "$item.desc",paramType = "query"),
+            @ApiImplicitParam(name = "$item.field", value = "$item.desc",paramType = "query",required = "$item.isNeedInput"),
             #end
         #end
     #end

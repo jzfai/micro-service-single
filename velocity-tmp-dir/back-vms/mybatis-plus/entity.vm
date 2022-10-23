@@ -17,15 +17,19 @@ import javax.validation.constraints.Pattern;
 public class ${dbTableConfig.tableNameCase} extends Model< ${dbTableConfig.tableNameCase} > {
 #foreach($item in $formConfig)
     #if($item.field=="createTime")
-    @ApiModelProperty(value = "$item.desc",hidden = true)
+    @ApiModelProperty(value = "$item.desc",hidden="$item.isNotShowSwagger")
     @TableField(fill = FieldFill.INSERT)
     private ${item.type} $item.field;
     #elseif($item.field=="updateTime")
-    @ApiModelProperty(value = "$item.desc",hidden = true)
+    @ApiModelProperty(value = "$item.desc",hidden="$item.isNotShowSwagger")
     @TableField(fill = FieldFill.UPDATE)
     private ${item.type} $item.field;
+    #elseif($item.field=="deleted")
+    @TableLogic
+    @ApiModelProperty(value = "$item.desc",hidden="$item.isNotShowSwagger")
+    private ${item.type} $item.field;
     #else
-    @ApiModelProperty(value = "$item.desc",hidden=$item.isNotShowSwagger)
+    @ApiModelProperty(value = "$item.desc",hidden="$item.isNotShowSwagger")
         #getValid($item)
     private ${item.type} $item.field;
     #end

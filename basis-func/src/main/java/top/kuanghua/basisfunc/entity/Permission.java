@@ -35,6 +35,8 @@ public class Permission extends Model<Permission> {
     private Integer plateFormId;
     @ApiModelProperty(value = "是否时父元素;0:不是,1:是", hidden = false)
     private Long parentNode;
+    @ApiModelProperty(value = "排序", hidden = false)
+    private Integer sort;
     @ApiModelProperty(value = "权限唯一CODE代码", hidden = false)
     @NotBlank(message = "code不能为空")
     private String code;
@@ -62,6 +64,12 @@ public class Permission extends Model<Permission> {
     private String icon;
     @ApiModelProperty(value = "重定向路径", hidden = false)
     private String redirect;
+    @ApiModelProperty(value = "当只有一个菜单是否显示子项;0:隐藏,1:显示", hidden = false)
+    private Integer alwaysShow;
+    @ApiModelProperty(value = "子项是否隐藏;0:显示,1:隐藏", hidden = false)
+    private Integer hidden;
+    @ApiModelProperty(value = "路由项额外字段", hidden = false)
+    private String extra;
     @ApiModelProperty(value = "修改时间", hidden = true)
     @TableField(fill = FieldFill.UPDATE)
     private Date updateTime;

@@ -183,7 +183,20 @@ public class UserService {
             throw new RuntimeException("修改密码失败");
         }
     }
-
+    /**
+     * 重置用用户名：如果用用户存在先删除原有用户在新增一个用户，没有则新建用户
+     */
+    public void resetUser(String username) {
+        QueryWrapper<User> userWrap = new QueryWrapper<User>().eq("username", username);
+        List<User> users = userMapper.selectList(userWrap);
+        //用户存在,先删除用户
+        if (users.size() == 1) {
+            userMapper.delete(userWrap);
+        } else {
+            //新增用户
+            this.insertUser(username);
+        }
+    }
 
     /**
      * 插入用户
@@ -205,22 +218,6 @@ public class UserService {
             user.setSalt(salt);
             user.setPassword(CodecUtils.md5Hex(user.getPassword(), salt));
             userMapper.insert(user);
-        }
-    }
-
-
-    /**
-     * 重置用用户名：如果用用户存在先删除原有用户在新增一个用户，没有则新建用户
-     */
-    public void resetUser(String username) {
-        QueryWrapper<User> userWrap = new QueryWrapper<User>().eq("username", username);
-        List<User> users = userMapper.selectList(userWrap);
-        //用户存在,先删除用户
-        if (users.size() == 1) {
-            userMapper.delete(userWrap);
-        } else {
-            //新增用户
-            this.insertUser(username);
         }
     }
 }

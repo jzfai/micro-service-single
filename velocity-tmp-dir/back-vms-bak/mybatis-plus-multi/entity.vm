@@ -12,11 +12,11 @@ import java.util.*;
 public class ${currentTbConfig.tableNameCase} extends Model< ${currentTbConfig.tableNameCase} > {
 #foreach($item in $dbTableConfig.tableFieldArr)
     #if($item.field=="createTime")
-    @ApiModelProperty(value = "$item.desc",hidden = true)
+    @ApiModelProperty(value = "$item.desc",hidden="$item.isNotShowSwagger")
     @TableField(fill = FieldFill.INSERT)
     private ${item.type} $item.field;
     #elseif($item.field=="updateTime")
-    @ApiModelProperty(value = "$item.desc",hidden = true)
+    @ApiModelProperty(value = "$item.desc",hidden="$item.isNotShowSwagger")
     @TableField(fill = FieldFill.UPDATE)
     private ${item.type} $item.field;
     #else

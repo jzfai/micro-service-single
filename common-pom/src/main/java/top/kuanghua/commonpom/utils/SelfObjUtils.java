@@ -7,6 +7,7 @@ import top.kuanghua.commonpom.entity.ResResult;
 
 import java.io.File;
 import java.lang.reflect.Array;
+import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -173,5 +174,18 @@ public class SelfObjUtils {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static boolean arrayContainsKey(String[] arr, String targetValue) {
+        return Arrays.asList(arr).contains(targetValue);
+    }
+
+    public static boolean listContainsKey(String[] arr, String targetValue) {
+        return Arrays.asList().contains(targetValue);
+    }
+
+    //json序列化
+    public static <T> T parseObject(Object text, Class<T> clazz) {
+        return  JSON.parseObject(JSON.toJSONString(text),clazz);
     }
 }
