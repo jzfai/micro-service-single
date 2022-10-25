@@ -29,6 +29,7 @@ import top.kuanghua.commonpom.utils.SelfObjUtils;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -164,15 +165,14 @@ public class UserController {
     }
 
 
-
     @PostMapping("loginValid")
     @ApiOperation(value = "登录校验")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "keyword", value = "用户名或手机号", paramType = "query",required = true),
+            @ApiImplicitParam(name = "keyword", value = "用户名或手机号", paramType = "query", required = true),
             @ApiImplicitParam(name = "password", value = "密码", paramType = "query", required = true),
     })
-    public ResResult loginValid(String keyword,String password) {
-        HashMap<String, Object> hm = this.userService.loginValid(keyword,password);
+    public ResResult loginValid(String keyword, String password) {
+        HashMap<String, Object> hm = this.userService.loginValid(keyword, password);
         return new ResResult().success(hm);
     }
 
@@ -196,22 +196,25 @@ public class UserController {
     @PostMapping("getUserInfo")
     @ApiOperation(value = "获取用户信息")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "userId", value = "用户ID", paramType = "query",required = true),
+            @ApiImplicitParam(name = "userId", value = "用户ID", paramType = "query", required = true),
             @ApiImplicitParam(name = "plateFormId", value = "平台id", paramType = "query", required = true),
     })
-    public ResResult<Map> getUserInfo(@ApiIgnore @RequestHeader("TOKEN_INFO") String TOKEN_INFO, Integer plateFormId)  {
+    public ResResult<Map> getUserInfo(@ApiIgnore @RequestHeader("TOKEN_INFO") String TOKEN_INFO, Integer plateFormId) {
         Map tokenInfo = null;
         try {
             tokenInfo = JSON.parseObject(URLDecoder.decode(TOKEN_INFO, "utf-8"));
-            User userInfo =SelfObjUtils.parseObject(tokenInfo.get("userInfo"),User.class);
-            List<String> roleCodeArr = this.userService.getRoleCodeArrByUserId(userInfo.getId());
-            tokenInfo.put("roleCodeArr",roleCodeArr);
-            tokenInfo.put("menuList",this.userService.getPermissionByUserId(userInfo.getId(),plateFormId));
+            User userInfo = SelfObjUtils.parseObject(tokenInfo.get("userInfo"), User.class);
+            List<String> roles = this.userService.getRoleCodeArrByUserId(userInfo.getId());
+            HashSet<Long> codes = this.userService.getCodesByUserId(userInfo.getId(), plateFormId);
+            tokenInfo.put("roles", roles);
+            tokenInfo.put("codes", codes);
+            tokenInfo.put("menuList", this.userService.getPermissionByUserId(userInfo.getId(), plateFormId));
         } catch (UnsupportedEncodingException e) {
-          throw  new RuntimeException("获取用户信息有误");
+            throw new RuntimeException("获取用户信息有误");
         }
         return new ResResult().success(tokenInfo);
     }
+
     /**
      * 重置用用户名：如果用用户存在先删除原有用户在新增一个用户，没有则新建用户
      */
@@ -229,9 +232,11 @@ public class UserController {
         this.userService.insertUser(username);
         return new ResResult().success();
     }
+
     /**
      * 根据用户id获取权限
-     * @param userId 用户id
+     *
+     * @param userId      用户id
      * @param plateFormId 平台id
      * @author 猫哥
      * @date 2022/10/22 16:27
@@ -239,10 +244,10 @@ public class UserController {
     @PostMapping("getPermissionByUserId")
     @ApiOperation(value = "根据用户id获取权限")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "userId", value = "用户ID", paramType = "query",required = true),
+            @ApiImplicitParam(name = "userId", value = "用户ID", paramType = "query", required = true),
             @ApiImplicitParam(name = "plateFormId", value = "平台id", paramType = "query", required = true),
     })
     public ResResult<List<PermissionVo>> getPermissionByUserId(Long userId, Integer plateFormId) {
-        return new ResResult().success( this.userService.getPermissionByUserId(userId,plateFormId));
+        return new ResResult().success(this.userService.getPermissionByUserId(userId, plateFormId));
     }
 }
