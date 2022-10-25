@@ -60,8 +60,8 @@ public class PermissionController {
             @ApiImplicitParam(name = "createTime", value = "创建时间", paramType = "query"),
     })
     public ResResult<List<PermissionVo>> selectPage(@ApiIgnore() String id, @ApiIgnore() String parentId, String code,
-                                                  @ApiIgnore() String creator, @ApiIgnore() String editor, String name,
-                                                  @ApiIgnore() String category,Integer plateFormId, String title, String createTime, SelfCommonParams commonParams) {
+                                                    @ApiIgnore() String creator, @ApiIgnore() String editor, String name,
+                                                    @ApiIgnore() String category, Integer plateFormId, String title, String createTime, SelfCommonParams commonParams) {
         QueryWrapper<Permission> queryWrapper = new QueryWrapper<>();
         //权限ID
         if (ObjSelfUtils.isNotEmpty(id)) {
@@ -107,7 +107,7 @@ public class PermissionController {
 
         queryWrapper.select("id,parent_id,code,intro,creator,editor,path,name,category,component,title,el_svg_icon,icon,redirect,update_time,create_time,plate_form_id,deleted");
 
-        Page<PermissionVo> permissionPage = this.permissionService.selectPage(commonParams.getPageNum(), commonParams.getPageSize(), queryWrapper);
+        Page<PermissionVo> permissionPage = this.permissionService.selectPage(commonParams.getPageNum(), commonParams.getPageSize(), queryWrapper, plateFormId);
         return new ResResult().success(permissionPage);
     }
 
@@ -119,8 +119,8 @@ public class PermissionController {
      */
     @GetMapping("getPermissionList")
     @ApiOperation(value = "递归查询children数据")
-    public ResResult<List<PermissionVo>> getPermissionList(@RequestParam("parentId") Long parentId) {
-        return new ResResult().success(this.permissionService.getPermissionList(parentId));
+    public ResResult<List<PermissionVo>> getPermissionList(@RequestParam("parentId") Long parentId, Integer plateFormId) {
+        return new ResResult().success(this.permissionService.getPermissionList(parentId, plateFormId));
     }
 
     /**
@@ -134,6 +134,7 @@ public class PermissionController {
     public ResResult<Permission> selectById(@RequestParam("id") Long id) {
         return new ResResult().success(this.permissionService.selectById(id));
     }
+
     /**
      * @Description: 根据id数组查询列表
      * @Param: idList id数组

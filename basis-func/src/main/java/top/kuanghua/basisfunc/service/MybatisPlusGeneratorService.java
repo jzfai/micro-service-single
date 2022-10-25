@@ -3,13 +3,13 @@ package top.kuanghua.basisfunc.service;
 import org.apache.velocity.Template;
 import org.apache.velocity.context.Context;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import top.kuanghua.basisfunc.utils.GeneratorTempUtils;
 import top.kuanghua.commonpom.utils.ObjSelfUtils;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 
@@ -255,4 +255,36 @@ public class MybatisPlusGeneratorService {
     }
 
 
+    /**
+     * 测试模板
+     *
+     * @param files 传入的文件数组
+     * @return
+     * @author 猫哥
+     * @date 2022-10-25 9:51
+     */
+    public String generatorTmpDirTemp(List<MultipartFile> files, Map jsonData, String tmpSaveDir, String code) {
+
+        Context context = GeneratorTempUtils.getVelocityContext();
+        context.put("configData", jsonData);
+        context.put("basicConfig", jsonData.get("basicConfig"));
+        context.put("apiConfig", jsonData.get("apiConfig"));
+        context.put("tableList", jsonData.get("tableList"));
+        context.put("tableConfigArr", jsonData.get("tableConfigArr"));
+        context.put("queryConfig", jsonData.get("queryConfig"));
+        context.put("tableConfig", jsonData.get("tableConfig"));
+        try {
+            String codeName = "tmp-code";
+            FileWriter fw = new FileWriter(tmpSaveDir + codeName);
+            fw.write(code);
+            fw.close();
+            Template xmlTemp = GeneratorTempUtils.getTmpSaveDirTemp(tmpSaveDir, codeName);
+
+            Writer xmlWriter = new StringWriter();
+            xmlTemp.merge(context, xmlWriter);
+            return xmlWriter.toString();
+        } catch (IOException e) {
+            throw new RuntimeException("生成临时模版报错" + e);
+        }
+    }
 }
