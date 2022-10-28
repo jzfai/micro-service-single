@@ -41,7 +41,15 @@ public class UserService {
     private TokenService tokenService;
 
     public Page<User> selectPage(Integer pageNum, Integer pageSize, QueryWrapper<User> queryWrapper) {
-        return this.userMapper.selectPage(new Page<User>(pageNum, pageSize), queryWrapper);
+        Page<User> userPage = this.userMapper.selectPage(new Page<User>(pageNum, pageSize), queryWrapper);
+        List<User> userList = userPage.getRecords().stream().map(mItem -> {
+            //转换roleId
+            List<Role> roles = roleMapper.selectBatchIds(JSON.parseArray(mItem.getRoleId(), Long.class));
+            mItem.setRoleId(JSON.toJSONString(roles.stream().map(sItem -> sItem.getName()).collect(Collectors.toList())));
+            return mItem;
+        }).collect(Collectors.toList());
+        userPage.setRecords(userList);
+        return userPage;
     }
 
     public User selectById(Long id) {

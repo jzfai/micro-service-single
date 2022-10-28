@@ -6,7 +6,7 @@ envpt:
   redisPort: 6379
   rabbitIp: ${envpt.baseLinuxIp}
   rabbitPort: 5675
-  tomcatPortPre: 2
+  tomcatPortPre: 3
 
 spring:
   main:
