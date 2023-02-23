@@ -37,11 +37,21 @@ spring:
       fail_on_unknown_properties: false
 
 
+captcha:
+  # 页面 <参数设置> 可开启关闭 验证码校验
+  # 验证码类型 math 数组计算 char 字符验证
+  type: MATH
+  # line 线段干扰 circle 圆圈干扰 shear 扭曲干扰
+  category: CIRCLE
+  # 数字验证码位数
+  numberLength: 1
+  # 字符验证码长度
+  charLength: 4
 
 # 开发环境配置
 server:
   # 服务器的HTTP端口，默认为8080
-  port: 8080
+  port: 8090
   servlet:
     # 应用的访问路径
     context-path: /
@@ -134,14 +144,14 @@ swagger:
     # 标题
     title: '标题：${hugo.name}后台管理系统_接口文档'
     # 描述
-    description: '描述：用于管理集团旗下公司的人员信息,具体包括XXX,XXX模块...'
+    description: '描述：用于管理集团旗下公司的人员信息,具体包括XXX,XXX模块...6666'
     # 版本
-    version: '版本号: ${hugo-vue-plus.version}'
+    version: '版本号: ${micro-service-single.version}'
     # 作者信息
     contact:
       name: hugo
-      email: 869653722@qq.com
-      url: https://github.com/jzfai/micro-service-single.git
+      email: crazylionli@163.com
+      url: https://gitee.com/JavaLionLi/
   components:
     # 鉴权方式配置
     security-schemes:
@@ -150,11 +160,13 @@ swagger:
         in: HEADER
         name: ${sa-token.token-name}
 
-#文档配置
 springdoc:
+  swagger-ui:
+    # 持久化认证数据
+    persistAuthorization: true
   #这里定义了两个分组，可定义多个，也可以不定义
   group-configs:
-    - group: 1.测试模块
+    - group: 1.演示模块
       packages-to-scan: top.hugo.web
 
 # 日志配置

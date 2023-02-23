@@ -16,16 +16,23 @@ import top.hugo.system.service.SysLoginService;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 验证码操作处理
+ *
+ * @author Lion Li
+ */
 @Validated
 @RequiredArgsConstructor
 @RestController
+@RequestMapping("/author")
 public class LoginController {
+
     private final SysLoginService loginService;
+
     /**
      * 登录方法
      *
      * @param loginBody 登录信息
-     * @return 结果
      */
     @SaIgnore
     @PostMapping("/login")
@@ -49,13 +56,11 @@ public class LoginController {
     }
 
     /**
-     * 退出登录
+     * 获取用户信息
      */
-
     @PostMapping("/getUserInfo")
     public R<SaTokenInfo> getUserInfo() {
         SaTokenInfo userInfo = loginService.getUserInfo();
-
         return R.ok(userInfo);
     }
 }

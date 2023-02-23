@@ -11,8 +11,6 @@ public class LoginHelper {
     public static final String JOIN_CODE = ":";
     public static final String LOGIN_USER_KEY = "loginUser";
 
-
-
     /**
      * 登录系统 基于 设备类型
      * 针对相同用户体系不同设备
@@ -20,9 +18,8 @@ public class LoginHelper {
      * @param loginUser 登录用户信息
      */
     public static void loginByDevice(LoginUser loginUser, DeviceType deviceType) {
-//        SaHolder.getStorage().set(LOGIN_USER_KEY, loginUser);
+        // SaHolder.getStorage().set(LOGIN_USER_KEY, loginUser);
         StpUtil.login(loginUser.getLoginId(), deviceType.getDevice());
-//        setLoginUser(loginUser);
+        // setLoginUser(loginUser);
     }
-
 }

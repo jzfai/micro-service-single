@@ -9,7 +9,7 @@ import javax.validation.constraints.NotBlank;
 /**
  * 用户登录对象
  *
- * @author Lion Li
+ * @author 邝华
  */
 
 @Data

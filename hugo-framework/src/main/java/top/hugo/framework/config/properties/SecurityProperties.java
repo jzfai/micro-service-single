@@ -13,8 +13,11 @@ import org.springframework.stereotype.Component;
 @Component
 @ConfigurationProperties(prefix = "security")
 public class SecurityProperties {
+
     /**
      * 排除路径
      */
     private String[] excludes;
+
+
 }

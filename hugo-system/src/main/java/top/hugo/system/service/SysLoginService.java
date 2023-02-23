@@ -19,8 +19,8 @@ import top.hugo.common.entity.SysUser;
 import top.hugo.common.enums.DeviceType;
 import top.hugo.common.enums.LoginType;
 import top.hugo.common.enums.UserStatus;
-import top.hugo.common.execption.CaptchaExpireException;
-import top.hugo.common.execption.UserException;
+import top.hugo.common.exception.user.CaptchaExpireException;
+import top.hugo.common.exception.user.UserException;
 import top.hugo.common.helper.LoginHelper;
 import top.hugo.common.utils.RedisUtils;
 import top.hugo.common.utils.ServletUtils;
@@ -42,6 +42,9 @@ public class SysLoginService {
 
     @Value("${user.password.lockTime}")
     private Integer lockTime;
+
+    @Value("${sa-token.token-prefix}")
+    private String tokenPrefix;
 
     /**
      * 登录验证
@@ -68,7 +71,7 @@ public class SysLoginService {
         LoginUser loginUser = buildLoginUser(user);
         // 生成token
         LoginHelper.loginByDevice(loginUser, DeviceType.PC);
-        return StpUtil.getTokenValue();
+        return tokenPrefix+" "+StpUtil.getTokenValue();
     }
 
     /**
@@ -77,14 +80,14 @@ public class SysLoginService {
     private LoginUser buildLoginUser(SysUser user) {
         LoginUser loginUser = new LoginUser();
         loginUser.setUserId(user.getUserId());
-//        loginUser.setDeptId(user.getDeptId());
+        // loginUser.setDeptId(user.getDeptId());
         loginUser.setUsername(user.getUserName());
         loginUser.setUserType(user.getUserType());
-//        loginUser.setMenuPermission(permissionService.getMenuPermission(user));
-//        loginUser.setRolePermission(permissionService.getRolePermission(user));
-//        loginUser.setDeptName(ObjectUtil.isNull(user.getDept()) ? "" : user.getDept().getDeptName());
-//        List<RoleDTO> roles = BeanUtil.copyToList(user.getRoles(), RoleDTO.class);
-//        loginUser.setRoles(roles);
+        // loginUser.setMenuPermission(permissionService.getMenuPermission(user));
+        // loginUser.setRolePermission(permissionService.getRolePermission(user));
+        // loginUser.setDeptName(ObjectUtil.isNull(user.getDept()) ? "" : user.getDept().getDeptName());
+        // List<RoleDTO> roles = BeanUtil.copyToList(user.getRoles(), RoleDTO.class);
+        // loginUser.setRoles(roles);
         return loginUser;
     }
     /**

@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import top.hugo.common.constant.UserConstants;
 import top.hugo.common.domain.BaseEntity;
-import top.hugo.common.execption.xss.Xss;
+import top.hugo.common.xss.Xss;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;

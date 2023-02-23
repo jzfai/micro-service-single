@@ -3,7 +3,7 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>hugo-parent</artifactId>
+        <artifactId>micro-service-single</artifactId>
         <groupId>top.hugo</groupId>
         <version>4.4.0</version>
     </parent>
@@ -23,12 +23,12 @@
             <artifactId>spring-boot-devtools</artifactId>
             <optional>true</optional> <!-- 表示依赖不会传递 -->
         </dependency>
-
-        <!-- Mysql驱动包 -->
         <dependency>
-            <groupId>com.mysql</groupId>
-            <artifactId>mysql-connector-j</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
         </dependency>
+        <!--核心模块-->
         <dependency>
             <groupId>top.hugo</groupId>
             <artifactId>hugo-framework</artifactId>
@@ -37,6 +37,11 @@
         <dependency>
             <groupId>top.hugo</groupId>
             <artifactId>hugo-system</artifactId>
+            <version>4.4.0</version>
+        </dependency>
+        <dependency>
+            <groupId>top.hugo</groupId>
+            <artifactId>hugo-generator</artifactId>
             <version>4.4.0</version>
         </dependency>
     </dependencies>
