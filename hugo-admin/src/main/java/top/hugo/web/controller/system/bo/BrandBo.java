@@ -1,4 +1,4 @@
-package top.hugo.web.controller.bo;
+package top.hugo.web.controller.system.bo;
 
 import lombok.Data;
 

@@ -50,7 +50,6 @@ public class SysLoginService {
      * 登录验证
      *
      * @param username 用户名
-     *
      * @param password 密码
      * @param code     验证码
      * @param uuid     唯一标识
@@ -71,7 +70,8 @@ public class SysLoginService {
         LoginUser loginUser = buildLoginUser(user);
         // 生成token
         LoginHelper.loginByDevice(loginUser, DeviceType.PC);
-        return tokenPrefix+" "+StpUtil.getTokenValue();
+        return StpUtil.getTokenValue();
+        //return tokenPrefix+" "+StpUtil.getTokenValue();
     }
 
     /**
@@ -178,6 +178,7 @@ public class SysLoginService {
             StpUtil.logout();
             //recordLogininfor(loginUser.getUsername(), Constants.LOGOUT, MessageUtils.message("user.logout.success"));
         } catch (NotLoginException ignored) {
+
         }
     }
 

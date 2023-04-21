@@ -4,10 +4,7 @@ import cn.dev33.satoken.annotation.SaIgnore;
 import cn.dev33.satoken.stp.SaTokenInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import top.hugo.common.constant.Constants;
 import top.hugo.common.domain.R;
 import top.hugo.common.domain.model.LoginBody;
@@ -58,7 +55,7 @@ public class LoginController {
     /**
      * 获取用户信息
      */
-    @PostMapping("/getUserInfo")
+    @GetMapping("/userInfo")
     public R<SaTokenInfo> getUserInfo() {
         SaTokenInfo userInfo = loginService.getUserInfo();
         return R.ok(userInfo);
