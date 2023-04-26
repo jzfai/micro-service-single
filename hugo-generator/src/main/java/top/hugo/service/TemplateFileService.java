@@ -10,11 +10,10 @@ import org.apache.velocity.shaded.commons.io.FilenameUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import top.hugo.entity.TemplateFile;
-import top.hugo.service.mapper.TemplateFileMapper;
+import top.hugo.mapper.TemplateFileMapper;
 import top.hugo.utils.FileSelfUtils;
 import top.hugo.utils.GeneratorTempUtils;
 import top.hugo.utils.ObjSelfUtils;
-
 
 import javax.annotation.Resource;
 import java.io.*;

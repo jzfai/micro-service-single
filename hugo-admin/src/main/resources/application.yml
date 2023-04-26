@@ -101,7 +101,7 @@ mybatis-plus:
   # 对应的 XML 文件位置
   mapperLocations: classpath*:mapper/**/*Mapper.xml
   # 实体扫描，多个package用逗号或者分号分隔
-  typeAliasesPackage: com.hugo.**.domain
+  typeAliasesPackage: top.hugo.**.domain,top.hugo.**.entity,top.hugo.**.vo,top.hugo.**.bo
   # 启动时是否检查 MyBatis XML 文件的存在，默认不检查
   checkConfigLocation: false
   configuration:
@@ -172,7 +172,7 @@ springdoc:
 # 日志配置
 logging:
   level:
-    com.hugo: @logging.level@
+    top.hugo: @logging.level@
     org.springframework: info
   config: classpath:logback.xml
 
@@ -186,6 +186,7 @@ security:
     - /**/*.html
     - /**/*.css
     - /**/*.js
+    - /login
     # swagger 文档配置
     - /favicon.ico
     - /*/api-docs

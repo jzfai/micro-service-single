@@ -198,12 +198,28 @@
                 <artifactId>redisson-spring-data-27</artifactId>
                 <version>${redisson.version}</version>
             </dependency>
-
             <dependency>
                 <groupId>com.baomidou</groupId>
                 <artifactId>lock4j-redisson-spring-boot-starter</artifactId>
                 <version>${lock4j.version}</version>
             </dependency>
+
+            <!--   &lt;!&ndash;核心模块&ndash;&gt;-->
+            <!--   <dependency>-->
+            <!--       <groupId>top.hugo</groupId>-->
+            <!--       <artifactId>hugo-framework</artifactId>-->
+            <!--       <version>4.4.0</version>-->
+            <!--   </dependency>-->
+            <!--   <dependency>-->
+            <!--       <groupId>top.hugo</groupId>-->
+            <!--       <artifactId>hugo-system</artifactId>-->
+            <!--       <version>4.4.0</version>-->
+            <!--   </dependency>-->
+            <!--   <dependency>-->
+            <!--       <groupId>top.hugo</groupId>-->
+            <!--       <artifactId>hugo-generator</artifactId>-->
+            <!--       <version>4.4.0</version>-->
+            <!--   </dependency>-->
         </dependencies>
     </dependencyManagement>
 <!--    <repositories>-->
