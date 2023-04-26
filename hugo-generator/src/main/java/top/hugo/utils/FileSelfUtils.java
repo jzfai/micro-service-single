@@ -4,11 +4,11 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 /**
  * @Title: FileSelfUtils
@@ -125,7 +125,6 @@ public class FileSelfUtils {
             log.info("已存在" + path);
         }
     }
-
     /**
      * 递归删除文件夹
      *
@@ -136,7 +135,6 @@ public class FileSelfUtils {
         File directory = new File(path);
         deleteDeepDir(directory);
     }
-
     public static void deleteDeepDir(File directory) {
         //获取目录下所有文件和目录
         File files[] = directory.listFiles();
@@ -151,5 +149,39 @@ public class FileSelfUtils {
         //最终把该目录也删除
         directory.delete();
         log.info(directory.getName() + "：：目录已删除");
+    }
+    public static void downloadZip(OutputStream outputStream, File file){
+        BufferedInputStream bufferedInputStream = null;
+        ZipOutputStream zipOutputStream = null;
+        try {
+            byte[] buf = new byte[2048];
+            int len;
+            FileInputStream in = new FileInputStream(file);
+            while ((len = in.read(buf)) != -1) {
+                outputStream.write(buf, 0, len);
+                outputStream.flush();
+            }
+            outputStream.flush();
+            outputStream.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            // 关闭流
+            try {
+                if (bufferedInputStream != null) {
+                    bufferedInputStream.close();
+                }
+                if (zipOutputStream != null ) {
+                    zipOutputStream.close();
+                }
+                if (outputStream != null) {
+                    outputStream.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 }

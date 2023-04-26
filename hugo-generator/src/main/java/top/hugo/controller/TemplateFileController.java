@@ -28,10 +28,9 @@ import java.util.Map;
  * @since 2022-12-07 13:51:06
  */
 @RestController
-@RequestMapping("templateFile")
+@RequestMapping("basis-func/templateFile")
 @Validated
 public class TemplateFileController {
-
     @Resource
     private TemplateFileService templateFileService;
 
@@ -151,12 +150,12 @@ public class TemplateFileController {
         //生成模板
         Map<String, Object> JsonMap = JSON.parseObject(jsonData, Map.class);
         String exportFilePath = this.templateFileService.generatorTemplateFileByConfig(JsonMap, id, fileNamePre);
-        response.setContentType("application/zip");
+        response.setContentType("application/octet-stream");
+        response.setHeader("content-type", "application/octet-stream");
         response.setHeader("Access-Control-Expose-Headers", "exportFileName");
         response.setHeader("exportFileName", "back-temp-" + ObjSelfUtils.getCurrentDateTimeTrim() + ".zip");
         //你压缩包路径
         GeneratorTempUtils.downloadZip(response, exportFilePath);
-
     }
 
     @PostMapping("downZipByTemplateFileId")

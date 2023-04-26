@@ -225,13 +225,11 @@ public class GeneratorTempUtils {
             throw new RuntimeException("文件不存在");
         }
         try {
-            ZipFile zipFile = new ZipFile(file);
-            InputStream fis = new FileInputStream(zipFile.getFile());
-            IOUtils.copy(fis, response.getOutputStream());
-            fis.close();
-        } catch (Exception e) {
+            FileSelfUtils.downloadZip(response.getOutputStream(),file);
+        } catch (IOException e) {
             e.printStackTrace();
         }
+
         log.info(exportFilePath + "被删除了");
         log.info(getNeedZipDir() + "被删除了");
         deleteFile(exportFilePath);

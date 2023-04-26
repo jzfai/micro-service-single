@@ -19,7 +19,7 @@ import java.util.Map;
  * @create 2022/6/3 8:53
  */
 @RestController
-@RequestMapping("dataBase")
+@RequestMapping("basis-func/dataBase")
 public class DataBaseController {
     @Resource
     private DataBaseService dataBaseService;

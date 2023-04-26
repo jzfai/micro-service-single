@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tools>
+    <!--scope : 指定工具类的作用范围, 取值有三种 : application , request , session -->
+    <toolbox scope="application">
+        <tool key="number" class="org.apache.velocity.tools.generic.NumberTool"/>
+        <tool key="math" class="org.apache.velocity.tools.generic.MathTool"/>
+        <tool class="org.apache.velocity.tools.generic.DateTool" format="yyyy-MM-dd"/>
+        <tool key="esc" class="org.apache.velocity.tools.generic.EscapeTool"/>
+        <tool key="collection" class="org.apache.velocity.tools.generic.CollectionTool" stringsDelimiter=" "/>
+        <tool class="org.apache.velocity.tools.generic.ClassTool"/>
+        <tool key="field" class="org.apache.velocity.tools.generic.FieldTool"/>
+    </toolbox>
+    <toolbox scope="request">
+        <tool key="context" class="org.apache.velocity.tools.generic.ContextTool"/>
+        <tool key="render" class="org.apache.velocity.tools.generic.RenderTool"/>
+    </toolbox>
+</tools>

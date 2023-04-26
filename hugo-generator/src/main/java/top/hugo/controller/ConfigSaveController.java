@@ -20,7 +20,7 @@ import java.util.List;
  * @since 2022-07-20 10:10:28
  */
 @RestController
-@RequestMapping("configSave")
+@RequestMapping("basis-func/configSave")
 public class ConfigSaveController {
 
     @Resource

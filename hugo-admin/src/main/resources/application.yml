@@ -191,3 +191,4 @@ security:
     - /favicon.ico
     - /*/api-docs
     - /*/api-docs/**
+    - /basis-func/**

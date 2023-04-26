@@ -23,7 +23,7 @@ import java.util.Map;
  */
 
 @RestController
-@RequestMapping("upload")
+@RequestMapping("basis-func/upload")
 @Slf4j
 public class GoFastDFSController {
     @PostMapping("file")
