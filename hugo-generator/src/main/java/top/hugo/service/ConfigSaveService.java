@@ -4,9 +4,8 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.stereotype.Service;
 import top.hugo.entity.ConfigSave;
-import top.hugo.service.mapper.ConfigSaveMapper;
+import top.hugo.mapper.ConfigSaveMapper;
 import top.hugo.utils.ObjSelfUtils;
-
 
 import javax.annotation.Resource;
 import java.util.List;

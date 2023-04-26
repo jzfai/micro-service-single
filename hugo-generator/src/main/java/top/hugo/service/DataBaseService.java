@@ -1,7 +1,7 @@
 package top.hugo.service;
 
 import org.springframework.stereotype.Service;
-import top.hugo.service.mapper.DataBaseMapper;
+import top.hugo.mapper.DataBaseMapper;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;

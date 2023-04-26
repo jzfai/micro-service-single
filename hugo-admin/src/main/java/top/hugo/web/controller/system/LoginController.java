@@ -1,16 +1,26 @@
 package top.hugo.web.controller.system;
 
 import cn.dev33.satoken.annotation.SaIgnore;
-import cn.dev33.satoken.stp.SaTokenInfo;
+import cn.dev33.satoken.stp.StpUtil;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 import top.hugo.common.constant.Constants;
 import top.hugo.common.domain.R;
 import top.hugo.common.domain.model.LoginBody;
+import top.hugo.system.entity.SysMenu;
+import top.hugo.system.entity.SysUser;
 import top.hugo.system.service.SysLoginService;
+import top.hugo.system.service.SysMenuService;
+import top.hugo.system.vo.RouterVo;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -21,10 +31,10 @@ import java.util.Map;
 @Validated
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/author")
 public class LoginController {
 
     private final SysLoginService loginService;
+    private final SysMenuService menuService;
 
     /**
      * 登录方法
@@ -32,7 +42,7 @@ public class LoginController {
      * @param loginBody 登录信息
      */
     @SaIgnore
-    @PostMapping("/login")
+    @PostMapping("login")
     public R<Map<String, Object>> login(@Validated @RequestBody LoginBody loginBody) {
         Map<String, Object> ajax = new HashMap<>();
         // 生成令牌
@@ -45,8 +55,7 @@ public class LoginController {
     /**
      * 退出登录
      */
-    @SaIgnore
-    @PostMapping("/logout")
+    @PostMapping("logout")
     public R<Void> logout() {
         loginService.logout();
         return R.ok("退出成功");
@@ -54,11 +63,30 @@ public class LoginController {
 
     /**
      * 获取用户信息
+     *
+     * @return
      */
-    @GetMapping("/userInfo")
-    public R<SaTokenInfo> getUserInfo() {
-        SaTokenInfo userInfo = loginService.getUserInfo();
-        return R.ok(userInfo);
+    @GetMapping("getInfo")
+    public R<HashMap<String, Object>> getUserInfo() throws JsonProcessingException {
+        ObjectMapper jackson = new ObjectMapper();
+        SysUser sysUser = jackson.readValue(jackson.writeValueAsString(StpUtil.getExtra("user")), SysUser.class);
+        HashMap<String, Object> hm = new HashMap<>();
+        hm.put("user", sysUser);
+        return R.ok(hm);
+    }
+
+
+    /**
+     * 获取路由信息
+     *
+     * @return 路由信息
+     */
+    @GetMapping("getRouters")
+    public R<List<RouterVo>> getRouters() throws JsonProcessingException {
+        ObjectMapper jackson = new ObjectMapper();
+        SysUser sysUser = jackson.readValue(jackson.writeValueAsString(StpUtil.getExtra("user")), SysUser.class);
+        List<SysMenu> menus = menuService.selectMenuTreeByUserId(sysUser.getUserId());
+        return R.ok(menuService.buildMenus(menus));
     }
 }
 
