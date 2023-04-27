@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import top.hugo.domain.ResResult;
+import top.hugo.common.domain.R;
 import top.hugo.service.DataBaseService;
 
 
@@ -25,9 +25,9 @@ public class DataBaseController {
     private DataBaseService dataBaseService;
 
     @GetMapping("getAllDatabaseOrTable/{dbName}")
-    public ResResult getAllTableFromDb(@PathVariable String dbName) {
+    public R<ArrayList<Map>> getAllTableFromDb(@PathVariable String dbName) {
         ArrayList<Map> allTableFromDb = this.dataBaseService.getAllTableFromDb(dbName);
-        return new ResResult().success(allTableFromDb);
+        return R.ok(allTableFromDb);
     }
     /**
      * @param dbName
@@ -35,8 +35,8 @@ public class DataBaseController {
      * @return
      */
     @GetMapping("getAllDatabaseOrTable/{dbName}/{tbName}")
-    public ResResult getAllColumnFromTb(@PathVariable String dbName, @PathVariable String tbName) {
+    public R<ArrayList<Map>> getAllColumnFromTb(@PathVariable String dbName, @PathVariable String tbName) {
         ArrayList<Map> allColumnFromTb = this.dataBaseService.getAllColumnFromTb(dbName, tbName);
-        return new ResResult().success(allColumnFromTb);
+        return R.ok(allColumnFromTb);
     }
 }

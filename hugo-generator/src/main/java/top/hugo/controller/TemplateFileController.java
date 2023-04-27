@@ -1,12 +1,14 @@
 package top.hugo.controller;
 
-import com.alibaba.fastjson.JSON;
+import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import top.hugo.domain.ResResult;
+import top.hugo.bo.TemplateChangeBo;
+import top.hugo.common.domain.R;
+import top.hugo.common.utils.JsonUtils;
 import top.hugo.domain.SelfCommonParams;
 import top.hugo.entity.TemplateFile;
 import top.hugo.service.TemplateFileService;
@@ -40,20 +42,20 @@ public class TemplateFileController {
      * @return ResResult
      */
     @GetMapping("selectPage")
-    public ResResult<List<TemplateFile>> selectPage(String id, String name, SelfCommonParams commonParams) {
+    public R<Page<TemplateFile>> selectPage(String id, String name, SelfCommonParams commonParams) {
         QueryWrapper<TemplateFile> queryWrapper = new QueryWrapper<>();
         //主键id
-        if (ObjSelfUtils.isNotEmpty(id)) {
+        if (ObjectUtil.isNotEmpty(id)) {
             queryWrapper.like("id", id);
         }
         //文件存储名
-        if (ObjSelfUtils.isNotEmpty(name)) {
+        if (ObjectUtil.isNotEmpty(name)) {
             queryWrapper.like("name", name);
         }
 
         queryWrapper.select("id,name,file_arr,create_time,update_time,creator");
         Page<TemplateFile> templateFilePage = this.templateFileService.selectPage(commonParams.getPageNum(), commonParams.getPageSize(), queryWrapper);
-        return new ResResult().success(templateFilePage);
+        return R.ok(templateFilePage);
     }
 
     /**
@@ -63,8 +65,8 @@ public class TemplateFileController {
      * @return 单条数据
      */
     @GetMapping("selectById")
-    public ResResult<TemplateFile> selectById(@RequestParam("id") Integer id) {
-        return new ResResult().success(this.templateFileService.selectById(id));
+    public R<TemplateFile> selectById(@RequestParam("id") Integer id) {
+        return R.ok(this.templateFileService.selectById(id));
     }
 
     /**
@@ -73,8 +75,8 @@ public class TemplateFileController {
      * @return: ids列表数据
      */
     @PostMapping("selectBatchIds")
-    public ResResult<List<TemplateFile>> selectBatchIds(@RequestParam("idList") List<Integer> idList) {
-        return new ResResult().success(this.templateFileService.selectBatchIds(idList));
+    public R<List<TemplateFile>> selectBatchIds(@RequestParam("idList") List<Integer> idList) {
+        return R.ok(this.templateFileService.selectBatchIds(idList));
     }
 
 
@@ -85,8 +87,8 @@ public class TemplateFileController {
      * @return 修改结果
      */
     @PutMapping("updateById")
-    public ResResult updateById(@Validated @RequestBody TemplateFile templateFile) {
-        return new ResResult().success(this.templateFileService.updateById(templateFile));
+    public R<Integer> updateById(@Validated @RequestBody TemplateFile templateFile) {
+        return R.ok(this.templateFileService.updateById(templateFile));
     }
 
     /**
@@ -96,9 +98,10 @@ public class TemplateFileController {
      * @return 删除结果
      */
     @DeleteMapping("deleteBatchIds")
-    public ResResult deleteBatchIds(@RequestBody List<Integer> idList) {
-        return new ResResult().success(this.templateFileService.deleteBatchIds(idList));
+    public R<Integer> deleteBatchIds(@RequestBody List<Integer> idList) {
+        return R.ok(this.templateFileService.deleteBatchIds(idList));
     }
+
     /**
      * 根据id删除数据
      *
@@ -106,8 +109,8 @@ public class TemplateFileController {
      * @return 删除结果
      */
     @DeleteMapping("deleteById")
-    public ResResult deleteById(@RequestParam("id") Integer id) {
-        return new ResResult().success(this.templateFileService.deleteById(id));
+    public R<Integer> deleteById(@RequestParam("id") Integer id) {
+        return R.ok(this.templateFileService.deleteById(id));
     }
 
 
@@ -115,31 +118,29 @@ public class TemplateFileController {
      * 根据文件名读取文件内容
      * */
     @PostMapping("readFileToStringByFileName")
-    public ResResult<String> readFileToStringByFileName(Integer id, String fileName) {
+    public R<Object> readFileToStringByFileName(Integer id, String fileName) {
         String fileAbsPath = FileSelfUtils.getTemplateSaveRootDir() + id + File.separator + fileName;
         String fileToString = FileSelfUtils.readFileToString(fileAbsPath);
-        return new ResResult().success(fileToString);
+        return R.ok(fileToString);
     }
 
     /*
      * 保存模版文件
      * */
     @PostMapping("saveTemplateFile")
-    public ResResult saveMultiTemplateFile(@RequestParam("file") List<MultipartFile> files, @RequestParam("name") String name) {
+    public R<Object> saveMultiTemplateFile(@RequestParam("file") List<MultipartFile> files, @RequestParam("name") String name) {
         this.templateFileService.saveMultiTemplateFile(files, name);
-        return new ResResult().success();
+        return R.ok();
     }
-
 
     /*
      * 保存模版文件
      * */
     @PostMapping("changeInputCode")
-    public ResResult<String> changeInputCode(@RequestParam("jsonData") String jsonData, @RequestParam("id") Integer id,
-                                             @RequestParam("name") String name, @RequestParam("code") String code) {
-        Map<String, Object> JsonMap = JSON.parseObject(jsonData, Map.class);
-        String codeString = this.templateFileService.changeInputCode(JsonMap, id, name, code);
-        return new ResResult().success(codeString);
+    public R<Object> changeInputCode(@RequestParam("jsonData") String jsonData, @RequestParam("id") Integer id,
+                                     @RequestParam("name") String name, @RequestParam("code") String code) {
+        String codeString = this.templateFileService.changeInputCode(JsonUtils.parseObject(jsonData, Map.class), id, name, code);
+        return R.ok(codeString);
     }
 
     /*
@@ -148,23 +149,26 @@ public class TemplateFileController {
     @PostMapping("generatorTemplateFileByConfig")
     public void generatorTemplateFileByConfig(HttpServletResponse response, @RequestParam("jsonData") String jsonData, @RequestParam("id") Integer id, @RequestParam("fileNamePre") String fileNamePre) {
         //生成模板
-        Map<String, Object> JsonMap = JSON.parseObject(jsonData, Map.class);
-        String exportFilePath = this.templateFileService.generatorTemplateFileByConfig(JsonMap, id, fileNamePre);
-        response.setContentType("application/octet-stream");
-        response.setHeader("content-type", "application/octet-stream");
-        response.setHeader("Access-Control-Expose-Headers", "exportFileName");
-        response.setHeader("exportFileName", "back-temp-" + ObjSelfUtils.getCurrentDateTimeTrim() + ".zip");
+        String exportFilePath = this.templateFileService.generatorTemplateFileByConfig(JsonUtils.parseObject(jsonData, Map.class), id, fileNamePre);
         //你压缩包路径
-        GeneratorTempUtils.downloadZip(response, exportFilePath);
+        FileSelfUtils.exportFile(response, exportFilePath, ObjSelfUtils.getCurrentDateTimeTrim() + ".zip");
+        FileSelfUtils.deleteFile(exportFilePath);
+        FileSelfUtils.deleteDir(GeneratorTempUtils.getNeedZipDir());
     }
 
     @PostMapping("downZipByTemplateFileId")
     public void downZipByTemplateFileId(HttpServletResponse response, HttpServletRequest request, @RequestParam("id") Integer id) {
         String exportFilePath = this.templateFileService.downZipByTemplateFileId(id);
-        response.setContentType("application/zip");
-        response.setHeader("Access-Control-Expose-Headers", "exportFileName");
-        response.setHeader("exportFileName", "back-temp-" + ObjSelfUtils.getCurrentDateTimeTrim() + ".zip");
-        //你压缩包路径
-        GeneratorTempUtils.downloadZip(response, exportFilePath);
+        //导出文件并删除响应文件和目录
+        FileSelfUtils.exportFile(response, exportFilePath, ObjSelfUtils.getCurrentDateTimeTrim() + ".zip");
+        FileSelfUtils.deleteFile(exportFilePath);
+        FileSelfUtils.deleteDir(GeneratorTempUtils.getNeedZipDir());
+    }
+
+    /*修改文件信息*/
+    @PostMapping("changeTemplateFile")
+    public R<Object> changeTemplateFile(@RequestBody TemplateChangeBo templateChangeBo) {
+        templateFileService.changeTemplateFile(templateChangeBo);
+        return R.ok();
     }
 }

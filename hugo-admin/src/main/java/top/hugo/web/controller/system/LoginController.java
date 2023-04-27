@@ -56,7 +56,7 @@ public class LoginController {
      * 退出登录
      */
     @PostMapping("logout")
-    public R<Void> logout() {
+    public R<String> logout() {
         loginService.logout();
         return R.ok("退出成功");
     }

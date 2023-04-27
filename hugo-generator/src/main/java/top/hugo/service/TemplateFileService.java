@@ -1,5 +1,6 @@
 package top.hugo.service;
 
+import cn.hutool.core.util.ObjectUtil;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -9,6 +10,8 @@ import org.apache.velocity.context.Context;
 import org.apache.velocity.shaded.commons.io.FilenameUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import top.hugo.bo.TemplateChangeBo;
+import top.hugo.common.utils.BeanCopyUtils;
 import top.hugo.entity.TemplateFile;
 import top.hugo.mapper.TemplateFileMapper;
 import top.hugo.utils.FileSelfUtils;
@@ -97,15 +100,6 @@ public class TemplateFileService {
         return xmlWriter.toString();
     }
 
-    public Context setContextData(Map<String, Object> contextData) {
-        //设置上下文数据
-        Context context = GeneratorTempUtils.getVelocityContext();
-        context.put("totalData", contextData);
-        contextData.entrySet().stream().forEach(mapEntry -> {
-            context.put(mapEntry.getKey(), mapEntry.getValue());
-        });
-        return context;
-    }
 
     /**
      * 除vm以外的文件生成文件导出
@@ -124,16 +118,19 @@ public class TemplateFileService {
         arrString.forEach(feItem -> {
             String extension = FilenameUtils.getExtension(feItem);
             if (!extension.equals("vm")) {
+                //读取模板文件内容
                 Template entityTemp = GeneratorTempUtils.getTmpSaveDirTemp(workPath, feItem);
-                //GeneratorTempUtils.getExportMybatisPlusDir(packagePath, "entity") + tbName + ".java"
                 String packagePath = "";
-                if (ObjSelfUtils.isNotEmpty(basicConfig) && ObjSelfUtils.isNotEmpty(basicConfig.get("packageName"))) {
+                if (ObjectUtil.isNotEmpty(basicConfig) && ObjectUtil.isNotEmpty(basicConfig.get("packageName"))) {
                     packagePath = basicConfig.get("packageName").toString().replaceAll("\\.", Matcher.quoteReplacement(File.separator));
                 }
+                //得到要生成的文件名
                 String fileName = dillFileName(fileNamePre, feItem, extension);
                 try {
+                    // java/demo.java  mappingDir(feItem)): 匹配目录 java  packagePath:目录路径
                     FileWriter entityWriter = new FileWriter(GeneratorTempUtils.getExportMybatisPlusDir(packagePath, mappingDir(feItem)) + fileName);
                     entityTemp.merge(context, entityWriter);
+                    //写出文件
                     entityWriter.close();
                 } catch (IOException e) {
                     throw new RuntimeException("生成文件报错" + e);
@@ -146,15 +143,17 @@ public class TemplateFileService {
         return exportFileName;
     }
 
-
-    /*根据文件配置id,提供下载*/
-    public String downZipByTemplateFileId(Integer id) {
-        String workPath = FileSelfUtils.getTemplateSaveRootDir() + id;
-        log.info("导出的文件路径" + workPath);
-        String exportFileName = GeneratorTempUtils.getOutputZipPath() + ObjSelfUtils.getCurrentDateTimeTrim() + ".zip";
-        //生成zip包
-        GeneratorTempUtils.createZipFile(exportFileName, workPath);
-        return exportFileName;
+    /*
+     * 设置velocity模板上下文数据
+     * */
+    public Context setContextData(Map<String, Object> contextData) {
+        //设置上下文数据
+        Context context = GeneratorTempUtils.getVelocityContext();
+        context.put("totalData", contextData);
+        contextData.entrySet().stream().forEach(mapEntry -> {
+            context.put(mapEntry.getKey(), mapEntry.getValue());
+        });
+        return context;
     }
 
     /*匹配文件名*/
@@ -190,4 +189,25 @@ public class TemplateFileService {
         }
         return mappingString;
     }
+
+
+    /*根据文件配置id,提供下载*/
+    public String downZipByTemplateFileId(Integer id) {
+        String workPath = FileSelfUtils.getTemplateSaveRootDir() + id;
+        log.info("导出的文件路径" + workPath);
+        String exportFileName = GeneratorTempUtils.getOutputZipPath() + ObjSelfUtils.getCurrentDateTimeTrim() + ".zip";
+        //生成zip包
+        GeneratorTempUtils.createZipFile(exportFileName, workPath);
+        return exportFileName;
+    }
+
+
+    /*修改文件信息*/
+    public void changeTemplateFile(TemplateChangeBo templateChangeBo) {
+        //更新模板文件信息
+        this.templateFileMapper.updateById(BeanCopyUtils.copy(templateChangeBo, TemplateFile.class));
+        //更新模板内容
+        FileSelfUtils.savaFileByName(templateChangeBo.getId(), templateChangeBo.getFileName(), templateChangeBo.getCode());
+    }
+
 }

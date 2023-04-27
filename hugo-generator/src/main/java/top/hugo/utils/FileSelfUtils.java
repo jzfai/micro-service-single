@@ -4,6 +4,8 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
@@ -92,7 +94,6 @@ public class FileSelfUtils {
         }
         return readString;
     }
-
     /**
      * 删除文件
      *
@@ -150,13 +151,23 @@ public class FileSelfUtils {
         directory.delete();
         log.info(directory.getName() + "：：目录已删除");
     }
-    public static void downloadZip(OutputStream outputStream, File file){
-        BufferedInputStream bufferedInputStream = null;
-        ZipOutputStream zipOutputStream = null;
+
+    /*导出文件*/
+    public static void exportFile(HttpServletResponse response,String exportFilePath,String exportFileName){
+        response.setContentType("application/octet-stream");
+        response.setHeader("content-type", "application/octet-stream");
+        response.setHeader("Access-Control-Expose-Headers", "exportFileName");
+        response.setHeader("exportFileName",exportFileName);
+        File file = new File(exportFilePath);
+        if (!file.exists()) {
+            throw new RuntimeException("文件不存在");
+        }
+        ServletOutputStream outputStream=null;
         try {
             byte[] buf = new byte[2048];
             int len;
             FileInputStream in = new FileInputStream(file);
+            outputStream = response.getOutputStream();
             while ((len = in.read(buf)) != -1) {
                 outputStream.write(buf, 0, len);
                 outputStream.flush();
@@ -169,12 +180,6 @@ public class FileSelfUtils {
         } finally {
             // 关闭流
             try {
-                if (bufferedInputStream != null) {
-                    bufferedInputStream.close();
-                }
-                if (zipOutputStream != null ) {
-                    zipOutputStream.close();
-                }
                 if (outputStream != null) {
                     outputStream.close();
                 }
@@ -182,6 +187,5 @@ public class FileSelfUtils {
                 e.printStackTrace();
             }
         }
-
     }
 }

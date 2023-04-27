@@ -1,13 +1,13 @@
 package top.hugo.controller;
 
+import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.web.bind.annotation.*;
-import top.hugo.domain.ResResult;
+import top.hugo.common.domain.R;
 import top.hugo.domain.SelfCommonParams;
 import top.hugo.entity.ConfigSave;
 import top.hugo.service.ConfigSaveService;
-import top.hugo.utils.ObjSelfUtils;
 
 
 import javax.annotation.Resource;
@@ -34,10 +34,10 @@ public class ConfigSaveController {
      */
     @GetMapping("selectPage")
 
-    public ResResult selectPage(ConfigSave generatorConfigSave, SelfCommonParams commonParams) {
+    public R<Page<ConfigSave>> selectPage(ConfigSave generatorConfigSave, SelfCommonParams commonParams) {
         QueryWrapper<ConfigSave> queryWrapper = new QueryWrapper<>();
         //选中的字段配置
-        if (ObjSelfUtils.isNotEmpty(generatorConfigSave.getName())) {
+        if (ObjectUtil.isNotEmpty(generatorConfigSave.getName())) {
             queryWrapper.like("name", generatorConfigSave.getName());
         }
         //生成的配置
@@ -47,7 +47,7 @@ public class ConfigSaveController {
         queryWrapper.orderByDesc("create_time");
 
         Page<ConfigSave> generatorConfigSavePage = this.generatorConfigSaveService.selectPage(commonParams.getPageNum(), commonParams.getPageSize(), queryWrapper);
-        return new ResResult().success(generatorConfigSavePage);
+        return R.ok(generatorConfigSavePage);
     }
 
     /**
@@ -57,8 +57,8 @@ public class ConfigSaveController {
      * @return 单条数据
      */
     @GetMapping("selectById")
-    public ResResult selectById(@RequestParam("id") Integer id) {
-        return new ResResult().success(this.generatorConfigSaveService.selectById(id));
+    public R<ConfigSave> selectById(@RequestParam("id") Integer id) {
+        return R.ok(this.generatorConfigSaveService.selectById(id));
     }
 
     /**
@@ -67,8 +67,8 @@ public class ConfigSaveController {
      * @return: ids列表数据
      */
     @PostMapping("selectBatchIds")
-    public ResResult selectBatchIds(@RequestParam("idList") List<Integer> idList) {
-        return new ResResult().success(this.generatorConfigSaveService.selectBatchIds(idList));
+    public R<List<ConfigSave>> selectBatchIds(@RequestParam("idList") List<Integer> idList) {
+        return R.ok(this.generatorConfigSaveService.selectBatchIds(idList));
     }
 
     /**
@@ -78,8 +78,8 @@ public class ConfigSaveController {
      * @return 新增结果
      */
     @PostMapping("insert")
-    public ResResult<Integer> insert(@RequestBody ConfigSave generatorConfigSave) {
-        return new ResResult().success(this.generatorConfigSaveService.insert(generatorConfigSave));
+    public R<Integer> insert(@RequestBody ConfigSave generatorConfigSave) {
+        return R.ok(this.generatorConfigSaveService.insert(generatorConfigSave));
     }
 
     /**
@@ -89,8 +89,8 @@ public class ConfigSaveController {
      * @return 修改结果
      */
     @PutMapping("updateById")
-    public ResResult updateById(@RequestBody ConfigSave generatorConfigSave) {
-        return new ResResult().success(this.generatorConfigSaveService.updateById(generatorConfigSave));
+    public R<Integer> updateById(@RequestBody ConfigSave generatorConfigSave) {
+        return R.ok(this.generatorConfigSaveService.updateById(generatorConfigSave));
     }
 
     /**
@@ -100,12 +100,12 @@ public class ConfigSaveController {
      * @return 删除结果
      */
     @DeleteMapping("deleteBatchIds")
-    public ResResult deleteBatchIds(@RequestBody List<Integer> idList) {
-        return new ResResult().success(this.generatorConfigSaveService.deleteBatchIds(idList));
+    public R<Integer> deleteBatchIds(@RequestBody List<Integer> idList) {
+        return R.ok(this.generatorConfigSaveService.deleteBatchIds(idList));
     }
 
     @DeleteMapping("deleteById")
-    public ResResult deleteById(@RequestParam("id") Integer id) {
-        return new ResResult().success(this.generatorConfigSaveService.deleteById(id));
+    public R<Integer> deleteById(@RequestParam("id") Integer id) {
+        return R.ok(this.generatorConfigSaveService.deleteById(id));
     }
 }

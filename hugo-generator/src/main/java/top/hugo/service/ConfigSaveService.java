@@ -1,5 +1,6 @@
 package top.hugo.service;
 
+import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.stereotype.Service;
@@ -37,10 +38,10 @@ public class ConfigSaveService {
     public int insert(ConfigSave generatorConfigSave) {
         QueryWrapper<ConfigSave> queryWrapper = new QueryWrapper<>();
         //选中的字段配置
-        if (ObjSelfUtils.isNotEmpty(generatorConfigSave.getName())) {
+        if (ObjectUtil.isNotEmpty(generatorConfigSave.getName())) {
             queryWrapper.like("name", generatorConfigSave.getName());
         }
-        if (ObjSelfUtils.isNotEmpty(generatorConfigSaveMapper.selectOne(queryWrapper))) {
+        if (ObjectUtil.isNotEmpty(generatorConfigSaveMapper.selectOne(queryWrapper))) {
             throw new RuntimeException(generatorConfigSave.getName() + "已存在");
         }
         return this.generatorConfigSaveMapper.insert(generatorConfigSave);

@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import top.hugo.domain.ResResult;
+import top.hugo.common.domain.R;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -27,7 +28,7 @@ import java.util.Map;
 @Slf4j
 public class GoFastDFSController {
     @PostMapping("file")
-    public ResResult goFastfdfs(@RequestParam("file") MultipartFile file) {
+    public R<Map<String, Object>> goFastfdfs(@RequestParam("file") MultipartFile file) {
         try {
             InputStreamResource isr = new InputStreamResource(file.getInputStream(), file.getOriginalFilename());
             Map<String, Object> params = new HashMap<>();
@@ -38,7 +39,7 @@ public class GoFastDFSController {
             String resp = HttpUtil.post("http://111.230.198.245:8080/group1/upload", params);
             Map<String, Object> coversMap = JSON.parseObject(resp, Map.class);
             log.info(coversMap.toString());
-            return new ResResult().success(coversMap);
+            return R.ok(coversMap);
         } catch (IOException e) {
             throw new RuntimeException("上传文件异常");
         }

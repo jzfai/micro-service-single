@@ -124,6 +124,21 @@ public class GeneratorTempUtils {
     }
 
     /**
+     * @return
+     * @author 邝华
+     * @date 2022-06-10 13:53
+     */
+    public static String getNeedZipDir() {
+        String os = System.getProperty("os.name");
+        String path = "";
+        if (os.toLowerCase().startsWith("win")) {
+            path = NeedZipDir;
+        } else {
+            path = MacNeedZipDir;
+        }
+        return fileMkdir(path);
+    }
+    /**
      * 获取临时存储目录路径
      *
      * @return
@@ -142,21 +157,7 @@ public class GeneratorTempUtils {
         return fileMkdir(path);
     }
 
-    /**
-     * @return
-     * @author 邝华
-     * @date 2022-06-10 13:53
-     */
-    public static String getNeedZipDir() {
-        String os = System.getProperty("os.name");
-        String path = "";
-        if (os.toLowerCase().startsWith("win")) {
-            path = NeedZipDir;
-        } else {
-            path = MacNeedZipDir;
-        }
-        return fileMkdir(path);
-    }
+
 
     /**
      * @return
@@ -215,71 +216,6 @@ public class GeneratorTempUtils {
         return manager.createContext();
     }
 
-    /**
-     * @param response
-     * @param exportFilePath 导出文件的路径
-     */
-    public static void downloadZip(HttpServletResponse response, String exportFilePath) {
-        File file = new File(exportFilePath);
-        if (!file.exists()) {
-            throw new RuntimeException("文件不存在");
-        }
-        try {
-            FileSelfUtils.downloadZip(response.getOutputStream(),file);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        log.info(exportFilePath + "被删除了");
-        log.info(getNeedZipDir() + "被删除了");
-        deleteFile(exportFilePath);
-        deleteDir(getNeedZipDir());
-    }
-
-    /**
-     * 删除导出后文件夹下的文件
-     *
-     * @return
-     * @author 邝华
-     * @email kuanghua@aulton.com
-     * @date 2022-06-10 14:13
-     */
-    public static void deleteDir(String path) {
-        File directory = new File(path);
-        deleteDeepDir(directory);
-    }
-
-    public static void deleteDeepDir(File directory) {
-        //获取目录下所有文件和目录
-        File files[] = directory.listFiles();
-        for (File file : files) {
-            if (file.isDirectory()) {
-                deleteDeepDir(file);
-            } else {
-                file.delete();
-                log.info(file.getName() + "：：文件已删除");
-            }
-        }
-        //最终把该目录也删除
-        directory.delete();
-        log.info(directory.getName() + "：：目录已删除");
-    }
-
-    /**
-     * 删除文件
-     *
-     * @param path 要删除的文件路径
-     * @return
-     * @author 邝华
-     * @email kuanghua@aulton.com
-     * @date 2022-06-13 11:22
-     */
-    public static void deleteFile(String path) {
-        File file = new File(path);
-        if (file.exists()) {
-            file.delete();//只有为空的文件夹才能执行true
-        }
-    }
 
     /**
      * @param tempName 模板名称
@@ -325,15 +261,6 @@ public class GeneratorTempUtils {
         ve.init();
         return ve.getTemplate(tempName);
     }
-//
-//    /**
-//     * 获取JsonData下的目录路径
-//     *
-//     * @return 得到的目录名称
-//     */
-//    public static String getJsonDataDirPath() {
-//        return ClassUtils.getDefaultClassLoader().getResource("json-data").getPath() + File.separator;
-//    }
 
     /**
      * @param filePath 相对于resource的路径

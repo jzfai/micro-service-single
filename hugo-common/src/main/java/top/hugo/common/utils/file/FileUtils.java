@@ -48,4 +48,5 @@ public class FileUtils extends FileUtil {
         String encode = URLEncoder.encode(s, StandardCharsets.UTF_8.toString());
         return encode.replaceAll("\\+", "%20");
     }
+
 }
