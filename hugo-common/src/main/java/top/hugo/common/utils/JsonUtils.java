@@ -41,11 +41,22 @@ public class JsonUtils {
     }
 
     public static <T> T parseObject(String text, Class<T> clazz) {
-        if (StringUtils.isEmpty(text)) {
+        if (ObjectUtil.isEmpty(text)) {
             return null;
         }
         try {
             return OBJECT_MAPPER.readValue(text, clazz);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static <T> T parseObject(Object text, Class<T> clazz) {
+        if (ObjectUtil.isEmpty(text)) {
+            return null;
+        }
+        try {
+            return OBJECT_MAPPER.readValue(toJsonString(text), clazz);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -63,7 +74,7 @@ public class JsonUtils {
     }
 
     public static <T> T parseObject(String text, TypeReference<T> typeReference) {
-        if (StringUtils.isBlank(text)) {
+        if (ObjectUtil.isEmpty(text)) {
             return null;
         }
         try {
@@ -74,7 +85,7 @@ public class JsonUtils {
     }
 
     public static Dict parseMap(String text) {
-        if (StringUtils.isBlank(text)) {
+        if (ObjectUtil.isEmpty(text)) {
             return null;
         }
         try {
@@ -88,7 +99,7 @@ public class JsonUtils {
     }
 
     public static List<Dict> parseArrayMap(String text) {
-        if (StringUtils.isBlank(text)) {
+        if (ObjectUtil.isEmpty(text)) {
             return null;
         }
         try {
@@ -99,11 +110,23 @@ public class JsonUtils {
     }
 
     public static <T> List<T> parseArray(String text, Class<T> clazz) {
-        if (StringUtils.isEmpty(text)) {
+        if (ObjectUtil.isEmpty(text)) {
             return new ArrayList<>();
         }
         try {
             return OBJECT_MAPPER.readValue(text, OBJECT_MAPPER.getTypeFactory().constructCollectionType(List.class, clazz));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    public static <T> List<T> parseArray(Object text, Class<T> clazz) {
+        if (ObjectUtil.isEmpty(text)) {
+            return new ArrayList<>();
+        }
+        try {
+            return OBJECT_MAPPER.readValue(toJsonString(text), OBJECT_MAPPER.getTypeFactory().constructCollectionType(List.class, clazz));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

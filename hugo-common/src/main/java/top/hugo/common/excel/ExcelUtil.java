@@ -22,7 +22,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -81,7 +84,10 @@ public class ExcelUtil {
      * @param response  响应体
      */
     public static <T> void exportExcel(List<T> list, String sheetName, Class<T> clazz, HttpServletResponse response) {
+        String currentDate = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss").format(new Date());
         try {
+            response.setHeader("Access-Control-Expose-Headers", "file-name");
+            response.setHeader("file-name", URLEncoder.encode(currentDate + sheetName, "UTF-8") + ".xlsx");
             resetResponse(sheetName, response);
             ServletOutputStream os = response.getOutputStream();
             exportExcel(list, sheetName, clazz, false, os);

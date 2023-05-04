@@ -1,19 +1,23 @@
 package top.hugo.system.service;
 
-import cn.dev33.satoken.context.SaHolder;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import top.hugo.common.constant.CacheConstants;
+import top.hugo.common.constant.CacheNames;
+import top.hugo.common.constant.UserConstants;
 import top.hugo.common.core.DictService;
 import top.hugo.common.spring.SpringUtils;
+import top.hugo.common.utils.JsonUtils;
 import top.hugo.common.utils.StreamUtils;
 import top.hugo.common.utils.StringUtils;
+import top.hugo.common.utils.redis.CacheUtils;
 import top.hugo.system.entity.SysDictData;
 import top.hugo.system.mapper.SysDictDataMapper;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -40,14 +44,7 @@ public class SysDictTypeService implements DictService {
     }
 
     public String getDictLabel(String dictType, String dictValue, String separator) {
-        // 优先从本地缓存获取
-        List<SysDictData> datas = (List<SysDictData>) SaHolder.getStorage().get(CacheConstants.SYS_DICT_KEY + dictType);
-        if (ObjectUtil.isNull(datas)) {
-            datas = SpringUtils.getAopProxy(this).selectDictDataByType(dictType);
-            SaHolder.getStorage().set(CacheConstants.SYS_DICT_KEY + dictType, datas);
-        }
-
-        Map<String, String> map = StreamUtils.toMap(datas, SysDictData::getDictValue, SysDictData::getDictLabel);
+        Map<String, String> map = StreamUtils.toMap(getDictByRedis(dictType), SysDictData::getDictValue, SysDictData::getDictLabel);
         if (StringUtils.containsAny(dictValue, separator)) {
             return Arrays.stream(dictValue.split(separator))
                     .map(v -> map.getOrDefault(v, StringUtils.EMPTY))
@@ -58,14 +55,8 @@ public class SysDictTypeService implements DictService {
     }
 
     public String getDictValue(String dictType, String dictLabel, String separator) {
-        // 优先从本地缓存获取
-        List<SysDictData> datas = (List<SysDictData>) SaHolder.getStorage().get(CacheConstants.SYS_DICT_KEY + dictType);
-        if (ObjectUtil.isNull(datas)) {
-            datas = SpringUtils.getAopProxy(this).selectDictDataByType(dictType);
-            SaHolder.getStorage().set(CacheConstants.SYS_DICT_KEY + dictType, datas);
-        }
 
-        Map<String, String> map = StreamUtils.toMap(datas, SysDictData::getDictLabel, SysDictData::getDictValue);
+        Map<String, String> map = StreamUtils.toMap(getDictByRedis(dictType), SysDictData::getDictLabel, SysDictData::getDictValue);
         if (StringUtils.containsAny(dictLabel, separator)) {
             return Arrays.stream(dictLabel.split(separator))
                     .map(l -> map.getOrDefault(l, StringUtils.EMPTY))
@@ -74,4 +65,46 @@ public class SysDictTypeService implements DictService {
             return map.getOrDefault(dictLabel, StringUtils.EMPTY);
         }
     }
+
+    /*加载字典数据通过redis,空则查询存储到redis中*/
+    public List<SysDictData> getDictByRedis(String key) {
+        Object o = CacheUtils.get(CacheNames.SYS_DICT, key);
+        if (ObjectUtil.isEmpty(o)) {
+            // 优先从本地缓存获取
+            List<SysDictData> sysDictData = SpringUtils.getAopProxy(this).selectDictDataByType(key);
+            CacheUtils.put(CacheNames.SYS_DICT, key, sysDictData);
+            return sysDictData;
+        } else {
+            return JsonUtils.parseArray(o, SysDictData.class);
+        }
+    }
+
+    /**
+     * 加载字典缓存数据   key:[]
+     */
+    public void loadingDictCache() {
+        List<SysDictData> dictDataList = sysDictDataMapper.selectList(
+                new LambdaQueryWrapper<SysDictData>().eq(SysDictData::getStatus, UserConstants.DICT_NORMAL));
+        Map<String, List<SysDictData>> dictDataMap = StreamUtils.groupByKey(dictDataList, SysDictData::getDictType);
+        dictDataMap.forEach((k, v) -> {
+            List<SysDictData> dictList = StreamUtils.sorted(v, Comparator.comparing(SysDictData::getDictSort));
+            CacheUtils.put(CacheNames.SYS_DICT, k, dictList);
+        });
+    }
+
+    /**
+     * 清空字典缓存数据
+     */
+    public void clearDictCache() {
+        CacheUtils.clear(CacheNames.SYS_DICT);
+    }
+
+    /**
+     * 重置字典缓存数据
+     */
+    public void resetDictCache() {
+        clearDictCache();
+        loadingDictCache();
+    }
+
 }

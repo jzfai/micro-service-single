@@ -6,11 +6,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
 
 /**
  * @Title: FileSelfUtils
@@ -94,6 +94,7 @@ public class FileSelfUtils {
         }
         return readString;
     }
+
     /**
      * 删除文件
      *
@@ -126,6 +127,7 @@ public class FileSelfUtils {
             log.info("已存在" + path);
         }
     }
+
     /**
      * 递归删除文件夹
      *
@@ -136,6 +138,7 @@ public class FileSelfUtils {
         File directory = new File(path);
         deleteDeepDir(directory);
     }
+
     public static void deleteDeepDir(File directory) {
         //获取目录下所有文件和目录
         File files[] = directory.listFiles();
@@ -153,16 +156,14 @@ public class FileSelfUtils {
     }
 
     /*导出文件*/
-    public static void exportFile(HttpServletResponse response,String exportFilePath,String exportFileName){
-        response.setContentType("application/octet-stream");
-        response.setHeader("content-type", "application/octet-stream");
-        response.setHeader("Access-Control-Expose-Headers", "exportFileName");
-        response.setHeader("exportFileName",exportFileName);
+    public static void exportFile(HttpServletResponse response, String exportFilePath, String exportFileName) {
+        response.setHeader("Access-Control-Expose-Headers", "file-name");
+        response.setHeader("file-name", exportFileName);
         File file = new File(exportFilePath);
         if (!file.exists()) {
             throw new RuntimeException("文件不存在");
         }
-        ServletOutputStream outputStream=null;
+        ServletOutputStream outputStream = null;
         try {
             byte[] buf = new byte[2048];
             int len;

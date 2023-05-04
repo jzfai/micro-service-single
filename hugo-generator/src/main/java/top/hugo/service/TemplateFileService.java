@@ -150,9 +150,7 @@ public class TemplateFileService {
         //设置上下文数据
         Context context = GeneratorTempUtils.getVelocityContext();
         context.put("totalData", contextData);
-        contextData.entrySet().stream().forEach(mapEntry -> {
-            context.put(mapEntry.getKey(), mapEntry.getValue());
-        });
+        contextData.forEach(context::put);
         return context;
     }
 
@@ -190,7 +188,6 @@ public class TemplateFileService {
         return mappingString;
     }
 
-
     /*根据文件配置id,提供下载*/
     public String downZipByTemplateFileId(Integer id) {
         String workPath = FileSelfUtils.getTemplateSaveRootDir() + id;
@@ -201,7 +198,6 @@ public class TemplateFileService {
         return exportFileName;
     }
 
-
     /*修改文件信息*/
     public void changeTemplateFile(TemplateChangeBo templateChangeBo) {
         //更新模板文件信息
@@ -209,5 +205,4 @@ public class TemplateFileService {
         //更新模板内容
         FileSelfUtils.savaFileByName(templateChangeBo.getId(), templateChangeBo.getFileName(), templateChangeBo.getCode());
     }
-
 }

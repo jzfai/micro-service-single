@@ -22,6 +22,7 @@ import top.hugo.system.service.SysUserService;
 import top.hugo.system.vo.SysUserExportVo;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 /**
@@ -55,7 +56,7 @@ public class SysUserController extends BaseController {
     //@Log(title = "用户管理", businessType = BusinessType.EXPORT)
 //    @SaCheckPermission("system:user:export")
     @PostMapping("/export")
-    public void export(SysUser user, HttpServletResponse response) {
+    public void export(SysUser user, HttpServletResponse response) throws UnsupportedEncodingException {
         List<SysUser> list = sysUserService.selectUserList(user);
         List<SysUserExportVo> listVo = BeanUtil.copyToList(list, SysUserExportVo.class);
         for (int i = 0; i < list.size(); i++) {

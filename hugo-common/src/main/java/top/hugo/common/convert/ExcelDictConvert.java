@@ -11,7 +11,9 @@ import com.alibaba.excel.metadata.data.WriteCellData;
 import com.alibaba.excel.metadata.property.ExcelContentProperty;
 import lombok.extern.slf4j.Slf4j;
 import top.hugo.common.annotation.ExcelDictFormat;
+import top.hugo.common.core.DictService;
 import top.hugo.common.excel.ExcelUtil;
+import top.hugo.common.spring.SpringUtils;
 
 import java.lang.reflect.Field;
 
@@ -42,8 +44,7 @@ public class ExcelDictConvert implements Converter<Object> {
         if (ObjectUtil.isEmpty(type)) {
             value = ExcelUtil.reverseByExp(label, anno.readConverterExp(), anno.separator());
         } else {
-            //value = SpringUtils.getBean(DictService.class).getDictValue(type, label, anno.separator());
-            value = "";
+            value = SpringUtils.getBean(DictService.class).getDictValue(type, label, anno.separator());
         }
         return Convert.convert(contentProperty.getField().getType(), value);
     }
@@ -60,8 +61,7 @@ public class ExcelDictConvert implements Converter<Object> {
         if (ObjectUtil.isEmpty(type)) {
             label = ExcelUtil.convertByExp(value, anno.readConverterExp(), anno.separator());
         } else {
-            //label = SpringUtils.getBean(DictService.class).getDictLabel(type, value, anno.separator());
-            label = "";
+            label = SpringUtils.getBean(DictService.class).getDictLabel(type, value, anno.separator());
         }
         return new WriteCellData<>(label);
     }
