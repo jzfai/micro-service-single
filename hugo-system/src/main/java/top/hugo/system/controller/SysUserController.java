@@ -61,7 +61,7 @@ public class SysUserController extends BaseController {
      * 导出用户列表
      */
     //@Log(title = "用户管理", businessType = BusinessType.EXPORT)
-//    @SaCheckPermission("system:user:export")
+    //@SaCheckPermission("system:user:export")
     @PostMapping("/export")
     public void export(SysUser user, HttpServletResponse response) {
         List<SysUser> list = sysUserService.selectUserList(user);
