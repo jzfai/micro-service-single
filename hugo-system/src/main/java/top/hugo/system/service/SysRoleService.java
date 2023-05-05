@@ -58,15 +58,14 @@ public class SysRoleService {
     }
 
     private Wrapper<SysRole> buildQueryWrapper(SysRole role) {
-        Map<String, Object> params = role.getParams();
         QueryWrapper<SysRole> wrapper = Wrappers.query();
         wrapper.eq("r.del_flag", UserConstants.ROLE_NORMAL)
                 .eq(ObjectUtil.isNotNull(role.getRoleId()), "r.role_id", role.getRoleId())
                 .like(ObjectUtil.isNotEmpty(role.getRoleName()), "r.role_name", role.getRoleName())
                 .eq(ObjectUtil.isNotEmpty(role.getStatus()), "r.status", role.getStatus())
                 .like(ObjectUtil.isNotEmpty(role.getRoleKey()), "r.role_key", role.getRoleKey())
-                .between(params.get("beginTime") != null && params.get("endTime") != null,
-                        "r.create_time", params.get("beginTime"), params.get("endTime"))
+                .between(ObjectUtil.isNotEmpty(role.getBeginTime()) && ObjectUtil.isNotEmpty(role.getEndTime()),
+                        "r.create_time", role.getBeginTime(), role.getEndTime())
                 .orderByAsc("r.role_sort");
         return wrapper;
     }

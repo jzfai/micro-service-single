@@ -1,9 +1,12 @@
-package top.hugo.common.domain.model;
+package top.hugo.system.helper.modal;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import top.hugo.system.dto.RoleDTO;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.Set;
 
 /**
  * 登录用户身份权限
@@ -72,15 +75,15 @@ public class LoginUser implements Serializable {
      */
     private String os;
 
-//    /**
-//     * 菜单权限
-//     */
-//    private Set<String> menuPermission;
-//
-//    /**
-//     * 角色权限
-//     */
-//    private Set<String> rolePermission;
+    /**
+     * 菜单权限
+     */
+    private Set<String> menuPermission;
+
+    /**
+     * 角色权限
+     */
+    private Set<String> rolePermission;
 
     /**
      * 用户名
@@ -90,12 +93,12 @@ public class LoginUser implements Serializable {
     /**
      * 角色对象
      */
-//    private List<RoleDTO> roles;
-//
-//    /**
-//     * 数据权限 当前角色ID
-//     */
-//    private Long roleId;
+    private List<RoleDTO> roles;
+
+    /**
+     * 数据权限 当前角色ID
+     */
+    private Long roleId;
 
     /**
      * 获取登录id

@@ -3,13 +3,10 @@ package top.hugo.common.domain;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Entity基类
@@ -53,11 +50,24 @@ public class BaseEntity implements Serializable {
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date updateTime;
 
+
     /**
-     * 请求参数
+     * 开始时间
      */
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     @TableField(exist = false)
-    private Map<String, Object> params = new HashMap<>();
+    private String beginTime;
+
+    /**
+     * 结束时间
+     */
+    @TableField(exist = false)
+    private String endTime;
+//    /**
+//     * 请求参数
+//     */
+//    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+//    @TableField(exist = false)
+//    private Map<String, Object> params = new HashMap<>();
+
 
 }

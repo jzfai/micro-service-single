@@ -1,12 +1,12 @@
 package top.hugo.system.helper;
 
 import cn.dev33.satoken.stp.StpUtil;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import top.hugo.common.constant.UserConstants;
-import top.hugo.system.entity.SysUser;
+import top.hugo.common.utils.JsonUtils;
+import top.hugo.system.helper.modal.LoginUser;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class LoginHelper {
@@ -14,15 +14,9 @@ public class LoginHelper {
     public static final String LOGIN_USER_KEY = "loginUser";
 
 
-    public static SysUser getUserInfo() {
+    public static LoginUser getUserInfo() {
         ObjectMapper jackson = new ObjectMapper();
-        SysUser sysUser = null;
-        try {
-            sysUser = jackson.readValue(jackson.writeValueAsString(StpUtil.getExtra("user")), SysUser.class);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        return sysUser;
+        return JsonUtils.parseObject(StpUtil.getExtra("user"), LoginUser.class);
     }
 
 
@@ -33,12 +27,14 @@ public class LoginHelper {
     /**
      * 是否为管理员
      *
-     * @param userId 用户ID
      * @return 结果
      */
     public static boolean isAdmin() {
         return UserConstants.ADMIN_ID.equals(getUserInfo().getUserId());
     }
 
+    public static boolean isAdmin(Long userId) {
+        return UserConstants.ADMIN_ID.equals(userId);
+    }
 
 }

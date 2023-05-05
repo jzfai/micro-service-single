@@ -1,4 +1,4 @@
-package top.hugo.common.domain.model;
+package top.hugo.system.helper.modal;
 
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;

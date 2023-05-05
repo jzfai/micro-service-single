@@ -20,13 +20,13 @@ import top.hugo.common.page.TableDataInfo;
 import top.hugo.common.utils.StringUtils;
 import top.hugo.system.entity.SysUser;
 import top.hugo.system.entity.SysUserRole;
+import top.hugo.system.helper.LoginHelper;
 import top.hugo.system.mapper.SysUserMapper;
 import top.hugo.system.mapper.SysUserRoleMapper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -46,15 +46,14 @@ public class SysUserService {
     }
 
     private Wrapper<SysUser> buildQueryWrapper(SysUser user) {
-        Map<String, Object> params = user.getParams();
         QueryWrapper<SysUser> wrapper = Wrappers.query();
         wrapper.eq("u.del_flag", UserConstants.USER_NORMAL)
                 .eq(ObjectUtil.isNotNull(user.getUserId()), "u.user_id", user.getUserId())
                 .like(StringUtils.isNotBlank(user.getUserName()), "u.user_name", user.getUserName())
                 .eq(StringUtils.isNotBlank(user.getStatus()), "u.status", user.getStatus())
                 .like(StringUtils.isNotBlank(user.getPhonenumber()), "u.phonenumber", user.getPhonenumber())
-                .between(params.get("beginTime") != null && params.get("endTime") != null,
-                        "u.create_time", params.get("beginTime"), params.get("endTime"));
+                .between(ObjectUtil.isNotEmpty(user.getBeginTime()) && ObjectUtil.isNotEmpty(user.getEndTime()),
+                        "u.create_time", user.getBeginTime(), user.getEndTime());
 //                .and(ObjectUtil.isNotNull(user.getDeptId()), w -> {
 //                    List<SysDept> deptList = deptMapper.selectList(new LambdaQueryWrapper<SysDept>()
 //                            .select(SysDept::getDeptId)
@@ -228,6 +227,16 @@ public class SysUserService {
     }
 
     /**
+     * 通过用户ID查询用户
+     *
+     * @param userId 用户ID
+     * @return 用户对象信息
+     */
+    public SysUser selectUserById(Long userId) {
+        return sysUserMapper.selectUserById(userId);
+    }
+
+    /**
      * 重置用户密码
      *
      * @param user 用户信息
@@ -271,5 +280,34 @@ public class SysUserService {
                 .like(StringUtils.isNotBlank(user.getPhonenumber()), "u.phonenumber", user.getPhonenumber());
         Page<SysUser> page = sysUserMapper.selectUnallocatedList(pageQuery.build(), wrapper);
         return TableDataInfo.build(page);
+    }
+
+    /**
+     * 校验用户是否有数据权限
+     *
+     * @param userId 用户id
+     */
+    public void checkUserDataScope(Long userId) {
+        if (!LoginHelper.isAdmin()) {
+            SysUser user = new SysUser();
+            user.setUserId(userId);
+            List<SysUser> users = this.selectUserList(user);
+            if (CollUtil.isEmpty(users)) {
+                throw new ServiceException("没有权限访问用户数据！");
+            }
+        }
+    }
+
+    /**
+     * 用户授权角色
+     *
+     * @param userId  用户ID
+     * @param roleIds 角色组
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void insertUserAuth(Long userId, Long[] roleIds) {
+        userRoleMapper.delete(new LambdaQueryWrapper<SysUserRole>()
+                .eq(SysUserRole::getUserId, userId));
+        insertUserRole(userId, roleIds);
     }
 }

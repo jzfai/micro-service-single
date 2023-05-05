@@ -135,4 +135,8 @@ public interface UserConstants {
      */
     Long ADMIN_ID = 1L;
 
+    /**
+     * 管理员名字
+     */
+    String ADMIN_NAME = "admin";
 }

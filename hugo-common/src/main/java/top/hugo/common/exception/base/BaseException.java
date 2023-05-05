@@ -1,8 +1,10 @@
 package top.hugo.common.exception.base;
 
+import cn.hutool.core.util.ObjectUtil;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import top.hugo.common.utils.MessageUtils;
 
 /**
  * 基础异常
@@ -58,16 +60,16 @@ public class BaseException extends RuntimeException {
         this(null, null, null, defaultMessage);
     }
 
-//    @Override
-//    public String getMessage() {
-//        String message = null;
-//        if (!ObjectUtil.isEmpty(code)) {
-//            message = MessageUtils.message(code, args);
-//        }
-//        if (message == null) {
-//            message = defaultMessage;
-//        }
-//        return message;
-//    }
+    @Override
+    public String getMessage() {
+        String message = null;
+        if (!ObjectUtil.isEmpty(code)) {
+            message = MessageUtils.message(code, args);
+        }
+        if (message == null) {
+            message = defaultMessage;
+        }
+        return message;
+    }
 
 }

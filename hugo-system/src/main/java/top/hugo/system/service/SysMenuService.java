@@ -23,9 +23,7 @@ import top.hugo.system.mapper.SysRoleMenuMapper;
 import top.hugo.system.vo.MetaVo;
 import top.hugo.system.vo.RouterVo;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * 菜单 业务层处理
@@ -75,6 +73,23 @@ public class SysMenuService {
 
 
     /**
+     * 根据用户ID查询权限
+     *
+     * @param userId 用户ID
+     * @return 权限列表
+     */
+    public Set<String> selectMenuPermsByUserId(Long userId) {
+        List<String> perms = sysMenuMapper.selectMenuPermsByUserId(userId);
+        Set<String> permsSet = new HashSet<>();
+        for (String perm : perms) {
+            if (StringUtils.isNotEmpty(perm)) {
+                permsSet.addAll(Arrays.asList(perm.trim().split(",")));
+            }
+        }
+        return permsSet;
+    }
+
+    /**
      * 根据菜单ID查询信息
      *
      * @param menuId 菜单ID
@@ -82,6 +97,23 @@ public class SysMenuService {
      */
     public SysMenu selectMenuById(Long menuId) {
         return sysMenuMapper.selectById(menuId);
+    }
+
+    /**
+     * 根据角色ID查询权限
+     *
+     * @param roleId 角色ID
+     * @return 权限列表
+     */
+    public Set<String> selectMenuPermsByRoleId(Long roleId) {
+        List<String> perms = sysMenuMapper.selectMenuPermsByRoleId(roleId);
+        Set<String> permsSet = new HashSet<>();
+        for (String perm : perms) {
+            if (StringUtils.isNotEmpty(perm)) {
+                permsSet.addAll(Arrays.asList(perm.trim().split(",")));
+            }
+        }
+        return permsSet;
     }
 
 

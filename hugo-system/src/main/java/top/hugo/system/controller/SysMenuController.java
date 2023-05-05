@@ -85,7 +85,6 @@ public class SysMenuController extends BaseController {
         return toAjax(menuService.insertMenu(menu));
     }
 
-
     /**
      * 修改菜单
      */

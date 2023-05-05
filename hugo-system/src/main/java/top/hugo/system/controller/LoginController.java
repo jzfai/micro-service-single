@@ -1,9 +1,7 @@
-package top.hugo.web.controller.system;
+package top.hugo.system.controller;
 
 import cn.dev33.satoken.annotation.SaIgnore;
 import cn.dev33.satoken.stp.StpUtil;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,9 +10,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import top.hugo.common.constant.Constants;
 import top.hugo.common.domain.R;
-import top.hugo.common.domain.model.LoginBody;
+import top.hugo.common.utils.JsonUtils;
 import top.hugo.system.entity.SysMenu;
-import top.hugo.system.entity.SysUser;
+import top.hugo.system.helper.modal.LoginBody;
+import top.hugo.system.helper.modal.LoginUser;
 import top.hugo.system.service.SysLoginService;
 import top.hugo.system.service.SysMenuService;
 import top.hugo.system.vo.RouterVo;
@@ -67,11 +66,10 @@ public class LoginController {
      * @return
      */
     @GetMapping("getInfo")
-    public R<HashMap<String, Object>> getUserInfo() throws JsonProcessingException {
-        ObjectMapper jackson = new ObjectMapper();
-        SysUser sysUser = jackson.readValue(jackson.writeValueAsString(StpUtil.getExtra("user")), SysUser.class);
+    public R<HashMap<String, Object>> getUserInfo() {
+        LoginUser user = JsonUtils.parseObject(StpUtil.getExtra("user"), LoginUser.class);
         HashMap<String, Object> hm = new HashMap<>();
-        hm.put("user", sysUser);
+        hm.put("user", user);
         return R.ok(hm);
     }
 
@@ -82,10 +80,9 @@ public class LoginController {
      * @return 路由信息
      */
     @GetMapping("getRouters")
-    public R<List<RouterVo>> getRouters() throws JsonProcessingException {
-        ObjectMapper jackson = new ObjectMapper();
-        SysUser sysUser = jackson.readValue(jackson.writeValueAsString(StpUtil.getExtra("user")), SysUser.class);
-        List<SysMenu> menus = menuService.selectMenuTreeByUserId(sysUser.getUserId());
+    public R<List<RouterVo>> getRouters() {
+        LoginUser user = JsonUtils.parseObject(StpUtil.getExtra("user"), LoginUser.class);
+        List<SysMenu> menus = menuService.selectMenuTreeByUserId(user.getUserId());
         return R.ok(menuService.buildMenus(menus));
     }
 }

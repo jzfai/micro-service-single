@@ -151,7 +151,7 @@ public class SysUser extends BaseEntity {
     }
 
     public boolean isAdmin() {
-        return UserConstants.ADMIN_ID.equals(this.userId);
+        return UserConstants.ADMIN_NAME.equals(userName);
     }
 
 }

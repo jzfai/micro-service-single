@@ -1,7 +1,6 @@
 package top.hugo.system.controller;
 
 
-import cn.hutool.core.util.ObjectUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -9,17 +8,18 @@ import top.hugo.common.constant.UserConstants;
 import top.hugo.common.controller.BaseController;
 import top.hugo.common.domain.PageQuery;
 import top.hugo.common.domain.R;
-import top.hugo.common.domain.model.LoginUser;
+import top.hugo.common.excel.ExcelUtil;
 import top.hugo.common.page.TableDataInfo;
 import top.hugo.system.entity.SysDept;
 import top.hugo.system.entity.SysRole;
 import top.hugo.system.entity.SysUser;
 import top.hugo.system.entity.SysUserRole;
-import top.hugo.system.helper.LoginHelper;
 import top.hugo.system.service.SysDeptService;
+import top.hugo.system.service.SysPermissionService;
 import top.hugo.system.service.SysRoleService;
 import top.hugo.system.service.SysUserService;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,7 +38,7 @@ public class SysRoleController extends BaseController {
     private final SysRoleService roleService;
     private final SysUserService userService;
     private final SysDeptService deptService;
-    //private final SysPermissionService permissionService;
+    private final SysPermissionService permissionService;
 
     /**
      * 获取角色信息列表
@@ -49,16 +49,16 @@ public class SysRoleController extends BaseController {
         return roleService.selectPageRoleList(role, pageQuery);
     }
 
-//    /**
+    //    /**
 //     * 导出角色信息列表
 //     */
 //    //@Log(title = "角色管理", businessType = BusinessType.EXPORT)
 //    //@SaCheckPermission("system:role:export")
-//    @PostMapping("/export")
-//    public void export(SysRole role, HttpServletResponse response) {
-//        List<SysRole> list = roleService.selectRoleList(role);
-//        ExcelUtil.exportExcel(list, "角色数据", SysRole.class, response);
-//    }
+    @PostMapping("/export")
+    public void export(SysRole role, HttpServletResponse response) {
+        List<SysRole> list = roleService.selectRoleList(role);
+        ExcelUtil.exportExcel(list, "角色数据", SysRole.class, response);
+    }
 
     /**
      * 根据角色编号获取详细信息
@@ -109,7 +109,7 @@ public class SysRoleController extends BaseController {
 //            SysUser sysUser = userService.selectUserById(loginUser.getUserId());
 //            if (ObjectUtil.isNotNull(sysUser) && !sysUser.isAdmin()) {
 //                loginUser.setMenuPermission(permissionService.getMenuPermission(sysUser));
-//                LoginHelper.setLoginUser(loginUser);
+//                //LoginHelper.setLoginUser(loginUser);
 //            }
 //            return R.ok();
 //        }
