@@ -22,6 +22,7 @@ import top.hugo.common.utils.RedisUtils;
 import top.hugo.common.utils.StringUtils;
 import top.hugo.common.utils.reflect.ReflectUtils;
 import top.hugo.framework.config.properties.CaptchaProperties;
+import top.hugo.system.service.SysConfigService;
 
 import java.time.Duration;
 import java.util.HashMap;
@@ -40,6 +41,7 @@ import java.util.Map;
 @RestController
 public class CaptchaController {
     private final CaptchaProperties captchaProperties;
+    private final SysConfigService sysConfigService;
 
     /**
      * 生成验证码
@@ -47,8 +49,7 @@ public class CaptchaController {
     @GetMapping("/captchaImage")
     public R<Map<String, Object>> getCode() {
         Map<String, Object> ajax = new HashMap<>();
-        //String captchaEnabled = selectConfigByKey("sys.account.captchaEnabled");
-        boolean captchaEnabled = true;
+        boolean captchaEnabled = sysConfigService.selectCaptchaEnabled();
         ajax.put("captchaEnabled", captchaEnabled);
         if (!captchaEnabled) {
             return R.ok(ajax);
