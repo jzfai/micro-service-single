@@ -19,9 +19,11 @@ import top.hugo.common.exception.ServiceException;
 import top.hugo.common.page.TableDataInfo;
 import top.hugo.common.utils.StringUtils;
 import top.hugo.system.entity.SysUser;
+import top.hugo.system.entity.SysUserPost;
 import top.hugo.system.entity.SysUserRole;
 import top.hugo.system.helper.LoginHelper;
 import top.hugo.system.mapper.SysUserMapper;
+import top.hugo.system.mapper.SysUserPostMapper;
 import top.hugo.system.mapper.SysUserRoleMapper;
 
 import java.util.ArrayList;
@@ -34,6 +36,8 @@ import java.util.List;
 public class SysUserService {
     private final SysUserMapper sysUserMapper;
     private final SysUserRoleMapper userRoleMapper;
+    private final SysUserPostMapper userPostMapper;
+
 
     public TableDataInfo<SysUser> selectPageUserList(SysUser user, PageQuery pageQuery) {
         List<SysUser> sysUsers = this.selectUserList(user);
@@ -309,5 +313,71 @@ public class SysUserService {
         userRoleMapper.delete(new LambdaQueryWrapper<SysUserRole>()
                 .eq(SysUserRole::getUserId, userId));
         insertUserRole(userId, roleIds);
+    }
+
+    /**
+     * 通过用户名查询用户
+     *
+     * @param userName 用户名
+     * @return 用户对象信息
+     */
+    public SysUser selectUserByUserName(String userName) {
+        return sysUserMapper.selectUserByUserName(userName);
+    }
+
+    /**
+     * 修改保存用户信息
+     *
+     * @param user 用户信息
+     * @return 结果
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public int updateUser(SysUser user) {
+        Long userId = user.getUserId();
+        // 删除用户与角色关联
+        userRoleMapper.delete(new LambdaQueryWrapper<SysUserRole>().eq(SysUserRole::getUserId, userId));
+        // 新增用户与角色管理
+        insertUserRole(user);
+        // 删除用户与岗位关联
+        userPostMapper.delete(new LambdaQueryWrapper<SysUserPost>().eq(SysUserPost::getUserId, userId));
+        // 新增用户与岗位管理
+        insertUserPost(user);
+        return sysUserMapper.updateById(user);
+    }
+
+    /**
+     * 新增用户岗位信息
+     *
+     * @param user 用户对象
+     */
+    public void insertUserPost(SysUser user) {
+        Long[] posts = user.getPostIds();
+        if (ArrayUtil.isNotEmpty(posts)) {
+            // 新增用户与岗位管理
+            List<SysUserPost> list = new ArrayList<>(posts.length);
+            for (Long postId : posts) {
+                SysUserPost up = new SysUserPost();
+                up.setUserId(user.getUserId());
+                up.setPostId(postId);
+                list.add(up);
+            }
+            userPostMapper.insertBatch(list);
+        }
+    }
+
+    /**
+     * 校验email是否唯一
+     *
+     * @param user 用户信息
+     * @return
+     */
+    public String checkEmailUnique(SysUser user) {
+        boolean exist = sysUserMapper.exists(new LambdaQueryWrapper<SysUser>()
+                .eq(SysUser::getEmail, user.getEmail())
+                .ne(ObjectUtil.isNotNull(user.getUserId()), SysUser::getUserId, user.getUserId()));
+        if (exist) {
+            return UserConstants.NOT_UNIQUE;
+        }
+        return UserConstants.UNIQUE;
     }
 }

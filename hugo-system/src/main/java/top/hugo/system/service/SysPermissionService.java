@@ -1,6 +1,7 @@
 package top.hugo.system.service;
 
 
+import cn.hutool.core.util.ObjectUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import top.hugo.system.entity.SysRole;
@@ -52,7 +53,7 @@ public class SysPermissionService {
             perms.add("*:*:*");
         } else {
             List<SysRole> roles = user.getRoles();
-            if (!roles.isEmpty() && roles.size() > 1) {
+            if (ObjectUtil.isNotEmpty(roles) && roles.size() > 1) {
                 // 多角色设置permissions属性，以便数据权限匹配权限
                 for (SysRole role : roles) {
                     Set<String> rolePerms = menuService.selectMenuPermsByRoleId(role.getRoleId());

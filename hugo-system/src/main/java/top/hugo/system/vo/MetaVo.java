@@ -1,5 +1,6 @@
 package top.hugo.system.vo;
 
+
 import lombok.Data;
 import top.hugo.common.utils.StringUtils;
 

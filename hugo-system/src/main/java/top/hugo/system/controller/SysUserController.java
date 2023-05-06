@@ -1,19 +1,21 @@
 package top.hugo.system.controller;
 
 
-import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.dev33.satoken.secure.BCrypt;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.lang.tree.Tree;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ObjectUtil;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.java.Log;
+import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import top.hugo.common.constant.UserConstants;
 import top.hugo.common.controller.BaseController;
 import top.hugo.common.domain.PageQuery;
 import top.hugo.common.domain.R;
+import top.hugo.common.excel.ExcelResult;
 import top.hugo.common.excel.ExcelUtil;
 import top.hugo.common.page.TableDataInfo;
 import top.hugo.common.utils.StreamUtils;
@@ -21,13 +23,16 @@ import top.hugo.system.entity.SysDept;
 import top.hugo.system.entity.SysRole;
 import top.hugo.system.entity.SysUser;
 import top.hugo.system.helper.LoginHelper;
+import top.hugo.system.listener.SysUserImportListener;
 import top.hugo.system.service.SysDeptService;
+import top.hugo.system.service.SysPostService;
 import top.hugo.system.service.SysRoleService;
 import top.hugo.system.service.SysUserService;
 import top.hugo.system.vo.SysUserExportVo;
+import top.hugo.system.vo.SysUserImportVo;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,7 +50,29 @@ public class SysUserController extends BaseController {
     private final SysUserService sysUserService;
     private final SysDeptService deptService;
     private final SysRoleService sysRoleService;
-//    private final SysPostService postService;
+    private final SysPostService sysPostService;
+
+    /**
+     * 根据用户编号获取详细信息
+     *
+     * @param userId 用户ID
+     */
+    //@SaCheckPermission("system:user:query")
+    @GetMapping(value = {"", "/{userId}"})
+    public R<Map<String, Object>> getInfo(@PathVariable(value = "userId", required = false) Long userId) {
+        sysUserService.checkUserDataScope(userId);
+        Map<String, Object> ajax = new HashMap<>();
+        List<SysRole> roles = sysRoleService.selectRoleAll();
+        ajax.put("roles", LoginHelper.isAdmin(userId) ? roles : StreamUtils.filter(roles, r -> !r.isAdmin()));
+        ajax.put("posts", sysPostService.selectPostAll());
+        if (ObjectUtil.isNotNull(userId)) {
+            SysUser sysUser = sysUserService.selectUserById(userId);
+            ajax.put("user", sysUser);
+            ajax.put("postIds", sysPostService.selectPostListByUserId(userId));
+            ajax.put("roleIds", StreamUtils.toList(sysUser.getRoles(), SysRole::getRoleId));
+        }
+        return R.ok(ajax);
+    }
 
     /**
      * 获取用户列表
@@ -130,11 +157,52 @@ public class SysUserController extends BaseController {
 
 
     /**
+     * 新增用户
+     */
+    //    @SaCheckPermission("system:user:add")
+    //    @Log(title = "用户管理", businessType = BusinessType.INSERT)
+    @PostMapping
+    public R<Void> add(@Validated @RequestBody SysUser user) {
+        if (UserConstants.NOT_UNIQUE.equals(sysUserService.checkUserNameUnique(user))) {
+            return R.fail("新增用户'" + user.getUserName() + "'失败，登录账号已存在");
+        } else if (ObjectUtil.isNotEmpty(user.getPhonenumber())
+                && UserConstants.NOT_UNIQUE.equals(sysUserService.checkPhoneUnique(user))) {
+            return R.fail("新增用户'" + user.getUserName() + "'失败，手机号码已存在");
+        } else if (ObjectUtil.isNotEmpty(user.getEmail())
+                && UserConstants.NOT_UNIQUE.equals(sysUserService.checkEmailUnique(user))) {
+            return R.fail("新增用户'" + user.getUserName() + "'失败，邮箱账号已存在");
+        }
+        user.setPassword(BCrypt.hashpw(user.getPassword()));
+        return toAjax(sysUserService.insertUser(user));
+    }
+
+    /**
+     * 修改用户
+     */
+    //@SaCheckPermission("system:user:edit")
+    //@Log(title = "用户管理", businessType = BusinessType.UPDATE)
+    @PutMapping
+    public R<Void> edit(@Validated @RequestBody SysUser user) {
+        sysUserService.checkUserAllowed(user);
+        sysUserService.checkUserDataScope(user.getUserId());
+        if (UserConstants.NOT_UNIQUE.equals(sysUserService.checkUserNameUnique(user))) {
+            return R.fail("修改用户'" + user.getUserName() + "'失败，登录账号已存在");
+        } else if (ObjectUtil.isNotEmpty(user.getPhonenumber())
+                && UserConstants.NOT_UNIQUE.equals(sysUserService.checkPhoneUnique(user))) {
+            return R.fail("修改用户'" + user.getUserName() + "'失败，手机号码已存在");
+        } else if (ObjectUtil.isNotEmpty(user.getEmail())
+                && UserConstants.NOT_UNIQUE.equals(sysUserService.checkEmailUnique(user))) {
+            return R.fail("修改用户'" + user.getUserName() + "'失败，邮箱账号已存在");
+        }
+        return toAjax(sysUserService.updateUser(user));
+    }
+
+    /**
      * 根据用户编号获取授权角色
      *
      * @param userId 用户ID
      */
-//    @SaCheckPermission("system:user:query")
+    //    @SaCheckPermission("system:user:query")
     @GetMapping("/authRole/{userId}")
     public R<Map<String, Object>> authRole(@PathVariable Long userId) {
         SysUser user = sysUserService.selectUserById(userId);
@@ -151,12 +219,37 @@ public class SysUserController extends BaseController {
      * @param userId  用户Id
      * @param roleIds 角色ID串
      */
-//    @SaCheckPermission("system:user:edit")
-//    @Log(title = "用户管理", businessType = BusinessType.GRANT)
+    //    @SaCheckPermission("system:user:edit")
+    //    @Log(title = "用户管理", businessType = BusinessType.GRANT)
     @PutMapping("/authRole")
     public R<Void> insertAuthRole(Long userId, Long[] roleIds) {
         sysUserService.checkUserDataScope(userId);
         sysUserService.insertUserAuth(userId, roleIds);
         return R.ok();
     }
+
+    /**
+     * 导入数据
+     *
+     * @param file          导入文件
+     * @param updateSupport 是否更新已存在数据
+     */
+    //    @Log(title = "用户管理", businessType = BusinessType.IMPORT)
+    //    @SaCheckPermission("system:user:import")
+    @PostMapping(value = "/importData", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public R<String> importData(@RequestPart("file") MultipartFile file, boolean updateSupport) throws Exception {
+        ExcelResult<SysUserImportVo> result = ExcelUtil.importExcel(file.getInputStream(), SysUserImportVo.class, new SysUserImportListener(updateSupport));
+        return R.ok(result.getAnalysis());
+    }
+
+
+    /**
+     * 获取导入模板
+     */
+    @PostMapping("/importTemplate")
+    public void importTemplate(HttpServletResponse response) {
+        ExcelUtil.exportExcel(new ArrayList<>(), "用户数据", SysUserImportVo.class, response);
+    }
+
+
 }

@@ -46,10 +46,10 @@ public class SysDeptService {
     public List<SysDept> selectDeptList(SysDept dept) {
         LambdaQueryWrapper<SysDept> lqw = new LambdaQueryWrapper<>();
         lqw.eq(SysDept::getDelFlag, "0")
-                .eq(ObjectUtil.isNotNull(dept.getDeptId()), SysDept::getDeptId, dept.getDeptId())
-                .eq(ObjectUtil.isNotNull(dept.getParentId()), SysDept::getParentId, dept.getParentId())
-                .like(ObjectUtil.isEmpty(dept.getDeptName()), SysDept::getDeptName, dept.getDeptName())
-                .eq(ObjectUtil.isEmpty(dept.getStatus()), SysDept::getStatus, dept.getStatus())
+                .eq(ObjectUtil.isNotEmpty(dept.getDeptId()), SysDept::getDeptId, dept.getDeptId())
+                .eq(ObjectUtil.isNotEmpty(dept.getParentId()), SysDept::getParentId, dept.getParentId())
+                .like(ObjectUtil.isNotEmpty(dept.getDeptName()), SysDept::getDeptName, dept.getDeptName())
+                .eq(ObjectUtil.isNotEmpty(dept.getStatus()), SysDept::getStatus, dept.getStatus())
                 .orderByAsc(SysDept::getParentId)
                 .orderByAsc(SysDept::getOrderNum);
         return sysDeptMapper.selectDeptList(lqw);

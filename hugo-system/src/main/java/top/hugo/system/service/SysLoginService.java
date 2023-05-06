@@ -64,9 +64,9 @@ public class SysLoginService {
         HttpServletRequest request = ServletUtils.getRequest();
         //验证码
         boolean captchaEnabled = configService.selectCaptchaEnabled();
-        //        if (captchaEnabled) {
-        //            validateCaptcha(username, code, uuid, request);
-        //        }
+        if (captchaEnabled) {
+            validateCaptcha(username, code, uuid, request);
+        }
         //检查用户状态，获取用户信息
         SysUser user = loadUserByUsername(username);
         //检查用户登录状态,登录次数，密码是否正确等

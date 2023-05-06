@@ -11,6 +11,7 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import top.hugo.framework.handler.CreateAndUpdateMetaObjectHandler;
 
 /**
  * mybatis-plus配置类(下方注释有插件介绍)
@@ -63,10 +64,10 @@ public class MybatisPlusConfig {
     /**
      * 元对象字段填充控制器
      */
-//    @Bean
-//    public MetaObjectHandler metaObjectHandler() {
-//        return new CreateAndUpdateMetaObjectHandler();
-//    }
+    @Bean
+    public MetaObjectHandler metaObjectHandler() {
+        return new CreateAndUpdateMetaObjectHandler();
+    }
 
     /**
      * 使用网卡信息绑定雪花生成器
