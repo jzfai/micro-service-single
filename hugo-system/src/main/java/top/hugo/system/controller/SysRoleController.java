@@ -1,6 +1,7 @@
 package top.hugo.system.controller;
 
 
+import cn.hutool.core.util.ObjectUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,8 @@ import top.hugo.system.entity.SysDept;
 import top.hugo.system.entity.SysRole;
 import top.hugo.system.entity.SysUser;
 import top.hugo.system.entity.SysUserRole;
+import top.hugo.system.helper.LoginHelper;
+import top.hugo.system.helper.modal.LoginUser;
 import top.hugo.system.service.SysDeptService;
 import top.hugo.system.service.SysPermissionService;
 import top.hugo.system.service.SysRoleService;
@@ -103,16 +106,16 @@ public class SysRoleController extends BaseController {
             return R.fail("修改角色'" + role.getRoleName() + "'失败，角色权限已存在");
         }
 
-//        if (roleService.updateRole(role) > 0) {
-//            // 更新缓存用户权限
-//            LoginUser loginUser = getLoginUser();
-//            SysUser sysUser = userService.selectUserById(loginUser.getUserId());
-//            if (ObjectUtil.isNotNull(sysUser) && !sysUser.isAdmin()) {
-//                loginUser.setMenuPermission(permissionService.getMenuPermission(sysUser));
-//                //LoginHelper.setLoginUser(loginUser);
-//            }
-//            return R.ok();
-//        }
+        if (roleService.updateRole(role) > 0) {
+            // 更新缓存用户权限
+            LoginUser loginUser = LoginHelper.getUserInfo();
+            SysUser sysUser = userService.selectUserById(loginUser.getUserId());
+            if (ObjectUtil.isNotNull(sysUser) && !sysUser.isAdmin()) {
+                loginUser.setMenuPermission(permissionService.getMenuPermission(sysUser));
+// LoginHelper.setLoginUser(loginUser);
+            }
+            return R.ok();
+        }
         return R.fail("修改角色'" + role.getRoleName() + "'失败，请联系管理员");
     }
 

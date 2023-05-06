@@ -251,7 +251,6 @@ public class SysRoleService {
      * @param role 角色信息
      * @return 结果
      */
-
     public int updateRoleStatus(SysRole role) {
         return baseMapper.updateById(role);
     }
