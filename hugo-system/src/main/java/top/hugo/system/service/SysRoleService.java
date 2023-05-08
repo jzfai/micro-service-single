@@ -29,7 +29,7 @@ import java.util.*;
 /**
  * 角色 业务层处理
  *
- * @author Lion Li
+ * @author hugo
  */
 @RequiredArgsConstructor
 @Service
@@ -287,9 +287,9 @@ public class SysRoleService {
             rd.setDeptId(deptId);
             list.add(rd);
         }
-//        if (list.size() > 0) {
-//            rows = roleDeptMapper.insertBatch(list) ? list.size() : 0;
-//        }
+        //if (list.size() > 0) {
+        //    rows = roleDeptMapper.insertBatch(list) ? list.size() : 0;
+        //}
         return rows;
     }
 

@@ -11,7 +11,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 /**
  * 通用配置
  *
- * @author Lion Li
+ * @author hugo
  */
 @Configuration
 public class ResourcesConfig implements WebMvcConfigurer {

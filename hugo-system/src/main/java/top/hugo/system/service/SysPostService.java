@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * 岗位信息 服务层处理
  *
- * @author Lion Li
+ * @author hugo
  */
 @RequiredArgsConstructor
 @Service
@@ -29,7 +29,6 @@ public class SysPostService {
 
     private final SysPostMapper baseMapper;
     private final SysUserPostMapper userPostMapper;
-
 
     public TableDataInfo<SysPost> selectPagePostList(SysPost post, PageQuery pageQuery) {
         LambdaQueryWrapper<SysPost> lqw = new LambdaQueryWrapper<SysPost>()

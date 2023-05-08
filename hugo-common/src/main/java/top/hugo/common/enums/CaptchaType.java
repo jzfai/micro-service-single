@@ -9,7 +9,7 @@ import top.hugo.common.captcha.UnsignedMathGenerator;
 /**
  * 验证码类型
  *
- * @author Lion Li
+ * @author hugo
  */
 @Getter
 @AllArgsConstructor

@@ -3,7 +3,7 @@ package top.hugo.common.constant;
 /**
  * 返回状态码
  *
- * @author Lion Li
+ * @author hugo
  */
 public interface HttpStatus {
     /**

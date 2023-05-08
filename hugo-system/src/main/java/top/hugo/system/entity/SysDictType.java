@@ -18,7 +18,7 @@ import javax.validation.constraints.Size;
 /**
  * 字典类型表 sys_dict_type
  *
- * @author Lion Li
+ * @author hugo
  */
 
 @Data

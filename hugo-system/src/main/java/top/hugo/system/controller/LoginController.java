@@ -25,7 +25,7 @@ import java.util.Map;
 /**
  * 验证码操作处理
  *
- * @author Lion Li
+ * @author hugo
  */
 @Validated
 @RequiredArgsConstructor

@@ -11,7 +11,7 @@ import java.util.Date;
 /**
  * Entity基类
  *
- * @author Lion Li
+ * @author hugo
  */
 
 @Data

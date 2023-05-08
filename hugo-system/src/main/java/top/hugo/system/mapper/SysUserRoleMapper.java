@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * 用户与角色关联表 数据层
  *
- * @author Lion Li
+ * @author hugo
  */
 public interface SysUserRoleMapper extends BaseMapperPlus<SysUserRoleMapper, SysUserRole, SysUserRole> {
 

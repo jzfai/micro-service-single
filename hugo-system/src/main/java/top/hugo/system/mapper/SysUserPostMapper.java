@@ -7,7 +7,7 @@ import top.hugo.system.entity.SysUserPost;
 /**
  * 用户与岗位关联表 数据层
  *
- * @author Lion Li
+ * @author hugo
  */
 public interface SysUserPostMapper extends BaseMapperPlus<SysUserPostMapper, SysUserPost, SysUserPost> {
 

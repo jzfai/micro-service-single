@@ -22,7 +22,7 @@ import java.util.Map;
  * 例如: 源对象 拷贝到 目标(链式对象)
  * 请区分好`浅拷贝`和`深拷贝`再做使用
  *
- * @author Lion Li
+ * @author hugo
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class BeanCopyUtils {
@@ -173,8 +173,8 @@ public class BeanCopyUtils {
          */
         private String genKey(Class<?> srcClass, Class<?> targetClass, Converter converter) {
             final StringBuilder key = StrUtil.builder()
-                .append(srcClass.getName()).append('#').append(targetClass.getName());
-            if(null != converter){
+                    .append(srcClass.getName()).append('#').append(targetClass.getName());
+            if (null != converter) {
                 key.append('#').append(converter.getClass().getName());
             }
             return key.toString();

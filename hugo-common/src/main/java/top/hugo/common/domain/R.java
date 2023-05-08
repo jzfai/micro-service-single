@@ -9,23 +9,20 @@ import java.io.Serializable;
 /**
  * 响应信息主体
  *
- * @author Lion Li
+ * @author hugo
  */
 @Data
 @NoArgsConstructor
 public class R<T> implements Serializable {
-    private static final long serialVersionUID = 1L;
-
     /**
      * 成功
      */
     public static final int SUCCESS = 200;
-
     /**
      * 失败
      */
     public static final int FAIL = 500;
-
+    private static final long serialVersionUID = 1L;
     private int code;
 
     private String msg;
@@ -81,7 +78,7 @@ public class R<T> implements Serializable {
     /**
      * 返回警告消息
      *
-     * @param msg 返回内容
+     * @param msg  返回内容
      * @param data 数据对象
      * @return 警告消息
      */

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 /**
  * Redisson 配置属性
  *
- * @author Lion Li
+ * @author hugo
  */
 @Data
 @Component

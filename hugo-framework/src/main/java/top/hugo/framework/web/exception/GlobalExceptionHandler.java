@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * 全局异常处理器
  *
- * @author Lion Li
+ * @author hugo
  */
 @Slf4j
 @RestControllerAdvice
@@ -58,7 +58,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public R<Void> handleHttpRequestMethodNotSupported(HttpRequestMethodNotSupportedException e,
-                                                                HttpServletRequest request) {
+                                                       HttpServletRequest request) {
         String requestURI = request.getRequestURI();
         log.error("请求地址'{}',不支持'{}'请求", requestURI, e.getMethod());
         return R.fail(e.getMessage());
@@ -73,7 +73,6 @@ public class GlobalExceptionHandler {
         log.error("请求地址'{}',数据库中已存在记录'{}'", requestURI, e.getMessage());
         return R.fail("数据库中已存在该记录，请联系管理员确认");
     }
-
 
 
     /**
@@ -95,7 +94,6 @@ public class GlobalExceptionHandler {
         log.error("请求地址'{}',发生系统异常.", requestURI, e);
         return R.fail(e.getMessage());
     }
-
 
 
     /**

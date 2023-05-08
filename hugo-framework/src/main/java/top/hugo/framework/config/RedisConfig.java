@@ -18,7 +18,7 @@ import top.hugo.framework.manager.PlusSpringCacheManager;
 /**
  * redis配置
  *
- * @author Lion Li
+ * @author hugo
  */
 @Slf4j
 @Configuration

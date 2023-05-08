@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import org.redisson.config.Config;
 import top.hugo.common.spring.SpringUtils;
 import org.redisson.api.*;
+
 import java.time.Duration;
 import java.util.Collection;
 import java.util.List;
@@ -17,7 +18,7 @@ import java.util.stream.Stream;
 /**
  * redis 工具类
  *
- * @author Lion Li
+ * @author hugo
  * @version 3.1.0 新增
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)

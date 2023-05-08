@@ -28,7 +28,7 @@ import java.util.Set;
 /**
  * Swagger 文档配置
  *
- * @author Lion Li
+ * @author hugo
  */
 @RequiredArgsConstructor
 @Configuration
@@ -103,7 +103,7 @@ public class SwaggerConfig {
                 return;
             }
             PlusPaths newPaths = new PlusPaths();
-            oldPaths.forEach((k,v) -> newPaths.addPathItem(finalContextPath + k, v));
+            oldPaths.forEach((k, v) -> newPaths.addPathItem(finalContextPath + k, v));
             openApi.setPaths(newPaths);
         };
     }
@@ -111,7 +111,7 @@ public class SwaggerConfig {
     /**
      * 单独使用一个类便于判断 解决springdoc路径拼接重复问题
      *
-     * @author Lion Li
+     * @author hugo
      */
     static class PlusPaths extends Paths {
 

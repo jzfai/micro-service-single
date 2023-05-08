@@ -7,7 +7,7 @@ import top.hugo.system.entity.SysDictType;
 /**
  * 字典表 数据层
  *
- * @author Lion Li
+ * @author hugo
  */
 public interface SysDictTypeMapper extends BaseMapperPlus<SysDictTypeMapper, SysDictType, SysDictType> {
 
