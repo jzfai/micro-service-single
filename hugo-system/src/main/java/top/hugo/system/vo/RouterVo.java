@@ -49,6 +49,12 @@ public class RouterVo {
      */
     private Boolean alwaysShow;
 
+
+    private String routeName;
+
+
+    private String activeMenu;
+
     /**
      * 其他元素
      */

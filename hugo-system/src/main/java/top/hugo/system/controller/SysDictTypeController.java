@@ -40,8 +40,8 @@ public class SysDictTypeController extends BaseController {
     /**
      * 导出字典类型列表
      */
-//    @Log(title = "字典类型", businessType = BusinessType.EXPORT)
-//    @SaCheckPermission("system:dict:export")
+    //@Log(title = "字典类型", businessType = BusinessType.EXPORT)
+    //@SaCheckPermission("system:dict:export")
     @PostMapping("/export")
     public void export(SysDictType dictType, HttpServletResponse response) {
         List<SysDictType> list = dictTypeService.selectDictTypeList(dictType);
@@ -53,7 +53,7 @@ public class SysDictTypeController extends BaseController {
      *
      * @param dictId 字典ID
      */
-//    @SaCheckPermission("system:dict:query")
+    //@SaCheckPermission("system:dict:query")
     @GetMapping(value = "/{dictId}")
     public R<SysDictType> getInfo(@PathVariable Long dictId) {
         return R.ok(dictTypeService.selectDictTypeById(dictId));

@@ -3,7 +3,7 @@ package top.hugo.common.exception;
 /**
  * 业务异常
  *
- * @author ruoyi
+ * @author hugo
  */
 public final class ServiceException extends RuntimeException {
     private static final long serialVersionUID = 1L;

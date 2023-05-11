@@ -3,7 +3,7 @@ package top.hugo.common.exception;
 /**
  * 全局异常
  *
- * @author ruoyi
+ * @author hugo
  */
 public class GlobalException extends RuntimeException {
 

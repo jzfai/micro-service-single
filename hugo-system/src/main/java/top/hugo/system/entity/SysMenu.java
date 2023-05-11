@@ -101,4 +101,16 @@ public class SysMenu extends TreeEntity<SysMenu> {
      */
     private String remark;
 
+
+    private String redirect;
+
+
+    private Integer alwaysShow;
+
+
+    private String routeName;
+
+
+    private String activeMenu;
+
 }

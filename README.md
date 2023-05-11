@@ -2,7 +2,7 @@
 
 micro-service-single provides service of vue3-admin-plus
 
-rewrite by Ruoyi-Vue-Plus, Thanks to [Ruoyi-Vue-Plus](https://gitee.com/JavaLionLi/RuoYi-Vue-Plus.git)
+rewrite by Ruoyi-Vue-Plus, Thanks to [Ruoyi-Vue-Plus](https://gitee.com/dromara/RuoYi-Vue-Plus)
 
 # start
 

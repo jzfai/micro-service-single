@@ -3,7 +3,7 @@ package top.hugo.common.constant;
 /**
  * 用户常量信息
  *
- * @author ruoyi
+ * @author hugo
  */
 public interface UserConstants {
 

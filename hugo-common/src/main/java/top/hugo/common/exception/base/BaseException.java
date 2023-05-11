@@ -9,7 +9,7 @@ import top.hugo.common.utils.MessageUtils;
 /**
  * 基础异常
  *
- * @author ruoyi
+ * @author hugo
  */
 @Data
 @EqualsAndHashCode(callSuper = true)

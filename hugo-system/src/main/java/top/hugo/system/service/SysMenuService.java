@@ -229,11 +229,18 @@ public class SysMenuService {
             router.setPath(getRouterPath(menu));
             router.setComponent(getComponent(menu));
             router.setQuery(menu.getQueryParam());
+
+            //新增字段逻辑
+            router.setRedirect(menu.getRedirect());
+            router.setRouteName(menu.getRouteName());
+            router.setActiveMenu(menu.getActiveMenu());
+            router.setAlwaysShow(1 == menu.getAlwaysShow());
+
             router.setMeta(new MetaVo(menu.getMenuName(), menu.getIcon(), StringUtils.equals("1", menu.getIsCache()), menu.getPath()));
             List<SysMenu> cMenus = menu.getChildren();
             if (!cMenus.isEmpty() && UserConstants.TYPE_DIR.equals(menu.getMenuType())) {
                 router.setAlwaysShow(true);
-                router.setRedirect("noRedirect");
+                //router.setRedirect("noRedirect");
                 router.setChildren(buildMenus(cMenus));
             } else if (isMenuFrame(menu)) {
                 router.setMeta(null);
