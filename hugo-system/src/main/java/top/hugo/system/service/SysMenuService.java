@@ -246,6 +246,7 @@ public class SysMenuService {
             //新增字段逻辑
             router.setRedirect(menu.getRedirect());
             router.setRouteName(menu.getRouteName());
+            router.setRedirect(menu.getRedirect());
             if (ObjectUtil.isNotEmpty(menu.getAlwaysShow())) {
                 router.setAlwaysShow(1 == menu.getAlwaysShow());
             }
