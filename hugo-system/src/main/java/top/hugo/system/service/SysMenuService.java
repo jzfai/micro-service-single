@@ -37,7 +37,6 @@ public class SysMenuService {
     private final SysRoleMapper sysRoleMapper;
     private final SysRoleMenuMapper sysRoleMenuMapper;
 
-
     public List<SysMenu> selectMenuList(Long userId) {
         return selectMenuList(new SysMenu(), userId);
     }
@@ -70,7 +69,6 @@ public class SysMenuService {
         }
         return menuList;
     }
-
 
     /**
      * 根据用户ID查询权限
@@ -228,15 +226,14 @@ public class SysMenuService {
             router.setName(getRouteName(menu));
             router.setPath(getRouterPath(menu));
             router.setComponent(getComponent(menu));
-            router.setQuery(menu.getQueryParam());
-
+            router.setMetaExtra(menu.getMetaExtra());
             //新增字段逻辑
             router.setRedirect(menu.getRedirect());
             router.setRouteName(menu.getRouteName());
-            router.setActiveMenu(menu.getActiveMenu());
-            router.setAlwaysShow(1 == menu.getAlwaysShow());
-
-            router.setMeta(new MetaVo(menu.getMenuName(), menu.getIcon(), StringUtils.equals("1", menu.getIsCache()), menu.getPath()));
+            if (ObjectUtil.isNotEmpty(menu.getAlwaysShow())) {
+                router.setAlwaysShow(1 == menu.getAlwaysShow());
+            }
+            router.setMeta(new MetaVo(menu.getMenuName(), menu.getIcon(), menu.getPath()));
             List<SysMenu> cMenus = menu.getChildren();
             if (!cMenus.isEmpty() && UserConstants.TYPE_DIR.equals(menu.getMenuType())) {
                 router.setAlwaysShow(true);
@@ -249,8 +246,8 @@ public class SysMenuService {
                 children.setPath(menu.getPath());
                 children.setComponent(menu.getComponent());
                 children.setName(StringUtils.capitalize(menu.getPath()));
-                children.setMeta(new MetaVo(menu.getMenuName(), menu.getIcon(), StringUtils.equals("1", menu.getIsCache()), menu.getPath()));
-                children.setQuery(menu.getQueryParam());
+                children.setMeta(new MetaVo(menu.getMenuName(), menu.getIcon()));
+                //children.setQuery(menu.getQueryParam());
                 childrenList.add(children);
                 router.setChildren(childrenList);
             } else if (menu.getParentId().intValue() == 0 && isInnerLink(menu)) {

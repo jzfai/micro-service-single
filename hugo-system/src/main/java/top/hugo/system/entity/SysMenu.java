@@ -53,10 +53,6 @@ public class SysMenu extends TreeEntity<SysMenu> {
     @Size(min = 0, max = 200, message = "组件路径不能超过255个字符")
     private String component;
 
-    /**
-     * 路由参数
-     */
-    private String queryParam;
 
     /**
      * 是否为外链（0是 1否）
@@ -64,9 +60,9 @@ public class SysMenu extends TreeEntity<SysMenu> {
     private String isFrame;
 
     /**
-     * 是否缓存（0缓存 1不缓存）
+     * meta中的配置参数(metaExtra)
      */
-    private String isCache;
+    private String metaExtra;
 
     /**
      * 类型（M目录 C菜单 F按钮）
@@ -75,7 +71,9 @@ public class SysMenu extends TreeEntity<SysMenu> {
     private String menuType;
 
     /**
-     * 显示状态（0显示 1隐藏）
+     * 显示状态（0+
+     * <p>
+     * 显示 1隐藏）
      */
     private String visible;
 

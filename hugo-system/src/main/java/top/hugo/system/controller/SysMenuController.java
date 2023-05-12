@@ -45,7 +45,8 @@ public class SysMenuController extends BaseController {
      */
     @GetMapping(value = "/{menuId}")
     public R<SysMenu> getInfo(@PathVariable Long menuId) {
-        return R.ok(menuService.selectMenuById(menuId));
+        SysMenu sysMenu = menuService.selectMenuById(menuId);
+        return R.ok(sysMenu);
     }
 
 
