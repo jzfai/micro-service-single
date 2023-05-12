@@ -24,11 +24,6 @@ public class MetaVo {
     private String icon;
 
     /**
-     * 设置为true，则不会被 <keep-alive>缓存
-     */
-    private boolean noCache;
-
-    /**
      * 内链地址（http(s)://开头）
      */
     private String link;
@@ -41,7 +36,7 @@ public class MetaVo {
     public MetaVo(String title, String icon, boolean noCache) {
         this.title = title;
         this.icon = icon;
-        this.noCache = noCache;
+        //this.noCache = noCache;
     }
 
     public MetaVo(String title, String icon, String link) {
@@ -53,7 +48,7 @@ public class MetaVo {
     public MetaVo(String title, String icon, boolean noCache, String link) {
         this.title = title;
         this.icon = icon;
-        this.noCache = noCache;
+        //this.noCache = noCache;
         if (StringUtils.ishttp(link)) {
             this.link = link;
         }

@@ -122,7 +122,22 @@ public class SysMenuService {
      * @return 结果
      */
     public int insertMenu(SysMenu menu) {
+        validRouteName(menu);
         return sysMenuMapper.insert(menu);
+    }
+
+    /*
+     * 检验routeName是否唯一
+     * */
+    public void validRouteName(SysMenu menu) {
+        //检验name唯一
+        LambdaQueryWrapper<SysMenu> lqw = new LambdaQueryWrapper<>();
+        lqw.eq(ObjectUtil.isNotEmpty(menu.getRouteName()), SysMenu::getMenuName, menu.getRouteName());
+        SysMenu sysMenu = sysMenuMapper.selectOne(lqw);
+
+        if (ObjectUtil.isNotEmpty(sysMenu) && !sysMenu.getRouteName().equals(menu.getRouteName())) {
+            throw new RuntimeException(menu.getRouteName() + "已存在");
+        }
     }
 
     /**
@@ -132,6 +147,7 @@ public class SysMenuService {
      * @return 结果
      */
     public int updateMenu(SysMenu menu) {
+        validRouteName(menu);
         return sysMenuMapper.updateById(menu);
     }
 
@@ -236,7 +252,7 @@ public class SysMenuService {
             router.setMeta(new MetaVo(menu.getMenuName(), menu.getIcon(), menu.getPath()));
             List<SysMenu> cMenus = menu.getChildren();
             if (!cMenus.isEmpty() && UserConstants.TYPE_DIR.equals(menu.getMenuType())) {
-                router.setAlwaysShow(true);
+                //router.setAlwaysShow(true);
                 //router.setRedirect("noRedirect");
                 router.setChildren(buildMenus(cMenus));
             } else if (isMenuFrame(menu)) {
@@ -299,7 +315,7 @@ public class SysMenuService {
         // 非外链并且是一级目录（类型为目录）
         if (0 == menu.getParentId().intValue() && UserConstants.TYPE_DIR.equals(menu.getMenuType())
                 && UserConstants.NO_FRAME.equals(menu.getIsFrame())) {
-            routerPath = "/" + menu.getPath();
+            routerPath = menu.getPath();
         }
         // 非外链并且是一级目录（类型为菜单）
         else if (isMenuFrame(menu)) {
