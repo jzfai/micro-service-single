@@ -11,9 +11,9 @@
         <result property="orderNum" column="order_num"/>
         <result property="path" column="path"/>
         <result property="component" column="component"/>
-        <!--        <result property="queryParam" column="query_param"/>-->
+        <!--<result property="queryParam" column="query_param"/>-->
         <result property="isFrame" column="is_frame"/>
-        <!--        <result property="isCache" column="is_cache"/>-->
+        <!--<result property="isCache" column="is_cache"/>-->
         <result property="menuType" column="menu_type"/>
         <result property="visible" column="visible"/>
         <result property="status" column="status"/>
@@ -32,7 +32,6 @@
                         m.menu_name,
                         m.path,
                         m.component,
---                         m.query_param,
                         m.route_name,
                         m.meta_extra,
                         m.always_show,
@@ -40,7 +39,6 @@
                         m.status,
                         m.perms,
                         m.is_frame,
---                         m.is_cache,
                         m.redirect,
                         m.menu_type,
                         m.icon,
@@ -59,12 +57,10 @@
                         m.menu_name,
                         m.path,
                         m.component,
---                         m.query_param,
                         m.visible,
                         m.status,
                         m.perms,
                         m.is_frame,
---                         m.is_cache,
                         m.route_name,
                         m.meta_extra,
                         m.always_show,

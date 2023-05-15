@@ -12,7 +12,7 @@ import top.hugo.common.excel.ValidatorUtils;
 import top.hugo.common.exception.ServiceException;
 import top.hugo.common.spring.SpringUtils;
 import top.hugo.system.entity.SysUser;
-import top.hugo.system.helper.LoginHelper;
+import top.hugo.common.helper.LoginHelper;
 import top.hugo.system.service.SysConfigService;
 import top.hugo.system.service.SysUserService;
 import top.hugo.system.vo.SysUserImportVo;

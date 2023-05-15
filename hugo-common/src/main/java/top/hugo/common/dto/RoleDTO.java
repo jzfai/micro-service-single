@@ -1,4 +1,4 @@
-package top.hugo.system.dto;
+package top.hugo.common.dto;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import top.hugo.common.constant.Constants;
 import top.hugo.common.constant.UserConstants;
 import top.hugo.common.utils.StreamUtils;
@@ -16,7 +17,7 @@ import top.hugo.common.utils.TreeBuildUtils;
 import top.hugo.system.entity.SysMenu;
 import top.hugo.system.entity.SysRole;
 import top.hugo.system.entity.SysRoleMenu;
-import top.hugo.system.helper.LoginHelper;
+import top.hugo.common.helper.LoginHelper;
 import top.hugo.system.mapper.SysMenuMapper;
 import top.hugo.system.mapper.SysRoleMapper;
 import top.hugo.system.mapper.SysRoleMenuMapper;
@@ -121,8 +122,10 @@ public class SysMenuService {
      * @param menu 菜单信息
      * @return 结果
      */
+    @Transactional
     public int insertMenu(SysMenu menu) {
         validRouteName(menu);
+        validPermissionCode(menu);
         return sysMenuMapper.insert(menu);
     }
 
@@ -131,13 +134,41 @@ public class SysMenuService {
      * */
     public void validRouteName(SysMenu menu) {
         //检验name唯一
-        LambdaQueryWrapper<SysMenu> lqw = new LambdaQueryWrapper<>();
-        lqw.eq(ObjectUtil.isNotEmpty(menu.getRouteName()), SysMenu::getMenuName, menu.getRouteName());
-        SysMenu sysMenu = sysMenuMapper.selectOne(lqw);
+        if (!UserConstants.TYPE_BUTTON.equals(menu.getMenuType())) {
+            LambdaQueryWrapper<SysMenu> lqw = new LambdaQueryWrapper<>();
+            lqw.eq(ObjectUtil.isNotEmpty(menu.getRouteName()), SysMenu::getRouteName, menu.getRouteName());
+            SysMenu sysMenu = sysMenuMapper.selectOne(lqw);
+            if (!ObjectUtil.isNotEmpty(menu.getMenuId())) {
+                if (ObjectUtil.isNotEmpty(sysMenu) && !sysMenu.getRouteName().equals(menu.getRouteName())) {
+                    throw new RuntimeException(menu.getRouteName() + "已存在");
+                }
+            } else {
+                if (ObjectUtil.isNotEmpty(sysMenu)) {
+                    throw new RuntimeException(menu.getPerms() + "已存在");
+                }
+            }
 
-        if (ObjectUtil.isNotEmpty(sysMenu) && !sysMenu.getRouteName().equals(menu.getRouteName())) {
-            throw new RuntimeException(menu.getRouteName() + "已存在");
         }
+    }
+
+    /*
+     * 权限字符唯一校验
+     * */
+    public void validPermissionCode(SysMenu menu) {
+        //检验name唯一
+        LambdaQueryWrapper<SysMenu> lqw = new LambdaQueryWrapper<>();
+        lqw.eq(ObjectUtil.isNotEmpty(menu.getPerms()), SysMenu::getPerms, menu.getPerms());
+        SysMenu sysMenu = sysMenuMapper.selectOne(lqw);
+        if (ObjectUtil.isNotEmpty(menu.getMenuId())) {
+            if (ObjectUtil.isNotEmpty(sysMenu) && !sysMenu.getPerms().equals(menu.getPerms())) {
+                throw new RuntimeException(menu.getPerms() + "已存在");
+            }
+        } else {
+            if (ObjectUtil.isNotEmpty(sysMenu)) {
+                throw new RuntimeException(menu.getPerms() + "已存在");
+            }
+        }
+
     }
 
     /**
@@ -146,8 +177,10 @@ public class SysMenuService {
      * @param menu 菜单信息
      * @return 结果
      */
+    @Transactional
     public int updateMenu(SysMenu menu) {
         validRouteName(menu);
+        validPermissionCode(menu);
         return sysMenuMapper.updateById(menu);
     }
 

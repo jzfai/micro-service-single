@@ -12,8 +12,8 @@ import top.hugo.common.constant.Constants;
 import top.hugo.common.domain.R;
 import top.hugo.common.utils.JsonUtils;
 import top.hugo.system.entity.SysMenu;
-import top.hugo.system.helper.modal.LoginBody;
-import top.hugo.system.helper.modal.LoginUser;
+import top.hugo.system.modal.LoginBody;
+import top.hugo.common.domain.LoginUser;
 import top.hugo.system.service.SysLoginService;
 import top.hugo.system.service.SysMenuService;
 import top.hugo.system.vo.RouterVo;
@@ -69,6 +69,8 @@ public class LoginController {
     public R<HashMap<String, Object>> getUserInfo() {
         LoginUser user = JsonUtils.parseObject(StpUtil.getExtra("user"), LoginUser.class);
         HashMap<String, Object> hm = new HashMap<>();
+        hm.put("permission", user.getMenuPermission());
+        hm.put("roles", user.getRolePermission());
         hm.put("user", user);
         return R.ok(hm);
     }

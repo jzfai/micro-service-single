@@ -25,10 +25,10 @@ import top.hugo.common.utils.DateUtils;
 import top.hugo.common.utils.MessageUtils;
 import top.hugo.common.utils.RedisUtils;
 import top.hugo.common.utils.ServletUtils;
-import top.hugo.system.dto.RoleDTO;
+import top.hugo.common.dto.RoleDTO;
 import top.hugo.system.entity.SysUser;
-import top.hugo.system.helper.LoginHelper;
-import top.hugo.system.helper.modal.LoginUser;
+import top.hugo.common.helper.LoginHelper;
+import top.hugo.common.domain.LoginUser;
 import top.hugo.system.mapper.SysUserMapper;
 
 import javax.servlet.http.HttpServletRequest;

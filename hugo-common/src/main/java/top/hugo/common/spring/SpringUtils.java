@@ -3,12 +3,13 @@ package top.hugo.common.spring;
 import cn.hutool.extra.spring.SpringUtil;
 import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 /**
  * spring工具类
  *
- * @author hugo
+ * @author Lion Li
  */
 @Component
 public final class SpringUtils extends SpringUtil {
@@ -60,6 +61,14 @@ public final class SpringUtils extends SpringUtil {
     @SuppressWarnings("unchecked")
     public static <T> T getAopProxy(T invoker) {
         return (T) AopContext.currentProxy();
+    }
+
+
+    /**
+     * 获取spring上下文
+     */
+    public static ApplicationContext context() {
+        return getApplicationContext();
     }
 
 }

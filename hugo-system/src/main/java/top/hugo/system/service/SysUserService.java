@@ -21,7 +21,7 @@ import top.hugo.common.utils.StringUtils;
 import top.hugo.system.entity.SysUser;
 import top.hugo.system.entity.SysUserPost;
 import top.hugo.system.entity.SysUserRole;
-import top.hugo.system.helper.LoginHelper;
+import top.hugo.common.helper.LoginHelper;
 import top.hugo.system.mapper.SysUserMapper;
 import top.hugo.system.mapper.SysUserPostMapper;
 import top.hugo.system.mapper.SysUserRoleMapper;

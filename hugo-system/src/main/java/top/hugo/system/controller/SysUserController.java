@@ -22,7 +22,7 @@ import top.hugo.common.utils.StreamUtils;
 import top.hugo.system.entity.SysDept;
 import top.hugo.system.entity.SysRole;
 import top.hugo.system.entity.SysUser;
-import top.hugo.system.helper.LoginHelper;
+import top.hugo.common.helper.LoginHelper;
 import top.hugo.system.listener.SysUserImportListener;
 import top.hugo.system.service.SysDeptService;
 import top.hugo.system.service.SysPostService;

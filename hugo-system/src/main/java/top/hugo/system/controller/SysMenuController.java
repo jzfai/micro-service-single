@@ -9,7 +9,7 @@ import top.hugo.common.controller.BaseController;
 import top.hugo.common.domain.R;
 import top.hugo.common.utils.StringUtils;
 import top.hugo.system.entity.SysMenu;
-import top.hugo.system.helper.LoginHelper;
+import top.hugo.common.helper.LoginHelper;
 import top.hugo.system.service.SysMenuService;
 
 import java.util.HashMap;

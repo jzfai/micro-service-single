@@ -27,7 +27,7 @@ public class MybatisPlusConfig {
     public MybatisPlusInterceptor mybatisPlusInterceptor() {
         MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
         // 数据权限处理
-//        interceptor.addInnerInterceptor(dataPermissionInterceptor());
+        //interceptor.addInnerInterceptor(dataPermissionInterceptor());
         // 分页插件
         interceptor.addInnerInterceptor(paginationInnerInterceptor());
         // 乐观锁插件

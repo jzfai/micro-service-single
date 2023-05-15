@@ -1,22 +1,25 @@
 package top.hugo.system.controller;
 
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.hutool.core.util.ObjectUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import top.hugo.common.annotation.Log;
 import top.hugo.common.constant.UserConstants;
 import top.hugo.common.controller.BaseController;
+import top.hugo.common.domain.LoginUser;
 import top.hugo.common.domain.PageQuery;
 import top.hugo.common.domain.R;
+import top.hugo.common.enums.BusinessType;
 import top.hugo.common.excel.ExcelUtil;
+import top.hugo.common.helper.LoginHelper;
 import top.hugo.common.page.TableDataInfo;
 import top.hugo.system.entity.SysDept;
 import top.hugo.system.entity.SysRole;
 import top.hugo.system.entity.SysUser;
 import top.hugo.system.entity.SysUserRole;
-import top.hugo.system.helper.LoginHelper;
-import top.hugo.system.helper.modal.LoginUser;
 import top.hugo.system.service.SysDeptService;
 import top.hugo.system.service.SysPermissionService;
 import top.hugo.system.service.SysRoleService;
@@ -46,17 +49,18 @@ public class SysRoleController extends BaseController {
     /**
      * 获取角色信息列表
      */
-    //@SaCheckPermission("system:role:list")
+    @SaCheckPermission("system:role:list")
+    // @SaCheckRole("admin") 注： @SaCheckPermission和 @SaCheckRole 只二者选择其中一个
     @GetMapping("/list")
     public TableDataInfo<SysRole> list(SysRole role, PageQuery pageQuery) {
         return roleService.selectPageRoleList(role, pageQuery);
     }
 
-    //    /**
-//     * 导出角色信息列表
-//     */
-//    //@Log(title = "角色管理", businessType = BusinessType.EXPORT)
-//    //@SaCheckPermission("system:role:export")
+    /**
+     * 导出角色信息列表
+     */
+    @Log(title = "角色管理", businessType = BusinessType.EXPORT)
+    @SaCheckPermission("system:role:export")
     @PostMapping("/export")
     public void export(SysRole role, HttpServletResponse response) {
         List<SysRole> list = roleService.selectRoleList(role);
@@ -95,7 +99,7 @@ public class SysRoleController extends BaseController {
      * 修改保存角色
      */
     //@SaCheckPermission("system:role:edit")
-    ////@Log(title = "角色管理", businessType = BusinessType.UPDATE)
+    //@Log(title = "角色管理", businessType = BusinessType.UPDATE)
     @PutMapping
     public R<Void> edit(@Validated @RequestBody SysRole role) {
         roleService.checkRoleAllowed(role);
@@ -123,7 +127,7 @@ public class SysRoleController extends BaseController {
      * 修改保存数据权限
      */
     //@SaCheckPermission("system:role:edit")
-    ////@Log(title = "角色管理", businessType = BusinessType.UPDATE)
+    //@Log(title = "角色管理", businessType = BusinessType.UPDATE)
     @PutMapping("/dataScope")
     public R<Void> dataScope(@RequestBody SysRole role) {
         roleService.checkRoleAllowed(role);

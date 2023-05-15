@@ -19,7 +19,7 @@ import top.hugo.system.entity.SysRole;
 import top.hugo.system.entity.SysRoleDept;
 import top.hugo.system.entity.SysRoleMenu;
 import top.hugo.system.entity.SysUserRole;
-import top.hugo.system.helper.LoginHelper;
+import top.hugo.common.helper.LoginHelper;
 import top.hugo.system.mapper.SysRoleMapper;
 import top.hugo.system.mapper.SysRoleMenuMapper;
 import top.hugo.system.mapper.SysUserRoleMapper;
