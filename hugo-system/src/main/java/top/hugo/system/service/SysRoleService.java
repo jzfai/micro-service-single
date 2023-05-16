@@ -14,12 +14,12 @@ import org.springframework.transaction.annotation.Transactional;
 import top.hugo.common.constant.UserConstants;
 import top.hugo.common.domain.PageQuery;
 import top.hugo.common.exception.ServiceException;
+import top.hugo.common.helper.LoginHelper;
 import top.hugo.common.page.TableDataInfo;
 import top.hugo.system.entity.SysRole;
 import top.hugo.system.entity.SysRoleDept;
 import top.hugo.system.entity.SysRoleMenu;
 import top.hugo.system.entity.SysUserRole;
-import top.hugo.common.helper.LoginHelper;
 import top.hugo.system.mapper.SysRoleMapper;
 import top.hugo.system.mapper.SysRoleMenuMapper;
 import top.hugo.system.mapper.SysUserRoleMapper;
@@ -319,21 +319,21 @@ public class SysRoleService {
      *
      * @param role 角色对象
      */
-//    public int insertRoleDept(SysRole role) {
-//        int rows = 1;
-//        // 新增角色与部门（数据权限）管理
-//        List<SysRoleDept> list = new ArrayList<SysRoleDept>();
-//        for (Long deptId : role.getDeptIds()) {
-//            SysRoleDept rd = new SysRoleDept();
-//            rd.setRoleId(role.getRoleId());
-//            rd.setDeptId(deptId);
-//            list.add(rd);
-//        }
-//        if (list.size() > 0) {
-//            rows = roleDeptMapper.insertBatch(list) ? list.size() : 0;
-//        }
-//        return rows;
-//    }
+    //    public int insertRoleDept(SysRole role) {
+    //        int rows = 1;
+    //        // 新增角色与部门（数据权限）管理
+    //        List<SysRoleDept> list = new ArrayList<SysRoleDept>();
+    //        for (Long deptId : role.getDeptIds()) {
+    //            SysRoleDept rd = new SysRoleDept();
+    //            rd.setRoleId(role.getRoleId());
+    //            rd.setDeptId(deptId);
+    //            list.add(rd);
+    //        }
+    //        if (list.size() > 0) {
+    //            rows = roleDeptMapper.insertBatch(list) ? list.size() : 0;
+    //        }
+    //        return rows;
+    //    }
 
     /**
      * 通过角色ID删除角色

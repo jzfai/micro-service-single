@@ -11,13 +11,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import top.hugo.common.constant.Constants;
 import top.hugo.common.constant.UserConstants;
+import top.hugo.common.helper.LoginHelper;
 import top.hugo.common.utils.StreamUtils;
 import top.hugo.common.utils.StringUtils;
 import top.hugo.common.utils.TreeBuildUtils;
 import top.hugo.system.entity.SysMenu;
 import top.hugo.system.entity.SysRole;
 import top.hugo.system.entity.SysRoleMenu;
-import top.hugo.common.helper.LoginHelper;
 import top.hugo.system.mapper.SysMenuMapper;
 import top.hugo.system.mapper.SysRoleMapper;
 import top.hugo.system.mapper.SysRoleMenuMapper;
@@ -138,13 +138,13 @@ public class SysMenuService {
             LambdaQueryWrapper<SysMenu> lqw = new LambdaQueryWrapper<>();
             lqw.eq(ObjectUtil.isNotEmpty(menu.getRouteName()), SysMenu::getRouteName, menu.getRouteName());
             SysMenu sysMenu = sysMenuMapper.selectOne(lqw);
-            if (!ObjectUtil.isNotEmpty(menu.getMenuId())) {
+            if (ObjectUtil.isNotEmpty(menu.getMenuId())) {
                 if (ObjectUtil.isNotEmpty(sysMenu) && !sysMenu.getRouteName().equals(menu.getRouteName())) {
                     throw new RuntimeException(menu.getRouteName() + "已存在");
                 }
             } else {
                 if (ObjectUtil.isNotEmpty(sysMenu)) {
-                    throw new RuntimeException(menu.getPerms() + "已存在");
+                    throw new RuntimeException(menu.getRouteName() + "已存在");
                 }
             }
 
