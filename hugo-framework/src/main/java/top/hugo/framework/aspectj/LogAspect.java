@@ -14,12 +14,12 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartFile;
 import top.hugo.common.annotation.Log;
 import top.hugo.common.enums.BusinessStatus;
+import top.hugo.common.event.OperLogEvent;
 import top.hugo.common.helper.LoginHelper;
 import top.hugo.common.spring.SpringUtils;
 import top.hugo.common.utils.JsonUtils;
 import top.hugo.common.utils.ServletUtils;
 import top.hugo.common.utils.StringUtils;
-import top.hugo.framework.event.OperLogEvent;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -100,7 +100,6 @@ public class LogAspect {
      *
      * @param log     日志
      * @param operLog 操作日志
-     * @throws Exception
      */
     public void getControllerMethodDescription(JoinPoint joinPoint, Log log, OperLogEvent operLog, Object jsonResult) throws Exception {
         // 设置action动作

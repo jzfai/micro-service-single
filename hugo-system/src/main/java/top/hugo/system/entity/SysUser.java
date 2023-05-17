@@ -8,6 +8,7 @@ import top.hugo.common.constant.UserConstants;
 import top.hugo.common.domain.BaseEntity;
 import top.hugo.common.xss.Xss;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.Date;
@@ -59,8 +60,8 @@ public class SysUser extends BaseEntity {
     /**
      * 用户邮箱
      */
-//    @Sensitive(strategy = SensitiveStrategy.EMAIL)
-//    @Email(message = "邮箱格式不正确")
+    //@Sensitive(strategy = SensitiveStrategy.EMAIL)
+    @Email(message = "邮箱格式不正确")
     @Size(min = 0, max = 50, message = "邮箱长度不能超过50个字符")
     private String email;
 

@@ -1,5 +1,6 @@
 package top.hugo.system.service;
 
+
 import cn.hutool.http.useragent.UserAgent;
 import cn.hutool.http.useragent.UserAgentUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -33,14 +34,13 @@ import java.util.Map;
 @RequiredArgsConstructor
 @Slf4j
 @Service
-public class SysLogininforService {
+public class SysLoginInfoService {
 
     private final SysLogininforMapper baseMapper;
 
     /**
      * 记录登录信息
      *
-     * @param logininforEvent 登录事件
      */
     @Async
     @EventListener
@@ -87,15 +87,15 @@ public class SysLogininforService {
         return "[" + msg.toString() + "]";
     }
 
-
+    
     public TableDataInfo<SysLogininfor> selectPageLogininforList(SysLogininfor logininfor, PageQuery pageQuery) {
         Map<String, Object> params = logininfor.getParams();
         LambdaQueryWrapper<SysLogininfor> lqw = new LambdaQueryWrapper<SysLogininfor>()
-                .like(StringUtils.isNotBlank(logininfor.getIpaddr()), SysLogininfor::getIpaddr, logininfor.getIpaddr())
-                .eq(StringUtils.isNotBlank(logininfor.getStatus()), SysLogininfor::getStatus, logininfor.getStatus())
-                .like(StringUtils.isNotBlank(logininfor.getUserName()), SysLogininfor::getUserName, logininfor.getUserName())
-                .between(params.get("beginTime") != null && params.get("endTime") != null,
-                        SysLogininfor::getLoginTime, params.get("beginTime"), params.get("endTime"));
+            .like(StringUtils.isNotBlank(logininfor.getIpaddr()), SysLogininfor::getIpaddr, logininfor.getIpaddr())
+            .eq(StringUtils.isNotBlank(logininfor.getStatus()), SysLogininfor::getStatus, logininfor.getStatus())
+            .like(StringUtils.isNotBlank(logininfor.getUserName()), SysLogininfor::getUserName, logininfor.getUserName())
+            .between(params.get("beginTime") != null && params.get("endTime") != null,
+                SysLogininfor::getLoginTime, params.get("beginTime"), params.get("endTime"));
         if (StringUtils.isBlank(pageQuery.getOrderByColumn())) {
             pageQuery.setOrderByColumn("info_id");
             pageQuery.setIsAsc("desc");
@@ -109,7 +109,7 @@ public class SysLogininforService {
      *
      * @param logininfor 访问日志对象
      */
-
+    
     public void insertLogininfor(SysLogininfor logininfor) {
         logininfor.setLoginTime(new Date());
         baseMapper.insert(logininfor);
@@ -121,16 +121,16 @@ public class SysLogininforService {
      * @param logininfor 访问日志对象
      * @return 登录记录集合
      */
-
+    
     public List<SysLogininfor> selectLogininforList(SysLogininfor logininfor) {
         Map<String, Object> params = logininfor.getParams();
         return baseMapper.selectList(new LambdaQueryWrapper<SysLogininfor>()
-                .like(StringUtils.isNotBlank(logininfor.getIpaddr()), SysLogininfor::getIpaddr, logininfor.getIpaddr())
-                .eq(StringUtils.isNotBlank(logininfor.getStatus()), SysLogininfor::getStatus, logininfor.getStatus())
-                .like(StringUtils.isNotBlank(logininfor.getUserName()), SysLogininfor::getUserName, logininfor.getUserName())
-                .between(params.get("beginTime") != null && params.get("endTime") != null,
-                        SysLogininfor::getLoginTime, params.get("beginTime"), params.get("endTime"))
-                .orderByDesc(SysLogininfor::getInfoId));
+            .like(StringUtils.isNotBlank(logininfor.getIpaddr()), SysLogininfor::getIpaddr, logininfor.getIpaddr())
+            .eq(StringUtils.isNotBlank(logininfor.getStatus()), SysLogininfor::getStatus, logininfor.getStatus())
+            .like(StringUtils.isNotBlank(logininfor.getUserName()), SysLogininfor::getUserName, logininfor.getUserName())
+            .between(params.get("beginTime") != null && params.get("endTime") != null,
+                SysLogininfor::getLoginTime, params.get("beginTime"), params.get("endTime"))
+            .orderByDesc(SysLogininfor::getInfoId));
     }
 
     /**
@@ -139,7 +139,7 @@ public class SysLogininforService {
      * @param infoIds 需要删除的登录日志ID
      * @return 结果
      */
-
+    
     public int deleteLogininforByIds(Long[] infoIds) {
         return baseMapper.deleteBatchIds(Arrays.asList(infoIds));
     }
@@ -147,7 +147,7 @@ public class SysLogininforService {
     /**
      * 清空系统登录日志
      */
-
+    
     public void cleanLogininfor() {
         baseMapper.delete(new LambdaQueryWrapper<>());
     }

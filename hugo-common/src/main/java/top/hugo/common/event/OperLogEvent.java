@@ -1,4 +1,4 @@
-package top.hugo.framework.event;
+package top.hugo.common.event;
 
 import lombok.Data;
 

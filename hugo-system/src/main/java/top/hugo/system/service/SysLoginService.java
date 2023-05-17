@@ -15,20 +15,21 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import top.hugo.common.constant.CacheConstants;
 import top.hugo.common.constant.Constants;
+import top.hugo.common.domain.LoginUser;
+import top.hugo.common.dto.RoleDTO;
 import top.hugo.common.enums.LoginType;
 import top.hugo.common.enums.UserStatus;
 import top.hugo.common.event.LogininforEvent;
 import top.hugo.common.exception.user.CaptchaException;
 import top.hugo.common.exception.user.CaptchaExpireException;
 import top.hugo.common.exception.user.UserException;
+import top.hugo.common.helper.LoginHelper;
+import top.hugo.common.spring.SpringUtils;
 import top.hugo.common.utils.DateUtils;
 import top.hugo.common.utils.MessageUtils;
 import top.hugo.common.utils.RedisUtils;
 import top.hugo.common.utils.ServletUtils;
-import top.hugo.common.dto.RoleDTO;
 import top.hugo.system.entity.SysUser;
-import top.hugo.common.helper.LoginHelper;
-import top.hugo.common.domain.LoginUser;
 import top.hugo.system.mapper.SysUserMapper;
 
 import javax.servlet.http.HttpServletRequest;
@@ -117,12 +118,12 @@ public class SysLoginService {
             // 达到规定错误次数 则锁定登录
             if (errorNumber.equals(maxRetryCount)) {
                 RedisUtils.setCacheObject(errorKey, errorNumber, Duration.ofMinutes(lockTime));
-                //syncService.recordLoginInfo(username, loginFail, MessageUtils.message(loginType.getRetryLimitExceed(), maxRetryCount, lockTime), request);
+                recordLoginInfo(username, loginFail, MessageUtils.message(loginType.getRetryLimitExceed(), maxRetryCount, lockTime));
                 throw new UserException(loginType.getRetryLimitExceed(), maxRetryCount, lockTime);
             } else {
                 // 未达到规定错误次数 则递增
                 RedisUtils.setCacheObject(errorKey, errorNumber);
-                // asyncService.recordLoginInfo(username, loginFail, MessageUtils.message(loginType.getRetryLimitCount(), errorNumber), request);
+                recordLoginInfo(username, loginFail, MessageUtils.message(loginType.getRetryLimitCount(), errorNumber));
                 throw new UserException(loginType.getRetryLimitCount(), errorNumber);
             }
         }
@@ -161,7 +162,7 @@ public class SysLoginService {
         logininforEvent.setStatus(status);
         logininforEvent.setMessage(message);
         logininforEvent.setRequest(ServletUtils.getRequest());
-//        SpringUtils.context().publishEvent(logininforEvent);
+        SpringUtils.context().publishEvent(logininforEvent);
     }
 
     /**

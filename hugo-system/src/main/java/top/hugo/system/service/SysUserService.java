@@ -16,12 +16,16 @@ import org.springframework.transaction.annotation.Transactional;
 import top.hugo.common.constant.UserConstants;
 import top.hugo.common.domain.PageQuery;
 import top.hugo.common.exception.ServiceException;
+import top.hugo.common.helper.DataBaseHelper;
+import top.hugo.common.helper.LoginHelper;
 import top.hugo.common.page.TableDataInfo;
+import top.hugo.common.utils.StreamUtils;
 import top.hugo.common.utils.StringUtils;
+import top.hugo.system.entity.SysDept;
 import top.hugo.system.entity.SysUser;
 import top.hugo.system.entity.SysUserPost;
 import top.hugo.system.entity.SysUserRole;
-import top.hugo.common.helper.LoginHelper;
+import top.hugo.system.mapper.SysDeptMapper;
 import top.hugo.system.mapper.SysUserMapper;
 import top.hugo.system.mapper.SysUserPostMapper;
 import top.hugo.system.mapper.SysUserRoleMapper;
@@ -35,14 +39,14 @@ import java.util.List;
 @Service
 public class SysUserService {
     private final SysUserMapper sysUserMapper;
+    private final SysDeptMapper sysDeptMapper;
     private final SysUserRoleMapper userRoleMapper;
     private final SysUserPostMapper userPostMapper;
 
 
     public TableDataInfo<SysUser> selectPageUserList(SysUser user, PageQuery pageQuery) {
-        List<SysUser> sysUsers = this.selectUserList(user);
-//        Page<SysUser> page = sysUserMapper.selectPageUserList(pageQuery.build(), this.buildQueryWrapper(user));
-        return TableDataInfo.build(sysUsers);
+        Page<SysUser> page = sysUserMapper.selectPageUserList(pageQuery.build(), this.buildQueryWrapper(user));
+        return TableDataInfo.build(page);
     }
 
     public List<SysUser> selectUserList(SysUser user) {
@@ -57,15 +61,15 @@ public class SysUserService {
                 .eq(StringUtils.isNotBlank(user.getStatus()), "u.status", user.getStatus())
                 .like(StringUtils.isNotBlank(user.getPhonenumber()), "u.phonenumber", user.getPhonenumber())
                 .between(ObjectUtil.isNotEmpty(user.getBeginTime()) && ObjectUtil.isNotEmpty(user.getEndTime()),
-                        "u.create_time", user.getBeginTime(), user.getEndTime());
-//                .and(ObjectUtil.isNotNull(user.getDeptId()), w -> {
-//                    List<SysDept> deptList = deptMapper.selectList(new LambdaQueryWrapper<SysDept>()
-//                            .select(SysDept::getDeptId)
-//                            .apply(DataBaseHelper.findInSet(user.getDeptId(), "ancestors")));
-//                    List<Long> ids = StreamUtils.toList(deptList, SysDept::getDeptId);
-//                    ids.add(user.getDeptId());
-//                    w.in("u.dept_id", ids);
-//                });
+                        "u.create_time", user.getBeginTime(), user.getEndTime())
+                .and(ObjectUtil.isNotNull(user.getDeptId()), w -> {
+                    List<SysDept> deptList = sysDeptMapper.selectList(new LambdaQueryWrapper<SysDept>()
+                            .select(SysDept::getDeptId)
+                            .apply(DataBaseHelper.findInSet(user.getDeptId(), "ancestors")));
+                    List<Long> ids = StreamUtils.toList(deptList, SysDept::getDeptId);
+                    ids.add(user.getDeptId());
+                    w.in("u.dept_id", ids);
+                });
         return wrapper;
     }
 
@@ -124,7 +128,7 @@ public class SysUserService {
         // 新增用户信息
         int rows = sysUserMapper.insert(user);
         // 新增用户岗位关联
-        //insertUserPost(user);
+        insertUserPost(user);
         // 新增用户与角色管理
         insertUserRole(user);
         return rows;
@@ -196,7 +200,7 @@ public class SysUserService {
         // 删除用户与角色关联
         userRoleMapper.delete(new LambdaQueryWrapper<SysUserRole>().eq(SysUserRole::getUserId, userId));
         // 删除用户与岗位表
-        //userPostMapper.delete(new LambdaQueryWrapper<SysUserPost>().eq(SysUserPost::getUserId, userId));
+        userPostMapper.delete(new LambdaQueryWrapper<SysUserPost>().eq(SysUserPost::getUserId, userId));
         return sysUserMapper.deleteById(userId);
     }
 
@@ -210,13 +214,13 @@ public class SysUserService {
     public int deleteUserByIds(Long[] userIds) {
         for (Long userId : userIds) {
             checkUserAllowed(new SysUser(userId));
-            //checkUserDataScope(userId);
+            checkUserDataScope(userId);
         }
         List<Long> ids = Arrays.asList(userIds);
         // 删除用户与角色关联
         userRoleMapper.delete(new LambdaQueryWrapper<SysUserRole>().in(SysUserRole::getUserId, ids));
         // 删除用户与岗位表
-        //userPostMapper.delete(new LambdaQueryWrapper<SysUserPost>().in(SysUserPost::getUserId, ids));
+        userPostMapper.delete(new LambdaQueryWrapper<SysUserPost>().in(SysUserPost::getUserId, ids));
         return sysUserMapper.deleteBatchIds(ids);
     }
 

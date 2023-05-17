@@ -17,12 +17,12 @@ import top.hugo.common.domain.PageQuery;
 import top.hugo.common.domain.R;
 import top.hugo.common.excel.ExcelResult;
 import top.hugo.common.excel.ExcelUtil;
+import top.hugo.common.helper.LoginHelper;
 import top.hugo.common.page.TableDataInfo;
 import top.hugo.common.utils.StreamUtils;
 import top.hugo.system.entity.SysDept;
 import top.hugo.system.entity.SysRole;
 import top.hugo.system.entity.SysUser;
-import top.hugo.common.helper.LoginHelper;
 import top.hugo.system.listener.SysUserImportListener;
 import top.hugo.system.service.SysDeptService;
 import top.hugo.system.service.SysPostService;
@@ -250,6 +250,4 @@ public class SysUserController extends BaseController {
     public void importTemplate(HttpServletResponse response) {
         ExcelUtil.exportExcel(new ArrayList<>(), "用户数据", SysUserImportVo.class, response);
     }
-
-
 }

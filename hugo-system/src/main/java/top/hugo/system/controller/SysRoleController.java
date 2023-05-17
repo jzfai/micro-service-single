@@ -99,7 +99,7 @@ public class SysRoleController extends BaseController {
      * 修改保存角色
      */
     //@SaCheckPermission("system:role:edit")
-    //@Log(title = "角色管理", businessType = BusinessType.UPDATE)
+    @Log(title = "角色管理", businessType = BusinessType.UPDATE)
     @PutMapping
     public R<Void> edit(@Validated @RequestBody SysRole role) {
         roleService.checkRoleAllowed(role);
