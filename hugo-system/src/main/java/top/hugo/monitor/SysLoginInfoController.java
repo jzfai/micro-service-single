@@ -1,7 +1,6 @@
 package top.hugo.monitor;
 
 
-import cn.dev33.satoken.annotation.SaCheckPermission;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -21,9 +20,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
- * 系统访问记录
+ * 测试批量方法
  *
  * @author Lion Li
+ * @date 2021-05-30
  */
 @Validated
 @RequiredArgsConstructor
@@ -34,7 +34,9 @@ public class SysLoginInfoController extends BaseController {
     private final SysLoginInfoService logininforService;
 
     /**
-     * 获取系统访问记录列表
+     * 新增批量方法 可完美替代 saveBatch 秒级插入上万数据 (对mysql负荷较大)
+     * <p>
+     * 3.5.0 版本 增加 rewriteBatchedStatements=true 批处理参数 使 MP 原生批处理可以达到同样的速度
      */
     //@SaCheckPermission("monitor:logininfor:list")
     @GetMapping("/list")
@@ -55,6 +57,7 @@ public class SysLoginInfoController extends BaseController {
 
     /**
      * 批量删除登录日志
+     *
      * @param infoIds 日志ids
      */
     //@SaCheckPermission("monitor:logininfor:remove")
@@ -85,5 +88,4 @@ public class SysLoginInfoController extends BaseController {
         }
         return R.ok();
     }
-
 }

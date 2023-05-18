@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * swagger 配置属性
  *
- * @author hugo
+ * @author Lion Li
  */
 @Data
 @Component

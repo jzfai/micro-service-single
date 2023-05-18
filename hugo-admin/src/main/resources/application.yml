@@ -150,7 +150,7 @@ swagger:
   enabled: true
   info:
     # 标题
-    title: '标题：${hugo.name}后台管理系统_接口文档'
+    title: '标题：${spring.application.name}后台管理系统_接口文档'
     # 描述
     description: '描述：用于管理集团旗下公司的人员信息,具体包括XXX,XXX模块...6666'
     # 版本
@@ -174,9 +174,12 @@ springdoc:
     persistAuthorization: true
   #这里定义了两个分组，可定义多个，也可以不定义
   group-configs:
-    - group: 1.演示模块
-      packages-to-scan: top.hugo.web
-
+    - group: system
+      packages-to-scan: top.hugo.system
+    - group: monitor
+      packages-to-scan: top.hugo.monitor
+    - group: generator
+      packages-to-scan: top.hugo.generator
 # 日志配置
 logging:
   level:

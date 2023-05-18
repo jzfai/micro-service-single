@@ -1,0 +1,38 @@
+package top.hugo.generator.service;
+
+import org.springframework.stereotype.Service;
+import top.hugo.generator.mapper.DataBaseMapper;
+
+import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.Map;
+
+/**
+ * @Title: DataBaseService
+ * @Description:
+ * @Auther: kuanghua
+ * @create 2022/6/3 8:50
+ * https://blog.csdn.net/qq_39323945/article/details/124661309
+ */
+@Service
+public class DataBaseService {
+    @Resource
+    private DataBaseMapper dataBaseMapper;
+
+    /**
+     * @param dbName
+     */
+    public ArrayList<Map> getAllTableFromDb(String dbName) {
+        ArrayList<Map> allTableFromDb = this.dataBaseMapper.getAllTableFromDb(dbName);
+        return allTableFromDb;
+    }
+
+    /**
+     * @param dbName
+     * @param tbName
+     */
+    public ArrayList<Map> getAllColumnFromTb(String dbName, String tbName) {
+        ArrayList<Map> allColumnFromTb = this.dataBaseMapper.getAllColumnFromTb(dbName, tbName);
+        return allColumnFromTb;
+    }
+}

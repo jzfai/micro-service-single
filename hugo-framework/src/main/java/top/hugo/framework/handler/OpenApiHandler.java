@@ -41,72 +41,6 @@ public class OpenApiHandler extends OpenAPIService {
      * The constant LOGGER.
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(OpenAPIService.class);
-
-    /**
-     * The Context.
-     */
-    private ApplicationContext context;
-
-    /**
-     * The Security parser.
-     */
-    private final SecurityService securityParser;
-
-    /**
-     * The Mappings map.
-     */
-    private final Map<String, Object> mappingsMap = new HashMap<>();
-
-    /**
-     * The Springdoc tags.
-     */
-    private final Map<HandlerMethod, Tag> springdocTags = new HashMap<>();
-
-    /**
-     * The Open api builder customisers.
-     */
-    private final Optional<List<OpenApiBuilderCustomizer>> openApiBuilderCustomisers;
-
-    /**
-     * The server base URL customisers.
-     */
-    private final Optional<List<ServerBaseUrlCustomizer>> serverBaseUrlCustomizers;
-
-    /**
-     * The Spring doc config properties.
-     */
-    private final SpringDocConfigProperties springDocConfigProperties;
-
-    /**
-     * The Open api.
-     */
-    private OpenAPI openAPI;
-
-    /**
-     * The Cached open api map.
-     */
-    private final Map<String, OpenAPI> cachedOpenAPI = new HashMap<>();
-
-    /**
-     * The Is servers present.
-     */
-    private boolean isServersPresent;
-
-    /**
-     * The Server base url.
-     */
-    private String serverBaseUrl;
-
-    /**
-     * The Property resolver utils.
-     */
-    private final PropertyResolverUtils propertyResolverUtils;
-
-    /**
-     * The javadoc provider.
-     */
-    private final Optional<JavadocProvider> javadocProvider;
-
     /**
      * The Basic error controller.
      */
@@ -126,6 +60,59 @@ public class OpenApiHandler extends OpenAPIService {
             }
         }
     }
+
+    /**
+     * The Security parser.
+     */
+    private final SecurityService securityParser;
+    /**
+     * The Mappings map.
+     */
+    private final Map<String, Object> mappingsMap = new HashMap<>();
+    /**
+     * The Springdoc tags.
+     */
+    private final Map<HandlerMethod, io.swagger.v3.oas.models.tags.Tag> springdocTags = new HashMap<>();
+    /**
+     * The Open api builder customisers.
+     */
+    private final Optional<List<OpenApiBuilderCustomizer>> openApiBuilderCustomisers;
+    /**
+     * The server base URL customisers.
+     */
+    private final Optional<List<ServerBaseUrlCustomizer>> serverBaseUrlCustomizers;
+    /**
+     * The Spring doc config properties.
+     */
+    private final SpringDocConfigProperties springDocConfigProperties;
+    /**
+     * The Cached open api map.
+     */
+    private final Map<String, OpenAPI> cachedOpenAPI = new HashMap<>();
+    /**
+     * The Property resolver utils.
+     */
+    private final PropertyResolverUtils propertyResolverUtils;
+    /**
+     * The javadoc provider.
+     */
+    private final Optional<JavadocProvider> javadocProvider;
+    /**
+     * The Context.
+     */
+    private ApplicationContext context;
+    /**
+     * The Open api.
+     */
+    private OpenAPI openAPI;
+    /**
+     * The Is servers present.
+     */
+    private boolean isServersPresent;
+    /**
+     * The Server base url.
+     */
+    private String serverBaseUrl;
 
     /**
      * Instantiates a new Open api builder.
@@ -174,11 +161,11 @@ public class OpenApiHandler extends OpenAPIService {
 
         if (!CollectionUtils.isEmpty(tagsStr))
             tagsStr = tagsStr.stream()
-                .map(str -> propertyResolverUtils.resolve(str, locale))
-                .collect(Collectors.toSet());
+                    .map(str -> propertyResolverUtils.resolve(str, locale))
+                    .collect(Collectors.toSet());
 
         if (springdocTags.containsKey(handlerMethod)) {
-            Tag tag = springdocTags.get(handlerMethod);
+            io.swagger.v3.oas.models.tags.Tag tag = springdocTags.get(handlerMethod);
             tagsStr.add(tag.getName());
             if (openAPI.getTags() == null || !openAPI.getTags().contains(tag)) {
                 openAPI.addTagsItem(tag);
@@ -197,12 +184,10 @@ public class OpenApiHandler extends OpenAPIService {
         }
 
         if (isAutoTagClasses(operation)) {
-
-
             if (javadocProvider.isPresent()) {
                 String description = javadocProvider.get().getClassJavadoc(handlerMethod.getBeanType());
                 if (StringUtils.isNotBlank(description)) {
-                    Tag tag = new Tag();
+                    io.swagger.v3.oas.models.tags.Tag tag = new io.swagger.v3.oas.models.tags.Tag();
 
                     // 自定义部分 修改使用java注释当tag名
                     List<String> list = IoUtil.readLines(new StringReader(description), new ArrayList<>());
@@ -223,7 +208,7 @@ public class OpenApiHandler extends OpenAPIService {
 
         if (!CollectionUtils.isEmpty(tags)) {
             // Existing tags
-            List<Tag> openApiTags = openAPI.getTags();
+            List<io.swagger.v3.oas.models.tags.Tag> openApiTags = openAPI.getTags();
             if (!CollectionUtils.isEmpty(openApiTags))
                 tags.addAll(openApiTags);
             openAPI.setTags(new ArrayList<>(tags));
@@ -231,7 +216,7 @@ public class OpenApiHandler extends OpenAPIService {
 
         // Handle SecurityRequirement at operation level
         io.swagger.v3.oas.annotations.security.SecurityRequirement[] securityRequirements = securityParser
-            .getSecurityRequirements(handlerMethod);
+                .getSecurityRequirements(handlerMethod);
         if (securityRequirements != null) {
             if (securityRequirements.length == 0)
                 operation.setSecurity(Collections.emptyList());
@@ -242,12 +227,12 @@ public class OpenApiHandler extends OpenAPIService {
         return operation;
     }
 
-    private void buildTagsFromMethod(Method method, Set<Tag> tags, Set<String> tagsStr, Locale locale) {
+    private void buildTagsFromMethod(Method method, Set<io.swagger.v3.oas.models.tags.Tag> tags, Set<String> tagsStr, Locale locale) {
         // method tags
         Set<Tags> tagsSet = AnnotatedElementUtils
-            .findAllMergedAnnotations(method, Tags.class);
+                .findAllMergedAnnotations(method, Tags.class);
         Set<io.swagger.v3.oas.annotations.tags.Tag> methodTags = tagsSet.stream()
-            .flatMap(x -> Stream.of(x.value())).collect(Collectors.toSet());
+                .flatMap(x -> Stream.of(x.value())).collect(Collectors.toSet());
         methodTags.addAll(AnnotatedElementUtils.findAllMergedAnnotations(method, io.swagger.v3.oas.annotations.tags.Tag.class));
         if (!CollectionUtils.isEmpty(methodTags)) {
             tagsStr.addAll(methodTags.stream().map(tag -> propertyResolverUtils.resolve(tag.name(), locale)).collect(Collectors.toSet()));
@@ -256,9 +241,9 @@ public class OpenApiHandler extends OpenAPIService {
         }
     }
 
-    private void addTags(List<io.swagger.v3.oas.annotations.tags.Tag> sourceTags, Set<Tag> tags, Locale locale) {
-        Optional<Set<Tag>> optionalTagSet = AnnotationsUtils
-            .getTags(sourceTags.toArray(new io.swagger.v3.oas.annotations.tags.Tag[0]), true);
+    private void addTags(List<io.swagger.v3.oas.annotations.tags.Tag> sourceTags, Set<io.swagger.v3.oas.models.tags.Tag> tags, Locale locale) {
+        Optional<Set<io.swagger.v3.oas.models.tags.Tag>> optionalTagSet = AnnotationsUtils
+                .getTags(sourceTags.toArray(new io.swagger.v3.oas.annotations.tags.Tag[0]), true);
         optionalTagSet.ifPresent(tagsSet -> {
             tagsSet.forEach(tag -> {
                 tag.name(propertyResolverUtils.resolve(tag.getName(), locale));
