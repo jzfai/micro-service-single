@@ -39,7 +39,7 @@ public class ConfigSave extends Model<ConfigSave> {
 
 
     /**
-     * 创建时间
+     * 创建时间（不用传）
      */
     @TableField(fill = FieldFill.INSERT)
     private Date createTime;

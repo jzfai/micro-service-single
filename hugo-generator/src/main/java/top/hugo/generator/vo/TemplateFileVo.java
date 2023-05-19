@@ -12,24 +12,24 @@ import java.util.Date;
  */
 @Data
 public class TemplateFileVo {
-    /*
+    /**
      * 模板id
      * */
     private Integer id;
-    /*
+    /**
      * 模板名
      * */
     private String name;
-    /*
+    /**
      * 文件名数组
-     * */
+     */
     private String fileArr;
-    /*
-     * 创建时间
-     * */
+    /**
+     * 创建时间（不用传）
+     **/
     private Date createTime;
-    /*
-     * 更新时间
+    /**
+     * 更新时间（不用传）
      * */
     private Date updateTime;
 }

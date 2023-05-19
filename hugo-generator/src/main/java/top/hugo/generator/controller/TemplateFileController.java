@@ -127,12 +127,12 @@ public class TemplateFileController {
     /**
      * 保存模版文件
      *
-     * @param files 文件列表
-     * @param name  模板组名
+     * @param name 模板组名
+     * @param file 文件数组
      */
     @PostMapping("saveTemplateFile")
-    public R<Object> saveMultiTemplateFile(@RequestParam("file") List<MultipartFile> files, @RequestParam("name") String name) {
-        this.templateFileService.saveMultiTemplateFile(files, name);
+    public R<Object> saveMultiTemplateFile(List<MultipartFile> file, @RequestParam("name") String name) {
+        this.templateFileService.saveMultiTemplateFile(file, name);
         return R.ok();
     }
 

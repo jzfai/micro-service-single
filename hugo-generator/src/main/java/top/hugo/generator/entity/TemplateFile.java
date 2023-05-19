@@ -40,13 +40,13 @@ public class TemplateFile extends Model<TemplateFile> {
 
 
     /**
-     * 更新时间
+     * 更新时间（不用传）
      */
     @TableField(fill = FieldFill.UPDATE)
     private Date updateTime;
 
     /**
-     * 创建时间
+     * 创建时间（不用传）
      */
     @TableField(fill = FieldFill.INSERT)
     private Date createTime;

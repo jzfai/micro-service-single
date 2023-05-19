@@ -23,8 +23,6 @@ run  hugo-admin/HugoApplication
 [api-doc](https://github.jzfai.top/micro-service-api/doc.html)
 
 ```
-
-
 ## Introduction to Microservices
 
 ##### hugo-admin：

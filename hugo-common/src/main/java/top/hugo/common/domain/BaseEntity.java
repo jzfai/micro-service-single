@@ -33,7 +33,7 @@ public class BaseEntity implements Serializable {
     private String createBy;
 
     /**
-     * 创建时间
+     * 创建时间（不用传）
      */
     @TableField(fill = FieldFill.INSERT)
     private Date createTime;
@@ -45,7 +45,7 @@ public class BaseEntity implements Serializable {
     private String updateBy;
 
     /**
-     * 更新时间
+     * 更新时间（不用传）
      */
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date updateTime;
