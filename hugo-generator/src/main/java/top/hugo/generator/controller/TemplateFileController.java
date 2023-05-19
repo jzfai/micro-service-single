@@ -164,7 +164,7 @@ public class TemplateFileController {
         //生成模板
         String exportFilePath = this.templateFileService.generatorTemplateFileByConfig(JsonUtils.parseObject(jsonData, Map.class), id, fileNamePre);
         //你压缩包路径
-        FileSelfUtils.exportFile(response, exportFilePath, DateUtils.getTime() + ".zip");
+        FileSelfUtils.exportFile(response, exportFilePath, DateUtils.dateTimeNow() + ".zip");
         FileSelfUtils.deleteFile(exportFilePath);
         FileSelfUtils.deleteDir(GeneratorTempUtils.getNeedZipDir());
     }
@@ -179,7 +179,7 @@ public class TemplateFileController {
     public void downZipByTemplateFileId(HttpServletResponse response, HttpServletRequest request, @RequestParam("id") Integer id) {
         String exportFilePath = this.templateFileService.downZipByTemplateFileId(id);
         //导出文件并删除响应文件和目录
-        FileSelfUtils.exportFile(response, exportFilePath, DateUtils.getTime() + ".zip");
+        FileSelfUtils.exportFile(response, exportFilePath, DateUtils.dateTimeNow() + ".zip");
         FileSelfUtils.deleteFile(exportFilePath);
         FileSelfUtils.deleteDir(GeneratorTempUtils.getNeedZipDir());
     }

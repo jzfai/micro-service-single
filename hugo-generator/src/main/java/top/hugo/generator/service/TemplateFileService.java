@@ -138,7 +138,7 @@ public class TemplateFileService {
                 }
             }
         });
-        String exportFileName = GeneratorTempUtils.getOutputZipPath() + DateUtils.getTime() + ".zip";
+        String exportFileName = GeneratorTempUtils.getOutputZipPath() + DateUtils.dateTimeNow() + ".zip";
         //生成zip包
         GeneratorTempUtils.createZipFile(exportFileName, GeneratorTempUtils.getNeedZipDir());
         return exportFileName;
@@ -160,12 +160,20 @@ public class TemplateFileService {
         //返回前端名
         List<String> frontExtendList = Arrays.asList("vue", "js", "ts");
         if (frontExtendList.contains(extendName)) {
-            return fileNamePre + "-" + fileName;
+            if (ObjectUtil.isNotEmpty(fileNamePre)) {
+                return fileNamePre + "-" + fileName;
+            } else {
+                return fileName;
+            }
         }
         //返回后端名
         List<String> backExtendList = Arrays.asList("java", "xml", "yml");
         if (backExtendList.contains(extendName)) {
-            return fileNamePre + setFirstWordUpCase(fileName);
+            if (ObjectUtil.isNotEmpty(fileNamePre)) {
+                return fileNamePre + "-" + setFirstWordUpCase(fileName);
+            } else {
+                return setFirstWordUpCase(fileName);
+            }
         }
         return "nomapping";
     }
@@ -193,7 +201,7 @@ public class TemplateFileService {
     public String downZipByTemplateFileId(Integer id) {
         String workPath = FileSelfUtils.getTemplateSaveRootDir() + id;
         log.info("导出的文件路径" + workPath);
-        String exportFileName = GeneratorTempUtils.getOutputZipPath() + DateUtils.getTime() + ".zip";
+        String exportFileName = GeneratorTempUtils.getOutputZipPath() + DateUtils.dateTimeNow() + ".zip";
         //生成zip包
         GeneratorTempUtils.createZipFile(exportFileName, workPath);
         return exportFileName;
