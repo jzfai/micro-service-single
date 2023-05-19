@@ -39,10 +39,10 @@ public class ConfigSaveController {
             queryWrapper.like("name", generatorConfigSave.getName());
         }
         //生成的配置
-        queryWrapper.orderByDesc("id");
-        queryWrapper.select("id,name,generator_config");
+        queryWrapper.select("*");
         //创建时间
         queryWrapper.orderByDesc("create_time");
+        queryWrapper.orderByDesc("update_time");
 
         Page<ConfigSave> generatorConfigSavePage = this.generatorConfigSaveService.selectPage(commonParams.getPageNum(), commonParams.getPageSize(), queryWrapper);
         return R.ok(generatorConfigSavePage);

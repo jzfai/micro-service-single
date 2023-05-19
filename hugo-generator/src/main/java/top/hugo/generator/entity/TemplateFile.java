@@ -1,8 +1,8 @@
 package top.hugo.generator.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
-import com.baomidou.mybatisplus.extension.activerecord.Model;
 import lombok.Data;
+import top.hugo.common.domain.BaseEntity;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -16,7 +16,7 @@ import java.util.Date;
  */
 @Data
 @TableName(value = "t_template_file")
-public class TemplateFile extends Model<TemplateFile> {
+public class TemplateFile extends BaseEntity {
     /**
      * id主键
      */
@@ -38,18 +38,6 @@ public class TemplateFile extends Model<TemplateFile> {
     @NotBlank(message = "fileArr不能为空")
     private String fileArr;
 
-
-    /**
-     * 更新时间（不用传）
-     */
-    @TableField(fill = FieldFill.UPDATE)
-    private Date updateTime;
-
-    /**
-     * 创建时间（不用传）
-     */
-    @TableField(fill = FieldFill.INSERT)
-    private Date createTime;
 
     /**
      * 是否删除（不用传）

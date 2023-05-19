@@ -53,8 +53,9 @@ public class TemplateFileController {
         if (ObjectUtil.isNotEmpty(name)) {
             queryWrapper.like("name", name);
         }
-
-        queryWrapper.select("id,name,file_arr,create_time,update_time,creator");
+        queryWrapper.select("*");
+        queryWrapper.orderByDesc("create_time");
+        queryWrapper.orderByDesc("update_time");
         Page<TemplateFile> templateFilePage = this.templateFileService.selectPage(commonParams.getPageNum(), commonParams.getPageSize(), queryWrapper);
         return R.ok(templateFilePage);
     }
