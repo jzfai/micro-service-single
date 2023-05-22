@@ -124,8 +124,17 @@ public class SysMenuService {
      */
     @Transactional
     public int insertMenu(SysMenu menu) {
-        validRouteName(menu);
-        validPermissionCode(menu);
+        List<String> routerNameArr = Arrays.asList("M", " C");
+        if (!menu.getMenuType().equals("M")) {
+            validPermissionCode(menu);
+
+        }
+
+        if (!menu.getMenuType().equals("F")) {
+            validRouteName(menu);
+        }
+
+
         return sysMenuMapper.insert(menu);
     }
 
@@ -179,8 +188,13 @@ public class SysMenuService {
      */
     @Transactional
     public int updateMenu(SysMenu menu) {
-        validRouteName(menu);
-        validPermissionCode(menu);
+        if (!menu.getMenuType().equals("M")) {
+            validPermissionCode(menu);
+
+        }
+        if (!menu.getMenuType().equals("F")) {
+            validRouteName(menu);
+        }
         return sysMenuMapper.updateById(menu);
     }
 
