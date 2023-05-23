@@ -199,11 +199,13 @@ security:
     - /**/*.css
     - /**/*.js
     - /login
+    - /register
     # swagger 文档配置
     - /favicon.ico
     - /*/api-docs
     - /*/api-docs/**
     - /basis-func/**
+  
 
 knife4j:
   enable: true
