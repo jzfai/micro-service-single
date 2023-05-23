@@ -14,6 +14,7 @@ import top.hugo.common.utils.BeanCopyUtils;
 import top.hugo.common.utils.DateUtils;
 import top.hugo.common.utils.JsonUtils;
 import top.hugo.generator.bo.TemplateChangeBo;
+import top.hugo.generator.entity.ConfigSave;
 import top.hugo.generator.entity.TemplateFile;
 import top.hugo.generator.mapper.TemplateFileMapper;
 import top.hugo.generator.utils.FileSelfUtils;
@@ -39,6 +40,8 @@ public class TemplateFileService {
 
     @Resource
     private TemplateFileMapper templateFileMapper;
+    @Resource
+    private ConfigSaveService configSaveService;
 
     public Page<TemplateFile> selectPage(Integer pageNum, Integer pageSize, QueryWrapper<TemplateFile> queryWrapper) {
         return this.templateFileMapper.selectPage(new Page<TemplateFile>(pageNum, pageSize), queryWrapper);
@@ -142,6 +145,15 @@ public class TemplateFileService {
         //生成zip包
         GeneratorTempUtils.createZipFile(exportFileName, GeneratorTempUtils.getNeedZipDir());
         return exportFileName;
+    }
+
+    /**
+     * 除vm以外的文件生成文件导出(根据配置Id)
+     * 熊猫哥
+     */
+    public String generatorTemplateFileByConfigId(Integer configId, Integer templateId, String fileNamePre) {
+        ConfigSave configSave = configSaveService.selectById(configId);
+        return generatorTemplateFileByConfig(JsonUtils.parseObject(configSave.getGeneratorConfig(), Map.class), templateId, fileNamePre);
     }
 
     /*

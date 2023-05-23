@@ -171,6 +171,23 @@ public class TemplateFileController {
 
 
     /**
+     * 生成模版文件通过配置(ConfigId)
+     *
+     * @param configId    配置Id
+     * @param templateId  模板组Id
+     * @param fileNamePre 文件名前缀
+     */
+    @PostMapping("generatorTemplateFileByConfigId")
+    public void generatorTemplateFileByConfigId(HttpServletResponse response, @RequestParam("configId") Integer configId, @RequestParam("templateId") Integer templateId, @RequestParam("fileNamePre") String fileNamePre) {
+        //生成模板
+        String exportFilePath = this.templateFileService.generatorTemplateFileByConfigId(configId, templateId, fileNamePre);
+        //你压缩包路径
+        FileSelfUtils.exportFile(response, exportFilePath, DateUtils.dateTimeNow() + ".zip");
+        FileSelfUtils.deleteFile(exportFilePath);
+        FileSelfUtils.deleteDir(GeneratorTempUtils.getNeedZipDir());
+    }
+
+    /**
      * 下载模板文件
      *
      * @param id 模板组Id
