@@ -7,7 +7,7 @@ import top.hugo.common.utils.StringUtils;
 /**
  * web层通用数据处理
  *
- * @author hugo
+ * @author kuanghua
  */
 public class BaseController {
 

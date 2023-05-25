@@ -6,7 +6,7 @@ import java.lang.annotation.*;
 /**
  * excel 列单元格合并(合并列相同项)
  *
- * @author hugo
+ * @author kuanghua
  */
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)

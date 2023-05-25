@@ -8,10 +8,10 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.ReflectionKit;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.toolkit.Db;
 import org.apache.ibatis.logging.Log;
 import org.apache.ibatis.logging.LogFactory;
 import top.hugo.common.utils.BeanCopyUtils;
-import com.baomidou.mybatisplus.extension.toolkit.Db;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -160,6 +160,10 @@ public interface BaseMapperPlus<M, T, V> extends BaseMapper<T> {
         return selectVoList(wrapper, this.currentVoClass());
     }
 
+    default List<V> selectVoList() {
+        return selectVoList(null, this.currentVoClass());
+    }
+
     /**
      * 根据 entity 条件，查询全部记录
      */
@@ -170,6 +174,7 @@ public interface BaseMapperPlus<M, T, V> extends BaseMapper<T> {
         }
         return BeanCopyUtils.copyList(list, voClass);
     }
+
 
     default <P extends IPage<V>> P selectVoPage(IPage<T> page, Wrapper<T> wrapper) {
         return selectVoPage(page, wrapper, this.currentVoClass());

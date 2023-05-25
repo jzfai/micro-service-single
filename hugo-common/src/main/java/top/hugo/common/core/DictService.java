@@ -3,7 +3,7 @@ package top.hugo.common.core;
 /**
  * 通用 字典服务
  *
- * @author hugo
+ * @author kuanghua
  */
 public interface DictService {
 

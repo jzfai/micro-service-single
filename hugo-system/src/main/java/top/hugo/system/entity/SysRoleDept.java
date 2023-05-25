@@ -8,7 +8,7 @@ import lombok.Data;
 /**
  * 角色和部门关联 sys_role_dept
  *
- * @author hugo
+ * @author kuanghua
  */
 
 @Data

@@ -29,7 +29,7 @@ import java.util.*;
 /**
  * 角色 业务层处理
  *
- * @author hugo
+ * @author kuanghua
  */
 @RequiredArgsConstructor
 @Service
@@ -76,19 +76,18 @@ public class SysRoleService {
      * @param userId 用户ID
      * @return 角色列表
      */
-
     public List<SysRole> selectRolesByUserId(Long userId) {
         List<SysRole> userRoles = baseMapper.selectRolePermissionByUserId(userId);
-        List<SysRole> roles = selectRoleAll();
-        for (SysRole role : roles) {
-            for (SysRole userRole : userRoles) {
-                if (role.getRoleId().longValue() == userRole.getRoleId().longValue()) {
-                    role.setFlag(true);
-                    break;
-                }
-            }
-        }
-        return roles;
+        //    List<SysRole> roles = selectRoleAll();
+//        for (SysRole role : roles) {
+//            for (SysRole userRole : userRoles) {
+//                if (role.getRoleId().longValue() == userRole.getRoleId().longValue()) {
+//                    role.setFlag(true);
+//                    break;
+//                }
+//            }
+//        }
+        return userRoles;
     }
 
     /**

@@ -5,7 +5,7 @@ import lombok.Data;
 /**
  * 平台实体类
  *
- * @author 熊猫哥
+ * @author kuanghua
  * @since 2022-10-07 16:33:13
  */
 @Data

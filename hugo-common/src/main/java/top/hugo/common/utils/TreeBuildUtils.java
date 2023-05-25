@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * 扩展 hutool TreeUtil 封装系统树构建
  *
- * @author hugo
+ * @author kuanghua
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class TreeBuildUtils extends TreeUtil {

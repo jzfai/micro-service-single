@@ -13,7 +13,7 @@ import java.util.Date;
 /**
  * 用户对象导出VO
  *
- * @author hugo
+ * @author kuanghua
  */
 
 @Data

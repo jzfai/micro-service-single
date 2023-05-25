@@ -3,7 +3,7 @@ package top.hugo.common.enums;
 /**
  * 操作状态
  *
- * @author ruoyi
+ * @author kuanghua
  */
 public enum BusinessStatus {
     /**

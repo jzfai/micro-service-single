@@ -8,7 +8,7 @@ import top.hugo.common.utils.StringUtils;
 /**
  * 数据库类型
  *
- * @author Lion Li
+ * @author kuanghua
  */
 @Getter
 @AllArgsConstructor

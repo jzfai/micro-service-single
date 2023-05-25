@@ -11,7 +11,7 @@ import java.util.Set;
 /**
  * 登录用户身份权限
  *
- * @author hugo
+ * @author kuanghua
  */
 
 @Data
@@ -100,6 +100,10 @@ public class LoginUser implements Serializable {
      */
     private Long roleId;
 
+    /**
+     * 数据权限 当前平台id
+     */
+    private Integer platformId;
     /**
      * 获取登录id
      */

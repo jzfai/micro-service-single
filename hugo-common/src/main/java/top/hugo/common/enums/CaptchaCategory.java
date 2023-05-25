@@ -10,7 +10,7 @@ import lombok.Getter;
 /**
  * 验证码类别
  *
- * @author hugo
+ * @author kuanghua
  */
 @Getter
 @AllArgsConstructor

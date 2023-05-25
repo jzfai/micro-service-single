@@ -17,7 +17,7 @@ import java.sql.SQLException;
 /**
  * 数据库助手
  *
- * @author Lion Li
+ * @author kuanghua
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class DataBaseHelper {

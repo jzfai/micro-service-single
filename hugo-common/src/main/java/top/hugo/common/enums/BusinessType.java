@@ -3,7 +3,7 @@ package top.hugo.common.enums;
 /**
  * 业务操作类型
  *
- * @author ruoyi
+ * @author kuanghua
  */
 public enum BusinessType {
     /**

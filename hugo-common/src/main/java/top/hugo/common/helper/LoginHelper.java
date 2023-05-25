@@ -21,7 +21,12 @@ public class LoginHelper {
 
 
     public static Long getUserId() {
+
         return getUserInfo().getUserId();
+    }
+
+    public static Integer getPlatformId() {
+        return getUserInfo().getPlatformId();
     }
 
     /**

@@ -6,7 +6,7 @@ import top.hugo.system.vo.SysConfig;
 /**
  * 参数配置 数据层
  *
- * @author hugo
+ * @author kuanghua
  */
 public interface SysConfigMapper extends BaseMapperPlus<SysConfigMapper, SysConfig, SysConfig> {
 

@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
 import org.apache.ibatis.annotations.Param;
 import top.hugo.common.constant.UserConstants;
+import top.hugo.common.helper.LoginHelper;
 import top.hugo.common.mapper.BaseMapperPlus;
 import top.hugo.system.entity.SysMenu;
 
@@ -13,7 +14,7 @@ import java.util.List;
 /**
  * 菜单表 数据层
  *
- * @author hugo
+ * @author kuanghua
  */
 public interface SysMenuMapper extends BaseMapperPlus<SysMenuMapper, SysMenu, SysMenu> {
 
@@ -57,6 +58,7 @@ public interface SysMenuMapper extends BaseMapperPlus<SysMenuMapper, SysMenu, Sy
         LambdaQueryWrapper<SysMenu> lqw = new LambdaQueryWrapper<SysMenu>()
                 .in(SysMenu::getMenuType, UserConstants.TYPE_DIR, UserConstants.TYPE_MENU)
                 .eq(SysMenu::getStatus, UserConstants.MENU_NORMAL)
+                .eq(SysMenu::getPlatformId, LoginHelper.getPlatformId())
                 .orderByAsc(SysMenu::getParentId)
                 .orderByAsc(SysMenu::getOrderNum);
         return this.selectList(lqw);
@@ -68,7 +70,7 @@ public interface SysMenuMapper extends BaseMapperPlus<SysMenuMapper, SysMenu, Sy
      * @param userId 用户ID
      * @return 菜单列表
      */
-    List<SysMenu> selectMenuTreeByUserId(Long userId);
+    List<SysMenu> selectMenuTreeByUserId(@Param("userId") Long userId, @Param("platformId") Integer platformId);
 
     /**
      * 根据角色ID查询菜单树信息

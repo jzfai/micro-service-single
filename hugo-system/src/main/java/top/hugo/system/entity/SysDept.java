@@ -16,7 +16,7 @@ import javax.validation.constraints.Size;
 /**
  * 部门表 sys_dept
  *
- * @author hugo
+ * @author kuanghua
  */
 
 @Data

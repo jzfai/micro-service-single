@@ -18,7 +18,7 @@ import java.util.stream.Stream;
 /**
  * redis 工具类
  *
- * @author hugo
+ * @author kuanghua
  * @version 3.1.0 新增
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)

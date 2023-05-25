@@ -4,6 +4,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import top.hugo.common.exception.ServiceException;
 import top.hugo.common.utils.SqlUtil;
@@ -16,7 +17,7 @@ import java.util.List;
 /**
  * 分页查询实体类
  *
- * @author hugo
+ * @author kuanghua
  */
 
 @Data
@@ -42,10 +43,12 @@ public class PageQuery implements Serializable {
     /**
      * 排序列
      */
+    @Schema(hidden = true)
     private String orderByColumn;
     /**
      * 排序的方向desc或者asc
      */
+    @Schema(hidden = true)
     private String isAsc;
 
     public <T> Page<T> build() {

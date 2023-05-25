@@ -3,7 +3,7 @@ package top.hugo.common.constant;
 /**
  * 通用常量信息
  *
- * @author hugo
+ * @author kuanghua
  */
 public interface Constants {
 

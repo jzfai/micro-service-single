@@ -40,7 +40,7 @@ import java.util.Map;
 /**
  * 用户信息
  *
- * @author hugo
+ * @author kuanghua
  */
 @Validated
 @RequiredArgsConstructor

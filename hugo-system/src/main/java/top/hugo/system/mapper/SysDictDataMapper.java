@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * 字典表 数据层
  *
- * @author hugo
+ * @author kuanghua
  */
 public interface SysDictDataMapper extends BaseMapperPlus<SysDictDataMapper, SysDictData, SysDictData> {
 

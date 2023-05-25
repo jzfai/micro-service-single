@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 /**
  * sql操作工具类
  *
- * @author hugo
+ * @author kuanghua
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class SqlUtil {

@@ -14,7 +14,7 @@ import javax.validation.constraints.Size;
 /**
  * 菜单权限表 sys_menu
  *
- * @author hugo
+ * @author kuanghua
  */
 
 @Data
@@ -81,6 +81,11 @@ public class SysMenu extends TreeEntity<SysMenu> {
      * 菜单状态（0正常 1停用）
      */
     private String status;
+
+    /**
+     * 平台id
+     */
+    private Integer platformId;
 
     /**
      * 权限字符串

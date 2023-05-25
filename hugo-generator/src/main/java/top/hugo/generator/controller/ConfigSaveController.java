@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * 配置数据模块
  *
- * @author 熊猫哥
+ * @author kuanghua
  * @since 2022-07-20 10:10:28
  */
 @RestController

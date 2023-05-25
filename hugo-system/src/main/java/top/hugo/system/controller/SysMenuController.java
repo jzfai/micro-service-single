@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.*;
 import top.hugo.common.constant.UserConstants;
 import top.hugo.common.controller.BaseController;
 import top.hugo.common.domain.R;
+import top.hugo.common.helper.LoginHelper;
 import top.hugo.common.utils.StringUtils;
 import top.hugo.system.entity.SysMenu;
-import top.hugo.common.helper.LoginHelper;
 import top.hugo.system.service.SysMenuService;
 
 import java.util.HashMap;
@@ -19,7 +19,7 @@ import java.util.Map;
 /**
  * 菜单信息
  *
- * @author hugo
+ * @author kuanghua
  */
 @Validated
 @RequiredArgsConstructor
@@ -33,8 +33,8 @@ public class SysMenuController extends BaseController {
      * 获取菜单列表
      */
     @GetMapping("/list")
-    public R<List<SysMenu>> list(SysMenu menu) {
-        List<SysMenu> menus = menuService.selectMenuList(menu, LoginHelper.getUserId());
+    public R<List<SysMenu>> list(SysMenu menu, Long userId, Integer platformId) {
+        List<SysMenu> menus = menuService.selectMenuList(menu, LoginHelper.getUserId(), platformId);
         return R.ok(menus);
     }
 
@@ -54,8 +54,8 @@ public class SysMenuController extends BaseController {
      * 获取菜单下拉树列表
      */
     @GetMapping("/treeselect")
-    public R<List<Tree<Long>>> treeselect(SysMenu menu) {
-        List<SysMenu> menus = menuService.selectMenuList(menu, LoginHelper.getUserId());
+    public R<List<Tree<Long>>> treeselect(SysMenu menu, Integer platformId) {
+        List<SysMenu> menus = menuService.selectMenuList(menu, LoginHelper.getUserId(), platformId);
         return R.ok(menuService.buildMenuTreeSelect(menus));
     }
 
@@ -69,6 +69,20 @@ public class SysMenuController extends BaseController {
         List<SysMenu> menus = menuService.selectMenuList(LoginHelper.getUserId());
         Map<String, Object> ajax = new HashMap<>();
         ajax.put("checkedKeys", menuService.selectMenuListByRoleId(roleId));
+        ajax.put("menus", menuService.buildMenuTreeSelect(menus));
+        return R.ok(ajax);
+    }
+
+
+    /**
+     * 加载对应角色菜单列表树
+     *
+     * @param platformId 平台id
+     */
+    @GetMapping(value = "selectMenuListByPlateFormId")
+    public R<Map<String, Object>> selectMenuListByPlateFormId(Long platformId) {
+        List<SysMenu> menus = menuService.selectMenuListByPlateFormId(platformId);
+        Map<String, Object> ajax = new HashMap<>();
         ajax.put("menus", menuService.buildMenuTreeSelect(menus));
         return R.ok(ajax);
     }

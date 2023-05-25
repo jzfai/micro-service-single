@@ -32,7 +32,7 @@ import java.util.Map;
 /**
  * 验证码操作处理
  *
- * @author hugo
+ * @author kuanghua
  */
 @SaIgnore
 @Slf4j

@@ -29,7 +29,7 @@ import java.util.*;
 /**
  * 菜单 业务层处理
  *
- * @author hugo
+ * @author kuanghua
  */
 @RequiredArgsConstructor
 @Service
@@ -39,7 +39,7 @@ public class SysMenuService {
     private final SysRoleMenuMapper sysRoleMenuMapper;
 
     public List<SysMenu> selectMenuList(Long userId) {
-        return selectMenuList(new SysMenu(), userId);
+        return selectMenuList(new SysMenu(), userId, LoginHelper.getPlatformId());
     }
 
     /**
@@ -48,7 +48,7 @@ public class SysMenuService {
      * @param menu 菜单信息
      * @return 菜单列表
      */
-    public List<SysMenu> selectMenuList(SysMenu menu, Long userId) {
+    public List<SysMenu> selectMenuList(SysMenu menu, Long userId, Integer platformId) {
         List<SysMenu> menuList = null;
         // 管理员显示所有菜单信息
         if (LoginHelper.isAdmin()) {
@@ -56,6 +56,7 @@ public class SysMenuService {
                     .like(StringUtils.isNotBlank(menu.getMenuName()), SysMenu::getMenuName, menu.getMenuName())
                     .eq(StringUtils.isNotBlank(menu.getVisible()), SysMenu::getVisible, menu.getVisible())
                     .eq(StringUtils.isNotBlank(menu.getStatus()), SysMenu::getStatus, menu.getStatus())
+                    .eq(ObjectUtil.isNotEmpty(platformId), SysMenu::getPlatformId, platformId)
                     .orderByAsc(SysMenu::getParentId)
                     .orderByAsc(SysMenu::getOrderNum));
         } else {
@@ -64,11 +65,26 @@ public class SysMenuService {
                     .like(StringUtils.isNotBlank(menu.getMenuName()), "m.menu_name", menu.getMenuName())
                     .eq(StringUtils.isNotBlank(menu.getVisible()), "m.visible", menu.getVisible())
                     .eq(StringUtils.isNotBlank(menu.getStatus()), "m.status", menu.getStatus())
+                    .eq(ObjectUtil.isNotEmpty(platformId), "m.platform_id", platformId)
                     .orderByAsc("m.parent_id")
                     .orderByAsc("m.order_num");
             menuList = sysMenuMapper.selectMenuListByUserId(wrapper);
         }
         return menuList;
+    }
+
+
+    /**
+     * 查询系统菜单列表
+     *
+     * @param platformId 平台id
+     * @return 菜单列表
+     */
+    public List<SysMenu> selectMenuListByPlateFormId(Long platformId) {
+        return sysMenuMapper.selectList(new LambdaQueryWrapper<SysMenu>()
+                .eq(ObjectUtil.isNotEmpty(platformId), SysMenu::getPlatformId, platformId)
+                .orderByAsc(SysMenu::getParentId)
+                .orderByAsc(SysMenu::getOrderNum));
     }
 
     /**
@@ -435,7 +451,7 @@ public class SysMenuService {
         if (UserConstants.ADMIN_ID.equals(userId)) {
             menus = sysMenuMapper.selectMenuTreeAll();
         } else {
-            menus = sysMenuMapper.selectMenuTreeByUserId(userId);
+            menus = sysMenuMapper.selectMenuTreeByUserId(userId, LoginHelper.getPlatformId());
         }
         return getChildPerms(menus, 0);
     }

@@ -13,7 +13,7 @@ import top.hugo.framework.config.properties.XxlJobProperties;
 /**
  * xxl-job config
  *
- * @author Lion Li
+ * @author kuanghua
  */
 @Slf4j
 @Configuration

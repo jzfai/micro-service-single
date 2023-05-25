@@ -16,7 +16,7 @@ import top.hugo.system.service.SysRegisterService;
 /**
  * 注册验证
  *
- * @author Lion Li
+ * @author kuanghua
  */
 @Validated
 @RequiredArgsConstructor

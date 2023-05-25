@@ -28,7 +28,7 @@ import java.util.List;
 /**
  * 部门管理 服务实现
  *
- * @author hugo
+ * @author kuanghua
  */
 @RequiredArgsConstructor
 @Service
@@ -43,7 +43,7 @@ public class SysDeptService {
      * @param dept 部门信息
      * @return 部门信息集合
      */
-    
+
     public List<SysDept> selectDeptList(SysDept dept) {
         LambdaQueryWrapper<SysDept> lqw = new LambdaQueryWrapper<>();
         lqw.eq(SysDept::getDelFlag, "0")
@@ -62,7 +62,7 @@ public class SysDeptService {
      * @param dept 部门信息
      * @return 部门树信息集合
      */
-    
+
     public List<Tree<Long>> selectDeptTreeList(SysDept dept) {
         List<SysDept> depts = this.selectDeptList(dept);
         return buildDeptTreeSelect(depts);
@@ -74,7 +74,7 @@ public class SysDeptService {
      * @param depts 部门列表
      * @return 下拉树结构列表
      */
-    
+
     public List<Tree<Long>> buildDeptTreeSelect(List<SysDept> depts) {
         if (CollUtil.isEmpty(depts)) {
             return CollUtil.newArrayList();
@@ -92,7 +92,7 @@ public class SysDeptService {
      * @param roleId 角色ID
      * @return 选中部门列表
      */
-    
+
     public List<Long> selectDeptListByRoleId(Long roleId) {
         SysRole role = roleMapper.selectById(roleId);
         return baseMapper.selectDeptListByRoleId(roleId, role.getDeptCheckStrictly());
@@ -104,7 +104,7 @@ public class SysDeptService {
      * @param deptId 部门ID
      * @return 部门信息
      */
-    
+
     public SysDept selectDeptById(Long deptId) {
         SysDept dept = baseMapper.selectById(deptId);
         SysDept parentDept = baseMapper.selectOne(new LambdaQueryWrapper<SysDept>()
@@ -119,7 +119,7 @@ public class SysDeptService {
      * @param deptId 部门ID
      * @return 子部门数
      */
-    
+
     public long selectNormalChildrenDeptById(Long deptId) {
         return baseMapper.selectCount(new LambdaQueryWrapper<SysDept>()
                 .eq(SysDept::getStatus, UserConstants.DEPT_NORMAL)
@@ -132,7 +132,7 @@ public class SysDeptService {
      * @param deptId 部门ID
      * @return 结果
      */
-    
+
     public boolean hasChildByDeptId(Long deptId) {
         return baseMapper.exists(new LambdaQueryWrapper<SysDept>()
                 .eq(SysDept::getParentId, deptId));
@@ -144,7 +144,7 @@ public class SysDeptService {
      * @param deptId 部门ID
      * @return 结果 true 存在 false 不存在
      */
-    
+
     public boolean checkDeptExistUser(Long deptId) {
         return userMapper.exists(new LambdaQueryWrapper<SysUser>()
                 .eq(SysUser::getDeptId, deptId));
@@ -156,7 +156,7 @@ public class SysDeptService {
      * @param dept 部门信息
      * @return 结果
      */
-    
+
     public String checkDeptNameUnique(SysDept dept) {
         boolean exist = baseMapper.exists(new LambdaQueryWrapper<SysDept>()
                 .eq(SysDept::getDeptName, dept.getDeptName())
@@ -173,7 +173,7 @@ public class SysDeptService {
      *
      * @param deptId 部门id
      */
-    
+
     public void checkDeptDataScope(Long deptId) {
         if (!LoginHelper.isAdmin()) {
             SysDept dept = new SysDept();
@@ -191,7 +191,7 @@ public class SysDeptService {
      * @param dept 部门信息
      * @return 结果
      */
-    
+
     public int insertDept(SysDept dept) {
         SysDept info = baseMapper.selectById(dept.getParentId());
         // 如果父节点不为正常状态,则不允许新增子节点
@@ -208,7 +208,7 @@ public class SysDeptService {
      * @param dept 部门信息
      * @return 结果
      */
-    
+
     public int updateDept(SysDept dept) {
         SysDept newParentDept = baseMapper.selectById(dept.getParentId());
         SysDept oldDept = baseMapper.selectById(dept.getDeptId());
@@ -268,7 +268,7 @@ public class SysDeptService {
      * @param deptId 部门ID
      * @return 结果
      */
-    
+
     public int deleteDeptById(Long deptId) {
         return baseMapper.deleteById(deptId);
     }

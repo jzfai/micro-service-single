@@ -32,6 +32,7 @@
                         r.status,
                         r.del_flag,
                         r.create_time,
+                        r.platform_ids,
                         r.remark
         from sys_role r
                  left join sys_user_role sur on sur.role_id = r.role_id

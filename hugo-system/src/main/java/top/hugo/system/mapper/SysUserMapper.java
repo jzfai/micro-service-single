@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * 用户表 数据层
  *
- * @author hugo
+ * @author kuanghua
  */
 public interface SysUserMapper extends BaseMapperPlus<SysUserMapper, SysUser, SysUser> {
     // @DataPermission({

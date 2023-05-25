@@ -8,7 +8,7 @@ import top.hugo.common.utils.StringUtils;
  * 设备类型
  * 针对多套 用户体系
  *
- * @author Lion Li
+ * @author kuanghua
  */
 @Getter
 @AllArgsConstructor

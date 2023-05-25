@@ -3,7 +3,7 @@ package top.hugo.common.constant;
 /**
  * 缓存的key 常量
  *
- * @author hugo
+ * @author kuanghua
  */
 public interface CacheConstants {
 

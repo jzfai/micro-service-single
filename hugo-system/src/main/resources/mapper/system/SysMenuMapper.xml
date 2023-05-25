@@ -51,7 +51,7 @@
             ${ew.getCustomSqlSegment}
     </select>
 
-    <select id="selectMenuTreeByUserId" parameterType="Long" resultMap="SysMenuResult">
+    <select id="selectMenuTreeByUserId" resultMap="SysMenuResult">
         select distinct m.menu_id,
                         m.parent_id,
                         m.menu_name,
@@ -75,6 +75,7 @@
                  left join sys_role ro on sur.role_id = ro.role_id
                  left join sys_user u on sur.user_id = u.user_id
         where u.user_id = #{userId}
+          and m.platform_id = #{platformId}
           and m.menu_type in ('M', 'C')
           and m.status = '0'
           and ro.status = '0'

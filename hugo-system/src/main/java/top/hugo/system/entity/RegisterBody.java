@@ -7,7 +7,7 @@ import top.hugo.system.modal.LoginBody;
 /**
  * 用户注册对象
  *
- * @author Lion Li
+ * @author kuanghua
  */
 @Data
 @EqualsAndHashCode(callSuper = true)

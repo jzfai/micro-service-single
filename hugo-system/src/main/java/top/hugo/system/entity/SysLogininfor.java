@@ -2,6 +2,7 @@ package top.hugo.system.entity;
 
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -17,7 +18,7 @@ import java.util.Map;
 /**
  * 系统访问记录表 sys_logininfor
  *
- * @author Lion Li
+ * @author kuanghua
  */
 
 @Data
@@ -30,7 +31,7 @@ public class SysLogininfor implements Serializable {
      * ID
      */
     @ExcelProperty(value = "序号")
-    @TableId(value = "info_id")
+    @TableId(value = "info_id", type = IdType.ASSIGN_ID)
     private Long infoId;
 
     /**

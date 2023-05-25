@@ -7,7 +7,7 @@ import top.hugo.system.entity.SysLogininfor;
 /**
  * 系统访问日志情况信息 数据层
  *
- * @author Lion Li
+ * @author kuanghua
  */
 public interface SysLogininforMapper extends BaseMapperPlus<SysLogininforMapper, SysLogininfor, SysLogininfor> {
 

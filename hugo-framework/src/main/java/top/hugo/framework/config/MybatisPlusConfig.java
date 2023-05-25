@@ -16,7 +16,7 @@ import top.hugo.framework.handler.CreateAndUpdateMetaObjectHandler;
 /**
  * mybatis-plus配置类(下方注释有插件介绍)
  *
- * @author hugo
+ * @author kuanghua
  */
 @EnableTransactionManagement(proxyTargetClass = true)
 @Configuration

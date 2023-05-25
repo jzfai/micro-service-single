@@ -9,7 +9,7 @@ import top.hugo.common.spring.SpringUtils;
 /**
  * 获取i18n资源文件
  *
- * @author hugo
+ * @author kuanghua
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class MessageUtils {

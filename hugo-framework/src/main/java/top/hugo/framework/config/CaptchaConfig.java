@@ -13,7 +13,7 @@ import java.awt.*;
 /**
  * 验证码配置
  *
- * @author hugo
+ * @author kuanghua
  */
 @Configuration
 public class CaptchaConfig {

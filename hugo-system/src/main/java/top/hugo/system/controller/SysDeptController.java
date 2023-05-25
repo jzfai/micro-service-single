@@ -20,7 +20,7 @@ import java.util.List;
 /**
  * 部门信息
  *
- * @author Lion Li
+ * @author kuanghua
  */
 @Validated
 @RequiredArgsConstructor
@@ -50,7 +50,7 @@ public class SysDeptController extends BaseController {
     public R<List<SysDept>> excludeChild(@PathVariable(value = "deptId", required = false) Long deptId) {
         List<SysDept> depts = deptService.selectDeptList(new SysDept());
         depts.removeIf(d -> d.getDeptId().equals(deptId)
-            || ArrayUtil.contains(StringUtils.split(d.getAncestors(), ","), deptId + ""));
+                || ArrayUtil.contains(StringUtils.split(d.getAncestors(), ","), deptId + ""));
         return R.ok(depts);
     }
 
@@ -93,7 +93,7 @@ public class SysDeptController extends BaseController {
         } else if (dept.getParentId().equals(deptId)) {
             return R.fail("修改部门'" + dept.getDeptName() + "'失败，上级部门不能是自己");
         } else if (StringUtils.equals(UserConstants.DEPT_DISABLE, dept.getStatus())
-            && deptService.selectNormalChildrenDeptById(deptId) > 0) {
+                && deptService.selectNormalChildrenDeptById(deptId) > 0) {
             return R.fail("该部门包含未停用的子部门！");
         }
         return toAjax(deptService.updateDept(dept));

@@ -12,7 +12,7 @@ import top.hugo.common.constant.Constants;
 /**
  * 获取地址类
  *
- * @author Lion Li
+ * @author kuanghua
  */
 @Slf4j
 @NoArgsConstructor(access = AccessLevel.PRIVATE)

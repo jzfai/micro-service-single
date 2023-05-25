@@ -7,7 +7,7 @@ import lombok.Getter;
  * 设备类型
  * 针对一套 用户体系
  *
- * @author hugo
+ * @author kuanghua
  */
 @Getter
 @AllArgsConstructor

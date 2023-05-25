@@ -8,7 +8,7 @@ import java.io.Serializable;
 /**
  * 登录用户身份权限
  *
- * @author hugo
+ * @author kuanghua
  */
 
 @Data

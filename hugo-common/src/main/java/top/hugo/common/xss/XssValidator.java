@@ -9,7 +9,7 @@ import javax.validation.ConstraintValidatorContext;
 /**
  * 自定义xss校验注解实现
  *
- * @author hugo
+ * @author kuanghua
  */
 public class XssValidator implements ConstraintValidator<Xss, String> {
 

@@ -9,11 +9,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import top.hugo.common.constant.Constants;
+import top.hugo.common.domain.LoginUser;
 import top.hugo.common.domain.R;
 import top.hugo.common.utils.JsonUtils;
 import top.hugo.system.entity.SysMenu;
 import top.hugo.system.modal.LoginBody;
-import top.hugo.common.domain.LoginUser;
 import top.hugo.system.service.SysLoginService;
 import top.hugo.system.service.SysMenuService;
 import top.hugo.system.vo.RouterVo;
@@ -25,7 +25,7 @@ import java.util.Map;
 /**
  * 验证码操作处理
  *
- * @author hugo
+ * @author kuanghua
  */
 @Validated
 @RequiredArgsConstructor
@@ -46,7 +46,7 @@ public class LoginController {
         Map<String, Object> ajax = new HashMap<>();
         // 生成令牌
         String token = loginService.login(loginBody.getUsername(), loginBody.getPassword(), loginBody.getCode(),
-                loginBody.getUuid());
+                loginBody.getUuid(), loginBody.getPlatformId());
         ajax.put(Constants.TOKEN, token);
         return R.ok(ajax);
     }

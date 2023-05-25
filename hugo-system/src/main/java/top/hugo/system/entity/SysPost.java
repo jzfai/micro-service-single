@@ -19,7 +19,7 @@ import javax.validation.constraints.Size;
 /**
  * 岗位表 sys_post
  *
- * @author hugo
+ * @author kuanghua
  */
 
 @Data

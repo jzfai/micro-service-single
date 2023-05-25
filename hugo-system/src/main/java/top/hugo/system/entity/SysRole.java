@@ -20,7 +20,7 @@ import java.util.Set;
 /**
  * 角色表 sys_role
  *
- * @author hugo
+ * @author kuanghua
  */
 
 @Data
@@ -77,6 +77,12 @@ public class SysRole extends BaseEntity {
      */
     private Boolean deptCheckStrictly;
 
+
+    /**
+     * 平台数组
+     */
+    private String platformIds;
+
     /**
      * 角色状态（0正常 1停用）
      */
@@ -118,6 +124,7 @@ public class SysRole extends BaseEntity {
      */
     @TableField(exist = false)
     private Set<String> permissions;
+
 
     public SysRole(Long roleId) {
         this.roleId = roleId;

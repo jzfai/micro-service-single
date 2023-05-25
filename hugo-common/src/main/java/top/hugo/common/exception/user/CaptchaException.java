@@ -3,7 +3,7 @@ package top.hugo.common.exception.user;
 /**
  * 验证码错误异常类
  *
- * @author hugo
+ * @author kuanghua
  */
 public class CaptchaException extends UserException {
     private static final long serialVersionUID = 1L;

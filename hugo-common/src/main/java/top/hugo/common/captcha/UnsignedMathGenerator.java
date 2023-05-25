@@ -9,7 +9,7 @@ import top.hugo.common.utils.StringUtils;
 /**
  * 无符号计算生成器
  *
- * @author hugo
+ * @author kuanghua
  */
 public class UnsignedMathGenerator implements CodeGenerator {
 

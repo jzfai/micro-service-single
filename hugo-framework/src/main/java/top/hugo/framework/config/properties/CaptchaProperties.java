@@ -9,7 +9,7 @@ import top.hugo.common.enums.CaptchaType;
 /**
  * 验证码 配置属性
  *
- * @author hugo
+ * @author kuanghua
  */
 @Data
 @Component
