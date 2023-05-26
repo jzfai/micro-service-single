@@ -83,14 +83,14 @@ server:
 sa-token:
   # token名称 (同时也是cookie名称)
   token-name: Authorization
-  # token有效期 设为一天 (必定过期) 单位: 秒
-  timeout: 86400
-  # token临时有效期 (指定时间无操作就过期) 单位: 秒
-  activity-timeout: 1800
+  # token有效期 设为一周 (必定过期) 单位: 秒
+  timeout: 604800
+  # token临时有效期 (指定时间无操作就过期) 单位: 秒（三天）
+  activity-timeout: 259200
   # 是否允许同一账号并发登录 (为true时允许一起登录, 为false时新登录挤掉旧登录)
   is-concurrent: true
   # 在多人登录同一账号时，是否共用一个token (为true时所有登录共用一个token, 为false时每次登录新建一个token)
-  is-share: false
+  is-share: true
   # 是否尝试从header里读取token
   is-read-header: true
   # 是否尝试从cookie里读取token
@@ -211,17 +211,8 @@ knife4j:
   enable: true
   openapi:
     title: Knife4j官方文档
-    description: "`我是测试`,**你知道吗**# aaa"
+    description: "knife4j官方文档"
     email: xiaoymin@foxmail.com
     concat: 八一菜刀
     url: https://docs.xiaominfo.com
     version: v4.0
-    license: Apache 2.0
-    license-url: https://stackoverflow.com/
-    terms-of-service-url: https://stackoverflow.com/
-    group:
-      test1:
-        group-name: 分组名称
-        api-rule: package
-        api-rule-resources:
-          - top.hugo
