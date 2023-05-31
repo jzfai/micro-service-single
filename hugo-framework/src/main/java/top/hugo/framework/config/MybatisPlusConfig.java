@@ -1,9 +1,12 @@
 package top.hugo.framework.config;
 
 import cn.hutool.core.net.NetUtil;
+import com.baomidou.mybatisplus.autoconfigure.ConfigurationCustomizer;
+import com.baomidou.mybatisplus.core.MybatisConfiguration;
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import com.baomidou.mybatisplus.core.incrementer.DefaultIdentifierGenerator;
 import com.baomidou.mybatisplus.core.incrementer.IdentifierGenerator;
+import com.baomidou.mybatisplus.extension.MybatisMapWrapperFactory;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.OptimisticLockerInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
@@ -98,4 +101,14 @@ public class MybatisPlusConfig {
      * https://baomidou.com/pages/2a45ff/
      */
 
+    //返回的map转驼峰
+    @Bean
+    public ConfigurationCustomizer mybatisConfigurationCustomizer() {
+        return new ConfigurationCustomizer() {
+            @Override
+            public void customize(MybatisConfiguration configuration) {
+                configuration.setObjectWrapperFactory(new MybatisMapWrapperFactory());
+            }
+        };
+    }
 }
