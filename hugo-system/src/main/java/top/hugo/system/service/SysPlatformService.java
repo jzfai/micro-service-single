@@ -6,7 +6,6 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import top.hugo.common.domain.PageQuery;
 import top.hugo.common.helper.LoginHelper;
 import top.hugo.common.page.TableDataInfo;
 import top.hugo.common.utils.JsonUtils;
@@ -34,11 +33,11 @@ public class SysPlatformService {
     private final SysPlatformMapper sysPlatformMapper;
     private final SysRoleService sysRoleService;
 
-    public TableDataInfo<SysPlatformVo> selectPagePlatformList(SysPlatformQuery platform, PageQuery pageQuery) {
+    public TableDataInfo<SysPlatformVo> selectPagePlatformList(SysPlatformQuery platform) {
         LambdaQueryWrapper<SysPlatform> lqw = new LambdaQueryWrapper<SysPlatform>()
                 .like(ObjectUtil.isNotEmpty(platform.getName()), SysPlatform::getName, platform.getName())
                 .orderByDesc(SysPlatform::getCreateTime).orderByDesc(SysPlatform::getUpdateTime);
-        IPage<SysPlatformVo> page = sysPlatformMapper.selectVoPage(pageQuery.build(), lqw);
+        IPage<SysPlatformVo> page = sysPlatformMapper.selectVoPage(platform.build(), lqw);
         return TableDataInfo.build(page);
     }
 
@@ -108,6 +107,7 @@ public class SysPlatformService {
     public int insertPlatform(SysPlatform platform) {
         return sysPlatformMapper.insert(platform);
     }
+
 
     /**
      * 修改保存平台信息

@@ -1,0 +1,3 @@
+#parse("utils.vm")
+#forExample([1,2,3,4,5])
+#mapExample({"name":"熊猫哥","age":"28"})

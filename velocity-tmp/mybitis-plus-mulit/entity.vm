@@ -1,0 +1,45 @@
+#parse("utils.vm")
+package ${basicConfig.packageName}.entity;
+import java.util.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
+/**
+*  ${currentTbConfig.tableDesc}实体类
+*
+* @author ${basicConfig.author}
+* @since ${basicConfig.dataTime}
+*/
+@Data
+@ApiModel("${currentTbConfig.tableDesc}")
+@TableName(value = "${currentTbConfig.originTableName}")
+public class ${currentTbConfig.tableNameCase} extends Model< ${currentTbConfig.tableNameCase} > {
+#foreach($item in $tableFormArr)
+    #if($item.field=="createTime")
+    @ApiModelProperty(value = "$item.desc",hidden=$item.isNotShowSwagger)
+    @TableField(fill = FieldFill.INSERT)
+    private ${item.type} $item.field;
+    #elseif($item.field=="updateTime")
+    @ApiModelProperty(value = "$item.desc",hidden=$item.isNotShowSwagger)
+    @TableField(fill = FieldFill.UPDATE)
+    private ${item.type} $item.field;
+    #elseif($item.field=="deleted")
+    @TableLogic
+    @ApiModelProperty(value = "$item.desc",hidden=$item.isNotShowSwagger)
+    private ${item.type} $item.field;
+    #else
+    @ApiModelProperty(value = "$item.desc",hidden=$item.isNotShowSwagger)
+        #getValid($item)
+    private ${item.type} $item.field;
+    #end
+#end
+
+/**
+* 获取主键值
+*
+* @return 主键值
+*/
+@Override
+protected Serializable pkVal() {
+return this.${currentTbConfig.uniKey};
+}
+}

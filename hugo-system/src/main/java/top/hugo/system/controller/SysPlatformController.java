@@ -6,7 +6,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import top.hugo.common.annotation.Log;
 import top.hugo.common.controller.BaseController;
-import top.hugo.common.domain.PageQuery;
 import top.hugo.common.domain.R;
 import top.hugo.common.enums.BusinessType;
 import top.hugo.common.excel.ExcelUtil;
@@ -31,16 +30,17 @@ import java.util.List;
 @RestController
 @RequestMapping("/system/platform")
 public class SysPlatformController extends BaseController {
-
     private final SysPlatformService platformService;
 
     /**
      * 获取平台列表
+     *
+     * @return
      */
     //@SaCheckPermission("system:platform:list")
-    @GetMapping("/list")
-    public TableDataInfo<SysPlatformVo> list(SysPlatformQuery platform, PageQuery pageQuery) {
-        return platformService.selectPagePlatformList(platform, pageQuery);
+    @PostMapping("/list")
+    public TableDataInfo<SysPlatformVo> list(@RequestBody @Validated SysPlatformQuery platform) {
+        return platformService.selectPagePlatformList(platform);
     }
 
     /**
@@ -77,7 +77,7 @@ public class SysPlatformController extends BaseController {
     }
 
     /**
-     * 修改平台
+     * 修改平台 v
      */
     //@SaCheckPermission("system:platform:edit")
     @Log(title = "平台管理", businessType = BusinessType.UPDATE)

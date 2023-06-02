@@ -1,0 +1,59 @@
+#macro(getOriginField)
+  #foreach($item in $tableConfig)$item.originField,#end
+#end
+#set($originFieldString="#getOriginField()")
+#set($lenth=$originFieldString.length() - 1)
+#if($lenth>0)
+  #set($selectString=$originFieldString.substring(0,$lenth))
+#end
+
+#macro(getValid $item)
+  #if($item.isNeedInput=="true")
+    #if(${item.type}=="Long")
+    @NotNull(message = "${item.field}不能为空")
+    #elseif(${item.type}=="Integer")
+    @NotNull(message = "${item.field}不能为空")
+    #elseif(${item.type}=="String")
+    @NotBlank(message = "${item.field}不能为空")
+    #elseif(${item.type}=="List")
+    @NotEmpty(message = "${item.field}不能为空")
+    #end
+  #end
+  #if($item.rule=="upZeroInt")
+  @Pattern(regexp = "^\+?[1-9]\d*$",message = "${item.field}输入有误-正整数")
+  #elseif($item.rule=="zeroInt")
+  @Pattern(regexp = "^\+?[0-9]\d*$",message = "${item.field}输入有误-正整数包括0")
+  #elseif($item.rule=="phone")
+  @Pattern(regexp = "^0?1[0-9]{10}$",message = "${item.field}输入有误-手机号")
+  #elseif($item.rule=="money")
+  @Pattern(regexp = "((^[1-9]\d*)|^0)(\.\d{0,2}){0,1}$",message = "${item.field}输入有误-金额")
+  #elseif($item.rule=="email")
+  @Pattern(regexp = "(^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4}))$",message = "${item.field}输入有误-邮箱")
+  #elseif($item.rule=="idCard")
+  @Pattern(regexp = "(^\\d{15}$)|(^\\d{18}$)|(^\\d{17}(\\d|X|x)$)",message = "${item.field}输入有误-身份证")
+  #end
+#end
+
+
+#macro(getQueryField)
+  #foreach($item in $queryConfig)
+    #if($item.isNotShowSwagger=="true")@ApiIgnore()#end #getValid($item)  String $item.field,
+  #end
+#end
+
+
+
+
+#macro(getSwaggerParam)
+@Parameters({
+  #foreach($item in $queryConfig)
+    #if($item.isNotShowSwagger=="false")
+      #if($item.isNeedInput=="true")
+      @Parameter(name = "$item.field", value = "$item.desc",paramType = "query", required = true),
+      #else
+      @Parameter(name = "$item.field", value = "$item.desc",paramType = "query",required = $item.isNeedInput),
+      #end
+    #end
+  #end
+})
+#end

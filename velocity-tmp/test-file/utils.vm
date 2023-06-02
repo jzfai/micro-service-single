@@ -1,0 +1,16 @@
+#macro(forExample $list)
+    #foreach($item  in   $list)
+        $item
+        ## 从0开始 ${foreach.index}
+        ## 从1开始 ${foreach.count}
+    #end
+#end
+#macro(mapExample $mapData)
+    #foreach($value  in   $mapData)
+        $value
+    #end
+    #foreach($entry  in   $mapData.entrySet())
+        ${entry.key} --- ${entry.value}
+    #end
+    ##[#break] 退出循环
+#end

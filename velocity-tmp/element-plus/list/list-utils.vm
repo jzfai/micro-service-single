@@ -1,0 +1,167 @@
+#*查询form item*#
+#macro(queryFormItemTmp)
+    #foreach($item in $queryConfig)
+        #if($item.componentType=="input") ##input
+        <el-form-item prop="${item.field}">
+            <el-input
+                v-model="searchForm.${item.field}"
+                class="w-${item.width}px"
+                placeholder="${item.desc}"/>
+        </el-form-item>
+        #elseif($item.componentType=="select") ##select
+        <el-form-item prop="${item.field}">
+            <el-select
+                v-model="searchForm.${item.field}"
+                clearable
+                class="w-${item.width}px"
+                placeholder="${item.desc}">
+                #foreach($enum in $item.optionDataArr)
+                    <el-option label="${enum.label}" value="${enum.value}"/>
+                #end
+            </el-select>
+        </el-form-item>
+        #elseif($item.componentType=="selectApi") ##selectApi
+        <el-form-item prop="${item.field}">
+            <el-select
+                v-model="searchForm.${item.field}"
+                clearable
+                placeholder="${item.desc}"
+                class="w-${item.width}px">
+                <el-option
+                    v-for="item in ${item.field}Data"
+                    :key="item.${item.valueKey}"
+                    :label="item.${item.labelKey}"
+                    :value="item.${item.valueKey}"/>
+            </el-select>
+        </el-form-item>
+        #elseif($item.componentType=="daterange") ##datetimerange
+        <el-form-item prop="${item.field}">
+            <el-date-picker
+                v-model="searchForm.${item.field}"
+                type="daterange"
+                format="YYYY-MM-DD"
+                value-format="YYYY-MM-DD HH:mm:ss"
+                @change="dateRangePacking"
+                class="w-${item.width}px"
+                range-separator="-"
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"/>
+        </el-form-item>
+        #elseif($item.componentType=="date") ##date
+        <el-form-item prop="${item.field}">
+            <el-date-picker v-model="datePacking" type="date" placeholder="${item.desc}" class="w-${item.width}px"/>
+        </el-form-item>
+        #end
+    #end
+#end
+#*表格列项*#
+#macro(tableItemTmp)
+    #if($tableConfig.isTableMulChoose)
+    <el-table-column type="selection" align="center" width="50"/>
+    #end
+    #foreach($item in $tableList)
+        #if($item.componentType=="input") ##input
+        <el-table-column show-overflow-tooltip align="center" prop="${item.field}" label="${item.desc}"
+                         min-width="${item.width}"/>
+        #elseif($item.componentType=="select") ##select
+        <el-table-column show-overflow-tooltip align="center" prop="${item.field}" label="${item.desc}"
+                         min-width="${item.width}">
+            <template #default="{ row }">
+                #foreach($enum in $item.optionDataArr)
+                    <span v-if="row.${item.field}==${enum.value}">${enum.label}</span>
+                #end
+            </template>
+        </el-table-column>
+        #elseif($item.componentType=="image") ##image
+        <el-table-column align="center" prop="${item.field}" label="${item.desc}" min-width="${item.width}">
+            <template #default="{ row }">
+                <el-image
+                    :src="row.${item.field}"
+                    style="border-radius: 6px"
+                    class="w-${item.width}px h-${item.width}px"
+                    :preview-teleported="true"
+                    :preview-src-list="[row.${item.field}]"
+                    fit="cover"
+                />
+            </template>
+        </el-table-column>
+        #end
+    #end
+#end
+##table 新增和删除
+#macro(tableGlobalOperatorTmp)
+    #if($tableConfig.isAdd)
+    <el-button type="primary" @click="addBtnClick">
+        <el-icon style="vertical-align: middle">
+            <FolderAdd/>
+        </el-icon>
+        <span style="vertical-align: middle">增加</span>
+    </el-button>
+    #end
+    #if($tableConfig.isMulDelete)
+    <el-button type="primary" @click="multiDelBtnClick">
+        <span style="vertical-align: middle">批量删除</span>
+    </el-button>
+    #end
+#end
+##table 操作
+#macro(tableOperatorTmp)
+    #if($tableConfig.isEdit)
+    <span @click="tableEditClick(row)">编辑</span>
+    #end
+    #if($tableConfig.isDelete)
+    <span @click="tableDelClick(row)">删除</span>
+    #end
+    #if($tableConfig.isDetail)
+    <span @click="tableDetailClick(row)">详情</span>
+    #end
+#end
+##分页
+#macro(tablePaginationTmp)
+    #if($tableConfig.isPagination)
+    <div class="rowCC mt-20px" v-if="totalPage>=10">
+        <el-pagination
+            :current-page="pageNum"
+            :page-sizes="[10, 20, 50, 100]"
+            :page-size="pageSize"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="totalPage"
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+        />
+    </div>
+    #end
+#end
+#*script*#
+#macro(onMountedScript)
+onMounted(()=>{
+selectPageReq()
+    #foreach($item in $queryConfig)
+        #if($item.componentType=="selectApi")##selectApi
+            ${item.field}Req()
+        #end
+    #end
+})
+#end
+##api req
+#macro(apiReqScript)
+    #foreach($item in $queryConfig)
+        #if($item.componentType=="selectApi")##selectApi
+        let ${item.field}Data = $ref([])
+        const ${item.field}Req = () => {
+        let reqConfig = {
+        url: '${item.api}',
+        method: '${item.method}',
+        }
+        axiosReq(reqConfig).then(({data}) => {
+            ${item.field}Data = data.records
+        })}
+        #end
+    #end
+#end
+##form key
+#macro(formKeyScrpt)
+    #foreach($item in $queryConfig)
+        $item.field:"",
+    #end
+#end

@@ -1,0 +1,31 @@
+#parse("utils.vm")
+
+$number.format("11")
+$number.integer("11")
+$math.ceil(1.23)
+
+
+$esc.dollar     ## $
+$esc.d          ## $
+$esc.hash       ## #
+$esc.h          ## #
+
+
+
+context中的所有key :
+#foreach( $key in $context.keys )
+  $key
+#end
+<br>
+
+context中的所有value :
+#foreach( $value in $context.values )
+  $value
+#end
+
+<br>
+
+context中的所有key-value :
+#foreach( $key in $context.keys )
+  $key = $context.get($key)
+#end

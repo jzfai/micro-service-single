@@ -205,6 +205,7 @@ security:
     - /*/api-docs
     - /*/api-docs/**
     - /basis-func/**
+    - /system/platform/**
 
 
 knife4j:

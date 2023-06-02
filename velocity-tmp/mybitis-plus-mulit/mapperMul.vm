@@ -1,0 +1,16 @@
+#set($firstTbConfig=$multiTableConfig[0])
+package ${basicConfig.packageName}.mapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.apache.ibatis.annotations.Param;
+import java.util.*;
+/**
+*  ${dbTableConfig.multiTableDesc}Mapper
+*
+* @author ${basicConfig.author}
+* @since ${basicConfig.dataTime}
+*/
+public interface ${dbTableConfig.multiTableNameCase}Mapper {
+Page< Map > select${dbTableConfig.multiTableNameCase}(Page< Map > pagination,@Param("params") ${dbTableConfig.multiTableNameCase}Query params);
+
+Map selectByKey(@Param("${firstTbConfig.associationKey}") ${firstTbConfig.associationKeyType} ${firstTbConfig.associationKey});
+}

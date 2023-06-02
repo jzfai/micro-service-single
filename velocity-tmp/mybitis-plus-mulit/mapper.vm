@@ -1,0 +1,10 @@
+package ${basicConfig.packageName}.mapper;
+/**
+*  ${currentTbConfig.tableDesc}Mapper
+*
+* @author ${basicConfig.author}
+* @since ${basicConfig.dataTime}
+*/
+public interface ${currentTbConfig.tableNameCase}Mapper extends BaseMapper< ${currentTbConfig.tableNameCase} > {
+
+}

@@ -1,0 +1,88 @@
+#parse("add-edit-utils.vm")
+<template>
+    <div class="project-page-style">
+        <FoldingCard :title="isEdit ? '编辑' : '新增'">
+            <el-form ref="refForm" label-width="150px" :inline="false" :model="subForm">
+                #subFormItemTmp()
+            </el-form>
+            <div class="footer-btn columnCC">
+                <div class="rowSS">
+                    <el-button @click="handleCancel">取消</el-button>
+                    <el-button type="primary" @click="confirmBtnClick">确定</el-button>
+                </div>
+            </div>
+        </FoldingCard>
+    </div>
+</template>
+
+<script setup lang="ts" name="${basicConfig.apiFileNameFirstCase}AddEdit">
+    /*回显数据*/
+    const { isEdit, row } = getQueryParam()
+    if (isEdit) {
+        onBeforeMount(async () => {
+            const { data } = await getDetailByIdReq(row.id)
+            reshowData(data, subForm)
+        })
+    }
+    //获取详情数据
+    const getDetailByIdReq = (id) => {
+        return axiosReq({
+            url: '${apiConfig.detailApi}',
+            data: { id },
+            method: '${apiConfig.detailMethod}'
+        })
+    }
+    #onMountedScript()
+    #apiReqScript()
+    /*新增和更新*/
+    let subForm = reactive({
+       #formKeyScrpt()
+    })
+    const refForm = $ref(null)
+    const confirmBtnClick = () => {
+        refForm.validate((valid) => {
+            if (valid) {
+                if (subForm.id) {
+                    updateReq()
+                } else {
+                    insertReq()
+                }
+            } else {
+                return false
+            }
+        })
+    }
+    const insertReq = () => {
+        const data = JSON.parse(JSON.stringify(subForm))
+        delete data.id
+        axiosReq({
+            url: '${apiConfig.insertApi}',
+            data,
+            method: '${apiConfig.insertMethod}',
+            bfLoading: true
+        }).then(() => {
+            elMessage('保存成功')
+            routerBack()
+        })
+    }
+    //更新
+    let updateReq = () => {
+        return axiosReq({
+            url: '${apiConfig.updateApi}',
+            data: subForm,
+            method: '${apiConfig.updateMethod}',
+            bfLoading: true
+        }).then(() => {
+            elMessage('更新成功')
+            routerBack()
+        })
+    }
+    /*4.上传文件*/
+   #uploadImageScript()
+
+    const { reshowData, fileUpload, chooseFileName, handleCancel,formRules } = useForm(subForm)
+</script>
+
+<style scoped lang="scss">
+
+</style>

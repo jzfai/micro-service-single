@@ -1,0 +1,74 @@
+#macro(tableItemTemp)
+    #foreach($item in $tableListConfig)
+        #if($item.componentType=="input") ##输入框 input
+        <el-table-column :render-header="addRedStarMixin" label="${item.desc}" min-width="w${item.width}" align="center">
+            #if($item.isTemplate=="true")
+                <template v-slot="{ row }" >
+                    <el-input v-model="row.${item.field}"   placeholder="请输入${item.desc}"/>
+                </template>
+            #end
+        </el-table-column>
+        #elseif($item.componentType=="select") ##select
+        <el-table-column :render-header="addRedStarMixin" label="${item.desc}" min-width="w${item.width}" align="center">
+            #if($item.isTemplate=="true")
+                <template v-slot="{ row }">
+                    <el-select class="w${item.width}" v-model="row.${item.field}" placeholder="${item.desc}">
+                        #foreach($enum in $item.optionDataArr)
+                            <el-option label="${enum.label}" value="${enum.value}"/>
+                        #end
+                    </el-select>
+                </template>
+            #end
+        </el-table-column>
+        #elseif($item.componentType=="selectApi") ##selectApi
+        <el-table-column :render-header="addRedStarMixin" label="${item.desc}" min-width="w${item.width}" align="center">
+            #if($item.isTemplate=="true")
+                <template v-slot="{ row }">
+                    <el-select class="w${item.width}"  v-model="row.${item.field}" placeholder="${item.desc}">
+                        <el-option
+                                v-for="item in ${item.field}Data"
+                                :key="item"
+                                :label="item.${item.labelKey}"
+                                :value="item.${item.valueKey}"/>
+                    </el-select>
+                </template>
+            #end
+        </el-table-column>
+        #end
+    #end
+#end
+
+
+
+##生成data
+#macro(formDataScript)
+    #foreach($item in $tableListConfig)
+        #if($item.componentType=="selectApi") ##输入框 input
+            ${item.field}Data:[],
+            ##elseif($item.componentType=="date") ##日期选择 datePicker
+            ##elseif($item.componentType=="time") ##时间选择 timePicker
+        #end
+    #end
+#end
+
+
+##生成method
+#macro(formMethodScript)
+    #foreach($item in $tableListConfig)
+        #if($item.componentType=="selectApi")
+            ${item.field}Req(){
+        this.globalApi.${frontConfig.apiFileName}.${item.field}Req().then(({data}) => {
+        this.${item.field}Data = data
+        })
+        },
+        #end
+    #end
+#end
+##生成mounted
+#macro(formMountedScript)
+    #foreach($item in $tableListConfig)
+        #if($item.componentType=="selectApi") ##输入框 selectApi
+        this.${item.field}Req()
+        #end
+    #end
+#end
