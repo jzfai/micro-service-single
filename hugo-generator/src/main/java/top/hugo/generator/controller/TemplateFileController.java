@@ -35,7 +35,6 @@ import java.util.Map;
 public class TemplateFileController {
     @Resource
     private TemplateFileService templateFileService;
-
     /**
      * 分页查询所有数据
      *
@@ -91,6 +90,18 @@ public class TemplateFileController {
         return R.ok(this.templateFileService.updateById(templateFile));
     }
 
+
+
+    /**
+     * 修改数据
+     *
+     * @param templateFile 实体对象 
+     * @return
+     */
+    @PutMapping("updateFileArr")
+    public R<Integer> updateFileArr(@Validated @RequestBody TemplateFile templateFile) {
+        return R.ok(this.templateFileService.updateFileArr(templateFile));
+    }
     /**
      * 删除数据
      *
@@ -110,7 +121,6 @@ public class TemplateFileController {
     public R<Integer> deleteById(@RequestParam("id") Integer id) {
         return R.ok(this.templateFileService.deleteById(id));
     }
-
 
     /**
      * 根据文件名读取文件内容
@@ -137,6 +147,17 @@ public class TemplateFileController {
         return R.ok();
     }
 
+    /**
+     * 更新模版文件
+     *
+     * @param name 模板组名
+     * @param file 文件数组
+     */
+    @PostMapping("saveTemplateFileUpdate")
+    public R<Object> saveMultiTemplateFile(List<MultipartFile> file,@RequestParam("fileArr") String fileArr, @RequestParam("name") String name,@RequestParam("id") Integer id) {
+        this.templateFileService.saveTemplateFileUpdate(file,fileArr,name,id);
+        return R.ok();
+    }
     /**
      * 修改模板文件
      *

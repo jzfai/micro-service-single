@@ -31,7 +31,6 @@ import java.util.List;
 @RequestMapping("/system/platform")
 public class SysPlatformController extends BaseController {
     private final SysPlatformService platformService;
-
     /**
      * 获取平台列表
      *
@@ -77,7 +76,7 @@ public class SysPlatformController extends BaseController {
     }
 
     /**
-     * 修改平台 v
+     * 修改平台
      */
     //@SaCheckPermission("system:platform:edit")
     @Log(title = "平台管理", businessType = BusinessType.UPDATE)
@@ -89,7 +88,6 @@ public class SysPlatformController extends BaseController {
 
     /**
      * 删除平台
-     *
      * @param platformIds 平台ID串
      */
     //@SaCheckPermission("system:platform:remove")
@@ -111,7 +109,6 @@ public class SysPlatformController extends BaseController {
     /**
      * 获取平台选择框列表
      *
-     * @return
      */
     @GetMapping("/filterPlatformByUserId")
     public R<List<SysPlatformVo>> filterPlatformByUserId() {

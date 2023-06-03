@@ -86,6 +86,21 @@ public class TemplateFileService {
         this.templateFileMapper.updateById(templateFile);
     }
 
+    /**
+     * 批量导入写入上传的模版文件
+     *
+     * @date 2022/12/10 16:17
+     */
+    public void saveTemplateFileUpdate(List<MultipartFile> files,  String fileArr,String name,Integer id) {
+        TemplateFile templateFile = new TemplateFile();
+        for (MultipartFile file : files) {
+            FileSelfUtils.savaFileByMulti(file, templateFile.getId().toString(), file.getOriginalFilename());
+        }
+        templateFile.setId(id);
+        templateFile.setName(name);
+        templateFile.setFileArr(fileArr);
+        this.templateFileMapper.updateById(templateFile);
+    }
 
     /**
      * 更新修改后的内容
@@ -225,5 +240,10 @@ public class TemplateFileService {
         this.templateFileMapper.updateById(BeanCopyUtils.copy(templateChangeBo, TemplateFile.class));
         //更新模板内容
         FileSelfUtils.savaFileByName(templateChangeBo.getId(), templateChangeBo.getFileName(), templateChangeBo.getCode());
+    }
+
+    public int updateFileArr(TemplateFile templateFile) {
+        TemplateFile templateFileData= templateFileMapper.selectById(templateFile.getId());
+        return templateFileMapper.updateById(templateFileData);
     }
 }

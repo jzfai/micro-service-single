@@ -60,7 +60,7 @@ captcha:
 # 开发环境配置
 server:
   # 服务器的HTTP端口，默认为8080
-  port: 30121
+  port: 30156
   servlet:
     # 应用的访问路径
     context-path: /
@@ -211,9 +211,9 @@ security:
 knife4j:
   enable: true
   openapi:
-    title: Knife4j官方文档
+    title: Knife4j官方文档(swagger3.0文档)
     description: "knife4j官方文档"
-    email: xiaoymin@foxmail.com
-    concat: 八一菜刀
-    url: https://docs.xiaominfo.com
+    email: 869653722@qq.com
+    concat: 熊猫哥
+    url: https://github.jzfai.top/micro-service-api/doc.html
     version: v4.0
