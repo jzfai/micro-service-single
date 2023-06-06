@@ -33,7 +33,7 @@ public class SysMenuController extends BaseController {
      * 获取菜单列表
      */
     @GetMapping("/list")
-    public R<List<SysMenu>> list(SysMenu menu, Long userId, Integer platformId) {
+    public R<List<SysMenu>> list(SysMenu menu, Integer platformId) {
         List<SysMenu> menus = menuService.selectMenuList(menu, LoginHelper.getUserId(), platformId);
         return R.ok(menus);
     }

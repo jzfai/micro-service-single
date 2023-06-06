@@ -61,6 +61,7 @@ public class SysMenuService {
                     .orderByAsc(SysMenu::getOrderNum));
         } else {
             QueryWrapper<SysMenu> wrapper = Wrappers.query();
+            //wrapper.eq("sur.user_id", userId)
             wrapper.eq("sur.user_id", userId)
                     .like(StringUtils.isNotBlank(menu.getMenuName()), "m.menu_name", menu.getMenuName())
                     .eq(StringUtils.isNotBlank(menu.getVisible()), "m.visible", menu.getVisible())
@@ -143,7 +144,6 @@ public class SysMenuService {
         List<String> routerNameArr = Arrays.asList("M", " C");
         if (!menu.getMenuType().equals("M")) {
             validPermissionCode(menu);
-
         }
 
         if (!menu.getMenuType().equals("F")) {
@@ -162,6 +162,7 @@ public class SysMenuService {
         if (!UserConstants.TYPE_BUTTON.equals(menu.getMenuType())) {
             LambdaQueryWrapper<SysMenu> lqw = new LambdaQueryWrapper<>();
             lqw.eq(ObjectUtil.isNotEmpty(menu.getRouteName()), SysMenu::getRouteName, menu.getRouteName());
+            lqw.eq(ObjectUtil.isNotEmpty(menu.getPlatformId()), SysMenu::getPlatformId, menu.getPlatformId());
             SysMenu sysMenu = sysMenuMapper.selectOne(lqw);
             if (ObjectUtil.isNotEmpty(menu.getMenuId())) {
                 if (ObjectUtil.isNotEmpty(sysMenu) && !sysMenu.getRouteName().equals(menu.getRouteName())) {
@@ -183,6 +184,7 @@ public class SysMenuService {
         //检验name唯一
         LambdaQueryWrapper<SysMenu> lqw = new LambdaQueryWrapper<>();
         lqw.eq(ObjectUtil.isNotEmpty(menu.getPerms()), SysMenu::getPerms, menu.getPerms());
+        lqw.eq(ObjectUtil.isNotEmpty(menu.getPlatformId()), SysMenu::getPlatformId, menu.getPlatformId());
         SysMenu sysMenu = sysMenuMapper.selectOne(lqw);
         if (ObjectUtil.isNotEmpty(menu.getMenuId())) {
             if (ObjectUtil.isNotEmpty(sysMenu) && !sysMenu.getPerms().equals(menu.getPerms())) {
