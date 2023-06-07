@@ -1,7 +1,6 @@
 package top.hugo.system.controller;
 
 import cn.dev33.satoken.annotation.SaIgnore;
-import cn.dev33.satoken.stp.StpUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,11 +10,14 @@ import org.springframework.web.bind.annotation.RestController;
 import top.hugo.common.constant.Constants;
 import top.hugo.common.domain.LoginUser;
 import top.hugo.common.domain.R;
-import top.hugo.common.utils.JsonUtils;
+import top.hugo.common.helper.LoginHelper;
+import top.hugo.common.utils.BeanCopyUtils;
 import top.hugo.system.entity.SysMenu;
+import top.hugo.system.entity.SysUser;
 import top.hugo.system.modal.LoginBody;
 import top.hugo.system.service.SysLoginService;
 import top.hugo.system.service.SysMenuService;
+import top.hugo.system.service.SysPermissionService;
 import top.hugo.system.vo.RouterVo;
 
 import java.util.HashMap;
@@ -31,7 +33,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 @RestController
 public class LoginController {
-
+    private final SysPermissionService permissionService;
     private final SysLoginService loginService;
     private final SysMenuService menuService;
 
@@ -67,10 +69,11 @@ public class LoginController {
      */
     @GetMapping("getInfo")
     public R<HashMap<String, Object>> getUserInfo() {
-        LoginUser user = JsonUtils.parseObject(StpUtil.getExtra("user"), LoginUser.class);
+        LoginUser userInfo = LoginHelper.getUserInfo();
         HashMap<String, Object> hm = new HashMap<>();
-        hm.put("permission", user.getMenuPermission());
-        hm.put("roles", user.getRolePermission());
+        SysUser user = BeanCopyUtils.copy(userInfo, SysUser.class);
+        hm.put("permission", permissionService.getMenuPermission(user));
+        hm.put("roles", permissionService.getRolePermission(user));
         hm.put("user", user);
         return R.ok(hm);
     }
@@ -83,8 +86,7 @@ public class LoginController {
      */
     @GetMapping("getRouters")
     public R<List<RouterVo>> getRouters() {
-        LoginUser user = JsonUtils.parseObject(StpUtil.getExtra("user"), LoginUser.class);
-        List<SysMenu> menus = menuService.selectMenuTreeByUserId(user.getUserId());
+        List<SysMenu> menus = menuService.selectMenuTreeByUserId(LoginHelper.getUserId());
         return R.ok(menuService.buildMenus(menus));
     }
 }

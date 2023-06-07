@@ -83,6 +83,7 @@ public class SysMenuController extends BaseController {
     public R<Map<String, Object>> selectMenuListByPlateFormId(Long platformId) {
         List<SysMenu> menus = menuService.selectMenuListByPlateFormId(platformId);
         Map<String, Object> ajax = new HashMap<>();
+        ajax.put("rows", menus);
         ajax.put("menus", menuService.buildMenuTreeSelect(menus));
         return R.ok(ajax);
     }
