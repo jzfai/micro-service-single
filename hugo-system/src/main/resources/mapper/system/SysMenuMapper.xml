@@ -15,6 +15,8 @@
         <result property="isFrame" column="is_frame"/>
         <!--<result property="isCache" column="is_cache"/>-->
         <result property="menuType" column="menu_type"/>
+        <result property="platformId" column="platform_id"/>
+        <result property="visible" column="visible"/>
         <result property="visible" column="visible"/>
         <result property="status" column="status"/>
         <result property="perms" column="perms"/>
@@ -41,6 +43,7 @@
                         m.is_frame,
                         m.redirect,
                         m.menu_type,
+                        m.platform_id,
                         m.icon,
                         m.order_num,
                         m.create_time
@@ -65,6 +68,7 @@
                         m.meta_extra,
                         m.always_show,
                         m.redirect,
+                        m.platform_id,
                         m.menu_type,
                         m.icon,
                         m.order_num,

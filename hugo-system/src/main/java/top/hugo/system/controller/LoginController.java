@@ -77,8 +77,7 @@ public class LoginController {
         hm.put("user", user);
         return R.ok(hm);
     }
-
-
+    
     /**
      * 获取路由信息
      *
