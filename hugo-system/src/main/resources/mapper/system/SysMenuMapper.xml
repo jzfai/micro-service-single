@@ -78,8 +78,8 @@
                  left join sys_user_role sur on rm.role_id = sur.role_id
                  left join sys_role ro on sur.role_id = ro.role_id
                  left join sys_user u on sur.user_id = u.user_id
-        where u.user_id = #{userId}
-          and m.platform_id = #{platformId}
+             --             u.user_id = #{userId}
+        where m.platform_id = #{platformId}
           and m.menu_type in ('M', 'C')
           and m.status = '0'
           and ro.status = '0'
