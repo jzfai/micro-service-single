@@ -72,6 +72,8 @@ public interface SysMenuMapper extends BaseMapperPlus<SysMenuMapper, SysMenu, Sy
      */
     List<SysMenu> selectMenuTreeByUserId(@Param("userId") Long userId, @Param("platformId") Integer platformId);
 
+    List<SysMenu> selectMenuTreeByUserId(@Param("platformId") Integer platformId);
+
     /**
      * 根据角色ID查询菜单树信息
      *
