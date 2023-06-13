@@ -448,12 +448,12 @@ public class SysMenuService {
     }
 
 
-    public List<SysMenu> selectMenuTreeByUserId(Long userId) {
+    public List<SysMenu> selectMenuTreeByUserId(Long userId,Integer platformId) {
         List<SysMenu> menus = null;
         if (UserConstants.ADMIN_ID.equals(userId)) {
             menus = sysMenuMapper.selectMenuTreeAll();
         } else {
-            menus = sysMenuMapper.selectMenuTreeByUserId(userId, LoginHelper.getPlatformId());
+            menus = sysMenuMapper.selectMenuTreeByUserId(userId, platformId);
         }
         return getChildPerms(menus, 0);
     }

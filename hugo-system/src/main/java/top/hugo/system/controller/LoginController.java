@@ -48,7 +48,7 @@ public class LoginController {
         Map<String, Object> ajax = new HashMap<>();
         // 生成令牌
         String token = loginService.login(loginBody.getUsername(), loginBody.getPassword(), loginBody.getCode(),
-                loginBody.getUuid(), loginBody.getPlatformId());
+                loginBody.getUuid());
         ajax.put(Constants.TOKEN, token);
         return R.ok(ajax);
     }
@@ -84,8 +84,8 @@ public class LoginController {
      * @return 路由信息
      */
     @GetMapping("getRouters")
-    public R<List<RouterVo>> getRouters() {
-        List<SysMenu> menus = menuService.selectMenuTreeByUserId(LoginHelper.getUserId());
+    public R<List<RouterVo>> getRouters(Integer platformId) {
+        List<SysMenu> menus = menuService.selectMenuTreeByUserId(LoginHelper.getUserId(),platformId);
         return R.ok(menuService.buildMenus(menus));
     }
 }

@@ -5,7 +5,6 @@ import org.hibernate.validator.constraints.Length;
 import top.hugo.common.constant.UserConstants;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 /**
  * 用户登录对象
@@ -39,12 +38,5 @@ public class LoginBody {
      * 唯一标识
      */
     private String uuid;
-
-
-    /**
-     * 平台id
-     */
-    @NotNull(message = "{user.password.not.blank}")
-    private Integer platformId;
-
+    
 }

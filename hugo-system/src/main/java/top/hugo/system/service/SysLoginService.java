@@ -61,7 +61,7 @@ public class SysLoginService {
      * @param uuid     唯一标识
      * @return 结果
      */
-    public String login(String username, String password, String code, String uuid, Integer platformId) {
+    public String login(String username, String password, String code, String uuid) {
         HttpServletRequest request = ServletUtils.getRequest();
         //验证码
         boolean captchaEnabled = configService.selectCaptchaEnabled();
@@ -73,7 +73,7 @@ public class SysLoginService {
         //检查用户登录状态,登录次数，密码是否正确等
         checkLogin(LoginType.PASSWORD, username, () -> BCrypt.checkpw(password, user.getPassword()));
         // 此处可根据登录用户的数据不同 自行创建 loginUser
-        LoginUser loginUser = buildLoginUser(user, platformId);
+        LoginUser loginUser = buildLoginUser(user);
         // 生成token
         StpUtil.login(user.getUserId(), SaLoginConfig.setExtra("user", loginUser));
         recordLoginInfo(username, Constants.LOGIN_SUCCESS, MessageUtils.message("user.login.success"));
@@ -84,13 +84,13 @@ public class SysLoginService {
     /**
      * 构建登录用户
      */
-    private LoginUser buildLoginUser(SysUser user, Integer platformId) {
+    private LoginUser buildLoginUser(SysUser user) {
         LoginUser loginUser = new LoginUser();
         loginUser.setUserId(user.getUserId());
         loginUser.setDeptId(user.getDeptId());
         loginUser.setUsername(user.getUserName());
         //设置平台id
-        loginUser.setPlatformId(platformId);
+        //loginUser.setPlatformId(platformId);
         loginUser.setUserType(user.getUserType());
         loginUser.setMenuPermission(permissionService.getMenuPermission(user));
         loginUser.setRolePermission(permissionService.getRolePermission(user));
