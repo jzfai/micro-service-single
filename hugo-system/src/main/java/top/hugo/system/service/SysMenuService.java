@@ -448,10 +448,10 @@ public class SysMenuService {
     }
 
 
-    public List<SysMenu> selectMenuTreeByUserId(Long userId,Integer platformId) {
+    public List<SysMenu> selectMenuTreeByUserId(Long userId, Integer platformId) {
         List<SysMenu> menus = null;
         if (UserConstants.ADMIN_ID.equals(userId)) {
-            menus = sysMenuMapper.selectMenuTreeAll();
+            menus = sysMenuMapper.selectMenuTreeAll(platformId);
         } else {
             menus = sysMenuMapper.selectMenuTreeByUserId(userId, platformId);
         }

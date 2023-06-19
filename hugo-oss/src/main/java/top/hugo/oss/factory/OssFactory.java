@@ -63,6 +63,9 @@ public class OssFactory {
         return client;
     }
 
+    /*
+     * 刷新配置（refresh）
+     * */
     private static void refresh(String configKey) {
         String json = CacheUtils.get(CacheNames.SYS_OSS_CONFIG, configKey);
         if (json == null) {

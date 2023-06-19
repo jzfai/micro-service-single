@@ -17,22 +17,22 @@ import top.hugo.oss.service.SysOssConfigService;
 @Component
 public class SystemApplicationRunner implements ApplicationRunner {
 
-    //    private final RuoYiConfig ruoyiConfig;
-//    private final ISysConfigService configService;
-//    private final ISysDictTypeService dictTypeService;
+    //private final RuoYiConfig ruoyiConfig;
+    //private final ISysConfigService configService;
+    //private final ISysDictTypeService dictTypeService;
     private final SysOssConfigService ossConfigService;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
         ossConfigService.init();
         log.info("初始化OSS配置成功");
-//        if (ruoyiConfig.isCacheLazy()) {
-//            return;
-//        }
-//        configService.loadingConfigCache();
-//        log.info("加载参数缓存数据成功");
-//        dictTypeService.loadingDictCache();
-//        log.info("加载字典缓存数据成功");
+        //if (ruoyiConfig.isCacheLazy()) {
+        //    return;
+        //}
+        //configService.loadingConfigCache();
+        //log.info("加载参数缓存数据成功");
+        //dictTypeService.loadingDictCache();
+        //log.info("加载字典缓存数据成功");
     }
 
 }

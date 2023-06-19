@@ -53,10 +53,11 @@ public interface SysMenuMapper extends BaseMapperPlus<SysMenuMapper, SysMenu, Sy
      *
      * @return 菜单列表
      */
-    default List<SysMenu> selectMenuTreeAll() {
+    default List<SysMenu> selectMenuTreeAll(Integer platformId) {
         LambdaQueryWrapper<SysMenu> lqw = new LambdaQueryWrapper<SysMenu>()
                 .in(SysMenu::getMenuType, UserConstants.TYPE_DIR, UserConstants.TYPE_MENU)
                 .eq(SysMenu::getStatus, UserConstants.MENU_NORMAL)
+                .eq(SysMenu::getPlatformId, platformId)
                 .orderByAsc(SysMenu::getParentId)
                 .orderByAsc(SysMenu::getOrderNum);
         return this.selectList(lqw);

@@ -175,6 +175,8 @@ springdoc:
     persistAuthorization: true
   #这里定义了两个分组，可定义多个，也可以不定义
   group-configs:
+    - group: oss
+      packages-to-scan: top.hugo.oss
     - group: system
       packages-to-scan: top.hugo.system
     - group: monitor
