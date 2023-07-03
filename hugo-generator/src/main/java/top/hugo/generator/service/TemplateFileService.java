@@ -91,7 +91,7 @@ public class TemplateFileService {
      *
      * @date 2022/12/10 16:17
      */
-    public void saveTemplateFileUpdate(List<MultipartFile> files,  String fileArr,String name,Integer id) {
+    public void saveTemplateFileUpdate(List<MultipartFile> files, String fileArr, String name, Integer id) {
         TemplateFile templateFile = new TemplateFile();
         for (MultipartFile file : files) {
             FileSelfUtils.savaFileByMulti(file, templateFile.getId().toString(), file.getOriginalFilename());
@@ -197,7 +197,7 @@ public class TemplateFileService {
         List<String> backExtendList = Arrays.asList("java", "xml", "yml");
         if (backExtendList.contains(extendName)) {
             if (ObjectUtil.isNotEmpty(fileNamePre)) {
-                return fileNamePre + "-" + setFirstWordUpCase(fileName);
+                return fileNamePre + setFirstWordUpCase(fileName);
             } else {
                 return setFirstWordUpCase(fileName);
             }
@@ -214,7 +214,7 @@ public class TemplateFileService {
 
     /*根据文件名匹配目录*/
     public String mappingDir(String fileName) {
-        List<String> stringList = Arrays.asList("controller", "query", "entity", "mapper", "service", "utils", "vo", "xml", "vue", "js", "ts");
+        List<String> stringList = Arrays.asList("controller", "query", "entity", "mapper", "service", "utils", "vo", "dto", "bo", "xml", "vue", "js", "ts");
         String mappingString = "nomapping";
         for (String item : stringList) {
             if (fileName.contains(item)) {
@@ -243,7 +243,7 @@ public class TemplateFileService {
     }
 
     public int updateFileArr(TemplateFile templateFile) {
-        TemplateFile templateFileData= templateFileMapper.selectById(templateFile.getId());
+        TemplateFile templateFileData = templateFileMapper.selectById(templateFile.getId());
         return templateFileMapper.updateById(templateFileData);
     }
 }

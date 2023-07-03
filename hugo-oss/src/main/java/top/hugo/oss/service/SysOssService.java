@@ -106,7 +106,6 @@ public class SysOssService {
         }
     }
 
-
     public SysOssVo upload(MultipartFile file) {
         String originalfileName = file.getOriginalFilename();
         String suffix = StringUtils.substring(originalfileName, originalfileName.lastIndexOf("."), originalfileName.length());

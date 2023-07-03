@@ -7,7 +7,7 @@ import org.springframework.boot.context.metrics.buffering.BufferingApplicationSt
 @SpringBootApplication
 public class HugoApplication {
     public static void main(String[] args) {
-        //关闭热更新
+        // 关闭热更新
         // System.setProperty("spring.devtools.restart.enabled", "false");
         SpringApplication application = new SpringApplication(HugoApplication.class);
         application.setApplicationStartup(new BufferingApplicationStartup(2048));
