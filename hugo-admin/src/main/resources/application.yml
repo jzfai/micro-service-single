@@ -183,6 +183,18 @@ springdoc:
       packages-to-scan: top.hugo.monitor
     - group: generator
       packages-to-scan: top.hugo.generator
+
+knife4j:
+  enable: true
+  openapi:
+    title: Knife4j官方文档(swagger3.0文档)
+    description: "knife4j官方文档"
+    email: 869653722@qq.com
+    concat: 熊猫哥
+    url: https://github.jzfai.top/micro-service-api/doc.html
+    version: v4.0
+
+
 # 日志配置
 logging:
   level:
@@ -210,12 +222,3 @@ security:
     - /system/platform/**
 
 
-knife4j:
-  enable: true
-  openapi:
-    title: Knife4j官方文档(swagger3.0文档)
-    description: "knife4j官方文档"
-    email: 869653722@qq.com
-    concat: 熊猫哥
-    url: https://github.jzfai.top/micro-service-api/doc.html
-    version: v4.0

@@ -1,0 +1,300 @@
+top.hugo.common.domain.R
+
+```java
+package top.hugo.common.domain;
+
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import top.hugo.common.constant.HttpStatus;
+
+import java.io.Serializable;
+
+/**
+ * 响应信息主体
+ *
+ * @author kuanghua
+ */
+@Data
+@NoArgsConstructor
+public class R<T> implements Serializable {
+    /**
+     * 成功
+     */
+    public static final int SUCCESS = 200;
+    /**
+     * 失败
+     */
+    public static final int FAIL = 500;
+    private static final long serialVersionUID = 1L;
+    private int code;
+
+    private String msg;
+
+    private T data;
+
+    public static <T> R<T> ok() {
+        return restResult(null, SUCCESS, "操作成功");
+    }
+
+    public static <T> R<T> ok(T data) {
+        return restResult(data, SUCCESS, "操作成功");
+    }
+
+    // public static <T> R<T> ok(String msg) {
+    //     return restResult(null, SUCCESS, msg);
+    // }
+
+    public static <T> R<T> ok(String msg, T data) {
+        return restResult(data, SUCCESS, msg);
+    }
+
+    public static <T> R<T> fail() {
+        return restResult(null, FAIL, "操作失败");
+    }
+
+    public static <T> R<T> fail(String msg) {
+        return restResult(null, FAIL, msg);
+    }
+
+    public static <T> R<T> fail(T data) {
+        return restResult(data, FAIL, "操作失败");
+    }
+
+    public static <T> R<T> fail(String msg, T data) {
+        return restResult(data, FAIL, msg);
+    }
+
+    public static <T> R<T> fail(int code, String msg) {
+        return restResult(null, code, msg);
+    }
+
+    /**
+     * 返回警告消息
+     *
+     * @param msg 返回内容
+     * @return 警告消息
+     */
+    public static <T> R<T> warn(String msg) {
+        return restResult(null, HttpStatus.WARN, msg);
+    }
+
+    /**
+     * 返回警告消息
+     *
+     * @param msg  返回内容
+     * @param data 数据对象
+     * @return 警告消息
+     */
+    public static <T> R<T> warn(String msg, T data) {
+        return restResult(data, HttpStatus.WARN, msg);
+    }
+
+    private static <T> R<T> restResult(T data, int code, String msg) {
+        R<T> r = new R<>();
+        r.setCode(code);
+        r.setData(data);
+        r.setMsg(msg);
+        return r;
+    }
+
+    public static <T> Boolean isError(R<T> ret) {
+        return !isSuccess(ret);
+    }
+
+    public static <T> Boolean isSuccess(R<T> ret) {
+        return R.SUCCESS == ret.getCode();
+    }
+}
+
+```
+
+import top.hugo.common.constant.HttpStatus
+
+```java
+package top.hugo.common.constant;
+
+/**
+ * 返回状态码
+ *
+ * @author kuanghua
+ */
+public interface HttpStatus {
+    /**
+     * 操作成功
+     */
+    int SUCCESS = 200;
+
+    /**
+     * 对象创建成功
+     */
+    int CREATED = 201;
+
+    /**
+     * 请求已经被接受
+     */
+    int ACCEPTED = 202;
+
+    /**
+     * 操作已经执行成功，但是没有返回数据
+     */
+    int NO_CONTENT = 204;
+
+    /**
+     * 资源已被移除
+     */
+    int MOVED_PERM = 301;
+
+    /**
+     * 重定向
+     */
+    int SEE_OTHER = 303;
+
+    /**
+     * 资源没有被修改
+     */
+    int NOT_MODIFIED = 304;
+
+    /**
+     * 参数列表错误（缺少，格式不匹配）
+     */
+    int BAD_REQUEST = 400;
+
+    /**
+     * 未授权
+     */
+    int UNAUTHORIZED = 401;
+
+    /**
+     * 访问受限，授权过期
+     */
+    int FORBIDDEN = 403;
+
+    /**
+     * 资源，服务未找到
+     */
+    int NOT_FOUND = 404;
+
+    /**
+     * 不允许的http方法
+     */
+    int BAD_METHOD = 405;
+
+    /**
+     * 资源冲突，或者资源被锁
+     */
+    int CONFLICT = 409;
+
+    /**
+     * 不支持的数据，媒体类型
+     */
+    int UNSUPPORTED_TYPE = 415;
+
+    /**
+     * 系统内部错误
+     */
+    int ERROR = 500;
+
+    /**
+     * 接口未实现
+     */
+    int NOT_IMPLEMENTED = 501;
+
+    /**
+     * 系统警告消息
+     */
+    int WARN = 601;
+}
+```
+
+
+
+top.hugo.common.domain.PageQuery
+
+```java
+package top.hugo.common.domain;
+
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.ObjectUtil;
+import com.baomidou.mybatisplus.core.metadata.OrderItem;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * 分页查询实体类
+ *
+ * @author kuanghua
+ */
+
+@Data
+public class PageQuery implements Serializable {
+
+    /**
+     * 当前记录起始索引 默认值
+     */
+    public static final int DEFAULT_PAGE_NUM = 1;
+    /**
+     * 每页显示记录数 默认值 默认查全部
+     */
+    public static final int DEFAULT_PAGE_SIZE = Integer.MAX_VALUE;
+    private static final long serialVersionUID = 1L;
+    /**
+     * 分页大小
+     */
+    private Integer pageSize;
+    /**
+     * 当前页数
+     */
+    private Integer pageNum;
+    /**
+     * 排序列
+     */
+    @Schema(hidden = true)
+    private String orderByColumn;
+    /**
+     * 排序的方向desc或者asc
+     */
+    @Schema(hidden = true)
+    private String isAsc;
+
+    public <T> Page<T> build() {
+        Integer pageNum = ObjectUtil.defaultIfNull(getPageNum(), DEFAULT_PAGE_NUM);
+        Integer pageSize = ObjectUtil.defaultIfNull(getPageSize(), DEFAULT_PAGE_SIZE);
+        if (pageNum <= 0) {
+            pageNum = DEFAULT_PAGE_NUM;
+        }
+        Page<T> page = new Page<>(pageNum, pageSize);
+
+        return page;
+    }
+}
+```
+
+top.hugo.common.domain.PageAndTimeRangeQuery
+
+```java
+package top.hugo.common.domain;
+import lombok.Data;
+/**
+ * 查询积累
+ *
+ * @author kuanghua
+ */
+@Data
+public class PageAndTimeRangeQuery extends PageQuery {
+    /**
+     * 创建时间
+     */
+    private String createTime;
+
+    /**
+     * 更新时间
+     */
+    private String updateTime;
+}
+```
+

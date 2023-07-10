@@ -116,11 +116,10 @@
         </dependency>
 
         <!--springdoc-->
-        <!--        <dependency>-->
-        <!--            <groupId>org.springdoc</groupId>-->
-        <!--            <artifactId>springdoc-openapi-webmvc-core</artifactId>-->
-        <!--        </dependency>-->
-
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-webmvc-core</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-javadoc</artifactId>
@@ -131,6 +130,7 @@
             <artifactId>knife4j-openapi3-spring-boot-starter</artifactId>
             <version>4.1.0</version>
         </dependency>
+        <!--springboot 配置提示依赖-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>

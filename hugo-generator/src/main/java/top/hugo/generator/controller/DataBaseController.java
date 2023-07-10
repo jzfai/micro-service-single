@@ -1,10 +1,13 @@
 package top.hugo.generator.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import top.hugo.common.domain.R;
+import top.hugo.generator.entity.ConfigSave;
+import top.hugo.generator.entity.DataBaseInfo;
 import top.hugo.generator.service.DataBaseService;
 
 import javax.annotation.Resource;
@@ -26,23 +29,31 @@ public class DataBaseController {
     /**
      * 获取数据库元数据
      *
-     * @param dbName 库名
+     * @return
+     * @params DataBaseInfo
      */
-    @GetMapping("getAllDatabaseOrTable/{dbName}")
-    public R<ArrayList<Map>> getAllTableFromDb(@PathVariable String dbName) {
-        ArrayList<Map> allTableFromDb = this.dataBaseService.getAllTableFromDb(dbName);
+    @PostMapping("getAllDatabaseTest")
+    public ConfigSave getAllDatabaseTest(@RequestBody ConfigSave configSave) {
+        return configSave;
+    }
+
+    /**
+     * 获取数据库元数据
+     *
+     * @params DataBaseInfo
+     */
+    @PostMapping("getAllDatabase")
+    public R<ArrayList<Map>> getAllTableFromDb(@Validated @RequestBody DataBaseInfo baseInfo) {
+        ArrayList<Map> allTableFromDb = this.dataBaseService.getAllTableFromDb(baseInfo);
         return R.ok(allTableFromDb);
     }
 
     /**
      * 获取数据库表元数据
-     *
-     * @param dbName 库名
-     * @param tbName 表名
      */
-    @GetMapping("getAllDatabaseOrTable/{dbName}/{tbName}")
-    public R<ArrayList<Map>> getAllColumnFromTb(@PathVariable String dbName, @PathVariable String tbName) {
-        ArrayList<Map> allColumnFromTb = this.dataBaseService.getAllColumnFromTb(dbName, tbName);
+    @PostMapping("getAllTable")
+    public R<ArrayList<Map>> getAllColumnFromTb(@Validated @RequestBody DataBaseInfo baseInfo) {
+        ArrayList<Map> allColumnFromTb = this.dataBaseService.getAllColumnFromTb(baseInfo);
         return R.ok(allColumnFromTb);
     }
 }

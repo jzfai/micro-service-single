@@ -15,6 +15,8 @@ import top.hugo.framework.config.properties.RedissonProperties;
 import top.hugo.framework.handler.KeyPrefixHandler;
 import top.hugo.framework.manager.PlusSpringCacheManager;
 
+import javax.annotation.Resource;
+
 /**
  * redis配置
  *
@@ -29,7 +31,7 @@ public class RedisConfig {
     @Autowired
     private RedissonProperties redissonProperties;
 
-    @Autowired
+    @Resource
     private ObjectMapper objectMapper;
 
     @Bean
@@ -37,10 +39,11 @@ public class RedisConfig {
         return config -> {
             config.setThreads(redissonProperties.getThreads())
                     .setNettyThreads(redissonProperties.getNettyThreads())
+                    //设置格式化设置为jackson
                     .setCodec(new JsonJacksonCodec(objectMapper));
             RedissonProperties.SingleServerConfig singleServerConfig = redissonProperties.getSingleServerConfig();
+            // 使用单机模式
             if (ObjectUtil.isNotNull(singleServerConfig)) {
-                // 使用单机模式
                 config.useSingleServer()
                         //设置redis key前缀
                         .setNameMapper(new KeyPrefixHandler(redissonProperties.getKeyPrefix()))
