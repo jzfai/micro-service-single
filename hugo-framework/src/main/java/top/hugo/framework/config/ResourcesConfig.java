@@ -13,7 +13,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  *
  * @author kuanghua
  */
-@Configuration
+@Configuration()
 public class ResourcesConfig implements WebMvcConfigurer {
 
     //@Override
