@@ -97,8 +97,8 @@ public class SysUserController extends BaseController {
             SysDept dept = list.get(i).getDept();
             SysUserExportVo vo = listVo.get(i);
             if (ObjectUtil.isNotEmpty(dept)) {
-                vo.setDeptName(dept.getDeptName());
-                vo.setLeader(dept.getLeader());
+//                vo.setDeptName(dept.getDeptName());
+//                vo.setLeader(dept.getLeader());
             }
         }
         ExcelUtil.exportExcel(listVo, "用户数据", SysUserExportVo.class, response);

@@ -1,5 +1,6 @@
 package top.hugo.system.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -25,7 +26,7 @@ public class SysMenu extends TreeEntity<SysMenu> {
     /**
      * 菜单ID
      */
-    @TableId(value = "menu_id")
+    @TableId(value = "menu_id", type = IdType.ASSIGN_ID)
     private Long menuId;
 
     /**

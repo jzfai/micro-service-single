@@ -4,11 +4,8 @@ package top.hugo.system.vo;
 import com.alibaba.excel.annotation.ExcelProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import top.hugo.common.annotation.ExcelDictFormat;
-import top.hugo.common.convert.ExcelDictConvert;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * 用户对象导出VO
@@ -24,8 +21,8 @@ public class SysUserExportVo implements Serializable {
     /**
      * 用户ID
      */
-    @ExcelProperty(value = "用户序号")
-    private Long userId;
+//    @ExcelProperty(value = "用户序号")
+//    private Long userId;
 
     /**
      * 用户账号
@@ -54,39 +51,39 @@ public class SysUserExportVo implements Serializable {
     /**
      * 用户性别
      */
-    @ExcelProperty(value = "用户性别", converter = ExcelDictConvert.class)
-    @ExcelDictFormat(dictType = "sys_user_sex")
-    private String sex;
+//    @ExcelProperty(value = "用户性别", converter = ExcelDictConvert.class)
+//    @ExcelDictFormat(dictType = "sys_user_sex")
+//    private String sex;
 
     /**
      * 帐号状态（0正常 1停用）
      */
-    @ExcelProperty(value = "帐号状态", converter = ExcelDictConvert.class)
-    @ExcelDictFormat(dictType = "sys_normal_disable")
-    private String status;
+//    @ExcelProperty(value = "帐号状态", converter = ExcelDictConvert.class)
+//    @ExcelDictFormat(dictType = "sys_normal_disable")
+//    private String status;
 
     /**
      * 最后登录IP
      */
-    @ExcelProperty(value = "最后登录IP")
-    private String loginIp;
+//    @ExcelProperty(value = "最后登录IP")
+//    private String loginIp;
 
-    /**
-     * 最后登录时间
-     */
-    @ExcelProperty(value = "最后登录时间")
-    private Date loginDate;
+//    /**
+//     * 最后登录时间
+//     */
+//    @ExcelProperty(value = "最后登录时间")
+//    private Date loginDate;
 
-    /**
-     * 部门名称
-     */
-    @ExcelProperty(value = "部门名称")
-    private String deptName;
-
-    /**
-     * 负责人
-     */
-    @ExcelProperty(value = "部门负责人")
-    private String leader;
+//    /**
+//     * 部门名称
+//     */
+//    @ExcelProperty(value = "部门名称")
+//    private String deptName;
+//
+//    /**
+//     * 负责人
+//     */
+//    @ExcelProperty(value = "部门负责人")
+//    private String leader;
 
 }
