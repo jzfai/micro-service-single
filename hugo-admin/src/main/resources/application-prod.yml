@@ -83,6 +83,9 @@ redisson:
 cors:
   enabled: false
 
+#是否开启权限拦截
+satoken:
+  enabled: true
 --- # xxl-job 配置
 #xxl.job:
 #  # 执行器开关
