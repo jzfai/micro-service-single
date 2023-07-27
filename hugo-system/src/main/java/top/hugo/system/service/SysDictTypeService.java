@@ -14,7 +14,6 @@ import top.hugo.common.core.DictService;
 import top.hugo.common.domain.PageQuery;
 import top.hugo.common.exception.ServiceException;
 import top.hugo.common.page.TableDataInfo;
-import top.hugo.common.spring.SpringUtils;
 import top.hugo.common.utils.JsonUtils;
 import top.hugo.common.utils.StreamUtils;
 import top.hugo.common.utils.StringUtils;
@@ -191,10 +190,11 @@ public class SysDictTypeService implements DictService {
     public List<SysDictData> getDictByRedis(String key) {
         Object o = CacheUtils.get(CacheNames.SYS_DICT, key);
         if (ObjectUtil.isEmpty(o)) {
-            // 优先从本地缓存获取
-            List<SysDictData> sysDictData = SpringUtils.getAopProxy(this).selectDictDataByType(key);
-            CacheUtils.put(CacheNames.SYS_DICT, key, sysDictData);
-            return sysDictData;
+            throw new ServiceException("数据字典数据为空");
+//            // 优先从本地缓存获取
+//            List<SysDictData> sysDictData = SpringUtils.getAopProxy(this).selectDictDataByType(key);
+//            CacheUtils.put(CacheNames.SYS_DICT, key, sysDictData);
+//            return sysDictData;
         } else {
             return JsonUtils.parseArray(o, SysDictData.class);
         }

@@ -132,7 +132,7 @@ mybatis-plus:
     dbConfig:
       # 主键类型
       # AUTO 自增 NONE 空 INPUT 用户输入 ASSIGN_ID 雪花 ASSIGN_UUID 唯一 UUID
-      idType: NONE
+      idType: ASSIGN_ID
       # 逻辑已删除值
       logicDeleteValue: 2
       # 逻辑未删除值

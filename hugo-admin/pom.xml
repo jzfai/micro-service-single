@@ -44,14 +44,12 @@
             <artifactId>hugo-generator</artifactId>
             <version>4.4.0</version>
         </dependency>
-
         <!--演示demo-->
         <dependency>
             <groupId>top.hugo</groupId>
             <artifactId>hugo-demo</artifactId>
             <version>4.4.0</version>
         </dependency>
-
         <!--oss-->
         <dependency>
             <groupId>top.hugo</groupId>

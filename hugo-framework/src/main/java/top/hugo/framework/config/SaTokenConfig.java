@@ -7,6 +7,7 @@ import cn.dev33.satoken.stp.StpLogic;
 import cn.dev33.satoken.stp.StpUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -16,15 +17,17 @@ import top.hugo.framework.config.properties.SecurityProperties;
 @RequiredArgsConstructor
 @Slf4j
 @Configuration
-public class SaTokenConfig  implements WebMvcConfigurer {
-    private  final SecurityProperties securityProperties;
+@ConditionalOnProperty(name = "satoken.enabled", havingValue = "true")
+public class SaTokenConfig implements WebMvcConfigurer {
+    private final SecurityProperties securityProperties;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new SaInterceptor(handler->{
+        registry.addInterceptor(new SaInterceptor(handler -> {
             SaRouter.match("/**").check(StpUtil::checkLogin);
         })).addPathPatterns("/**").excludePathPatterns(securityProperties.getExcludes());
     }
+
     @Bean
     public StpLogic getStpLogicJwt() {
         // Sa-Token 整合 jwt (简单模式)

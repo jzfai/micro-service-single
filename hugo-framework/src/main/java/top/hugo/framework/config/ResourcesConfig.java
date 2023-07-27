@@ -1,5 +1,6 @@
 package top.hugo.framework.config;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
@@ -30,6 +31,7 @@ public class ResourcesConfig implements WebMvcConfigurer {
      * 跨域配置
      */
     @Bean
+    @ConditionalOnProperty(name = "cors.enabled", havingValue = "true")
     public CorsFilter corsFilter() {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
