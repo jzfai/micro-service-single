@@ -143,7 +143,6 @@ public class TemplateFileService {
                 if (ObjectUtil.isNotEmpty(basicConfig) && ObjectUtil.isNotEmpty(basicConfig.get("packageName"))) {
                     packagePath = basicConfig.get("packageName").toString().replaceAll("\\.", Matcher.quoteReplacement(File.separator));
                 }
-                //得到要生成的文件名
                 String fileName = dillFileName(fileNamePre, feItem, extension);
                 try {
                     // java/demo.java  mappingDir(feItem)): 匹配目录 java  packagePath:目录路径
@@ -195,6 +194,11 @@ public class TemplateFileService {
         }
         //返回后端名
         List<String> backExtendList = Arrays.asList("java", "xml", "yml");
+
+        //如果是entity直接返回 “”
+        if ("entity".equals(fileName)) return "";
+
+        //匹配文件前缀
         if (backExtendList.contains(extendName)) {
             if (ObjectUtil.isNotEmpty(fileNamePre)) {
                 return fileNamePre + setFirstWordUpCase(fileName);
