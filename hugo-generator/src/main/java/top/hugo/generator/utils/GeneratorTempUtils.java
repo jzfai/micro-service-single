@@ -1,5 +1,6 @@
 package top.hugo.generator.utils;
 
+import cn.hutool.core.date.DateUtil;
 import lombok.extern.log4j.Log4j2;
 import net.lingala.zip4j.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
@@ -36,18 +37,19 @@ public class GeneratorTempUtils {
     public static final String MybatisPlusMulTbDir = "back-vms" + File.separator + "mybatis-plus-multi";
 
     //win
-    public static final String ExportFileDir = "D:\\temp-dir\\export-dir\\";
-    public static final String NeedZipDir = "D:\\temp-dir\\export-dir\\";
+    public static final String ExportFileDir = "D:\\temp-dir\\"+ DateUtil.format(DateUtil.date(),"yyyy-MM-dd_HH-mm-ss")+"\\";
+    public static final String NeedZipDir = "D:\\temp-dir\\"+ DateUtil.format(DateUtil.date(),"yyyy-MM-dd_HH-mm-ss")+"\\";
     public static final String OutputZipPath = "D:\\temp-dir\\";
     public static final String TmpSaveDir = "D:\\temp-dir\\";
+
+
     //mac和Linux
-    public static final String MacExportFileDir = "/velocity-tmp/export-dir/";
-    public static final String MacNeedZipDir = "/velocity-tmp/export-dir/";
+    public static final String MacExportFileDir = "/velocity-tmp/"+DateUtil.format(DateUtil.date(),"yyyy-MM-dd_HH-mm-ss")+"/";
+    public static final String MacNeedZipDir = "/velocity-tmp/"+ DateUtil.format(DateUtil.date(),"yyyy-MM-dd_HH-mm-ss")+"/";
     public static final String MacOutputZipPath = "/velocity-tmp/";
     public static final String MacTmpSaveDir = "/velocity-tmp/";
 
     /**
-     * @return
      * @author 邝华
      * @date 2022-06-10 13:54
      */

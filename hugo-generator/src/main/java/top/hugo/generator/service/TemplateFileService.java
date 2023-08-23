@@ -194,10 +194,9 @@ public class TemplateFileService {
         }
         //返回后端名
         List<String> backExtendList = Arrays.asList("java", "xml", "yml");
-
         //如果是entity直接返回 “”
-        if ("entity".equals(fileName)) return "";
-
+        if ("entity.java".equals(fileName)) return fileNamePre+".java";
+        if("Iservice.java".equals(fileName)){ return "I"+fileNamePre + "Service.java"; }
         //匹配文件前缀
         if (backExtendList.contains(extendName)) {
             if (ObjectUtil.isNotEmpty(fileNamePre)) {
