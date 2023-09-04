@@ -9,7 +9,9 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import top.hugo.common.annotation.ExcelDictFormat;
 import top.hugo.common.constant.UserConstants;
+import top.hugo.common.convert.ExcelDictConvert;
 import top.hugo.common.domain.BaseEntity;
 
 import javax.validation.constraints.NotBlank;
@@ -86,8 +88,8 @@ public class SysRole extends BaseEntity {
     /**
      * 角色状态（0正常 1停用）
      */
-    //@ExcelProperty(value = "角色状态", converter = ExcelDictConvert.class)
-    //@ExcelDictFormat(dictType = "sys_normal_disable")
+    @ExcelProperty(value = "角色状态", converter = ExcelDictConvert.class)
+    @ExcelDictFormat(dictType = "sys_normal_disable")
     private String status;
 
     /**

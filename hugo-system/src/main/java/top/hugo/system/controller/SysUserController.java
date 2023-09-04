@@ -60,6 +60,8 @@ public class SysUserController extends BaseController {
     //@SaCheckPermission("system:user:query")
     @GetMapping(value = {"", "/{userId}"})
     public R<Map<String, Object>> getInfo(@PathVariable(value = "userId", required = false) Long userId) {
+
+        LoginHelper
         sysUserService.checkUserDataScope(userId);
         Map<String, Object> ajax = new HashMap<>();
         List<SysRole> roles = sysRoleService.selectRoleAll();

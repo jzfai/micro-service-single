@@ -34,7 +34,7 @@ public class SysDictTypeService implements DictService {
     private final SysDictDataMapper dictDataMapper;
 
     public TableDataInfo<SysDictType> selectPageDictTypeList(SysDictType dictType, PageQuery pageQuery) {
-        LambdaQueryWrapper<SysDictType> lqw = new LambdaQueryWrapper<SysDictType>()
+        LambdaQueryWrapper<SysD ictType> lqw = new LambdaQueryWrapper<SysDictType>()
                 .like(StringUtils.isNotBlank(dictType.getDictName()), SysDictType::getDictName, dictType.getDictName())
                 .eq(StringUtils.isNotBlank(dictType.getStatus()), SysDictType::getStatus, dictType.getStatus())
                 .like(StringUtils.isNotBlank(dictType.getDictType()), SysDictType::getDictType, dictType.getDictType())
@@ -206,6 +206,7 @@ public class SysDictTypeService implements DictService {
     public void loadingDictCache() {
         List<SysDictData> dictDataList = dictDataMapper.selectList(
                 new LambdaQueryWrapper<SysDictData>().eq(SysDictData::getStatus, UserConstants.DICT_NORMAL));
+
         Map<String, List<SysDictData>> dictDataMap = StreamUtils.groupByKey(dictDataList, SysDictData::getDictType);
         dictDataMap.forEach((k, v) -> {
             List<SysDictData> dictList = StreamUtils.sorted(v, Comparator.comparing(SysDictData::getDictSort));

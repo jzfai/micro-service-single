@@ -10,6 +10,10 @@ import top.hugo.common.utils.StringUtils;
  * @author kuanghua
  */
 public class BaseController {
+    public void test(){
+
+    }
+
 
     /**
      * 响应返回结果
@@ -38,31 +42,4 @@ public class BaseController {
         return StringUtils.format("redirect:{}", url);
     }
 
-//    /**
-//     * 获取用户缓存信息
-//     */
-//    public LoginUser getLoginUser() {
-//        return LoginHelper.getLoginUser();
-//    }
-//
-//    /**
-//     * 获取登录用户id
-//     */
-//    public Long getUserId() {
-//        return LoginHelper.getUserId();
-//    }
-//
-//    /**
-//     * 获取登录部门id
-//     */
-//    public Long getDeptId() {
-//        return LoginHelper.getDeptId();
-//    }
-//
-//    /**
-//     * 获取登录用户名
-//     */
-//    public String getUsername() {
-//        return LoginHelper.getUsername();
-//    }
 }

@@ -19,9 +19,8 @@ import javax.validation.constraints.Size;
  */
 
 @Data
-@EqualsAndHashCode(callSuper = true)
 @TableName("sys_menu")
-public class SysMenu extends TreeEntity<SysMenu> {
+public class SysMenu  {
 
     /**
      * 菜单ID

@@ -104,17 +104,5 @@ public class LoginUser implements Serializable {
      * 数据权限 当前平台id
      */
     private Integer platformId;
-    /**
-     * 获取登录id
-     */
-//    public String getLoginId() {
-//        if (userType == null) {
-//            throw new IllegalArgumentException("用户类型不能为空");
-//        }
-//        if (userId == null) {
-//            throw new IllegalArgumentException("用户ID不能为空");
-//        }
-//        return userType + LoginHelper.JOIN_CODE + userId;
-//    }
 
 }
