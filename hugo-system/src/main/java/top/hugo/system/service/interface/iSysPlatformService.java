@@ -1,26 +1,12 @@
 package top.hugo.system.service.impl;
 
 
-import cn.hutool.core.util.ObjectUtil;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import top.hugo.common.helper.LoginHelper;
 import top.hugo.common.page.TableDataInfo;
-import top.hugo.common.utils.JsonUtils;
 import top.hugo.system.entity.SysPlatform;
-import top.hugo.system.entity.SysRole;
-import top.hugo.system.mapper.SysPlatformMapper;
 import top.hugo.system.query.SysPlatformQuery;
-import top.hugo.system.service.SysRoleService;
 import top.hugo.system.vo.SysPlatformVo;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public interface iSysPlatformService {
      TableDataInfo<SysPlatformVo> selectPagePlatformList(SysPlatformQuery platform) ;

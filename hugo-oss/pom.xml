@@ -17,9 +17,11 @@
             <artifactId>hugo-common</artifactId>
             <version>4.4.0</version>
         </dependency>
+        <!--minio整合包-->
         <dependency>
-            <groupId>com.amazonaws</groupId>
-            <artifactId>aws-java-sdk-s3</artifactId>
+            <groupId>io.minio</groupId>
+            <artifactId>minio</artifactId>
+            <version>7.0.2</version>
         </dependency>
     </dependencies>
 </project>

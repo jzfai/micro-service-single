@@ -1,109 +1,106 @@
 package top.hugo.oss.controller;
 
-
-import cn.hutool.core.util.ObjectUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import top.hugo.common.annotation.Log;
-import top.hugo.common.controller.BaseController;
-import top.hugo.common.domain.PageQuery;
 import top.hugo.common.domain.R;
-import top.hugo.common.enums.BusinessType;
-import top.hugo.common.exception.ServiceException;
+import top.hugo.common.excel.EasyExcelUtils;
 import top.hugo.common.page.TableDataInfo;
-import top.hugo.oss.bo.SysOssBo;
+import top.hugo.oss.query.SysOssQuery;
 import top.hugo.oss.service.SysOssService;
-import top.hugo.oss.validate.QueryGroup;
 import top.hugo.oss.vo.SysOssVo;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.constraints.NotEmpty;
-import java.io.IOException;
-import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
- * 文件上传 控制层
+ * OSS对象存储表
  *
- * @author Lion Li
+ * @author kuanghua
+ * @since 2023-09-06 11:14:58
  */
 @Validated
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/system/oss")
-public class SysOssController extends BaseController {
-
-    private final SysOssService iSysOssService;
-
-    /**
-     * 查询OSS对象存储列表
-     */
-    //@SaCheckPermission("system:oss:list")
-    @GetMapping("/list")
-    public TableDataInfo<SysOssVo> list(@Validated(QueryGroup.class) SysOssBo bo, PageQuery pageQuery) {
-        return iSysOssService.queryPageList(bo, pageQuery);
-    }
+public class SysOssController {
+    private final SysOssService sysOssService;
 
     /**
-     * 查询OSS对象基于id串
+     * 获取sysOss列表(分页)
      *
-     * @param ossIds OSS对象ID串
+     * @return
      */
-    //@SaCheckPermission("system:oss:list")
-    @GetMapping("/listByIds/{ossIds}")
-    public R<List<SysOssVo>> listByIds(@NotEmpty(message = "主键不能为空")
-                                       @PathVariable Long[] ossIds) {
-        List<SysOssVo> list = iSysOssService.listByIds(Arrays.asList(ossIds));
-        return R.ok(list);
+    @GetMapping("/listPage")
+    public TableDataInfo<SysOssVo> list(@Validated SysOssQuery sysOss) {
+        TableDataInfo<SysOssVo> list = sysOssService.selectPageSysOssList(sysOss);
+        return list;
     }
 
     /**
-     * 上传OSS对象存储
-     *
-     * @param file 文件
+     * 导出sysOss列表
      */
-    //@SaCheckPermission("system:oss:upload")
-    @Log(title = "OSS对象存储", businessType = BusinessType.INSERT)
-    @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public R<Map<String, String>> upload(@RequestPart("file") MultipartFile file) {
-        if (ObjectUtil.isNull(file)) {
-            throw new ServiceException("上传文件不能为空");
-        }
-        SysOssVo oss = iSysOssService.upload(file);
-        Map<String, String> map = new HashMap<>(2);
-        map.put("url", oss.getUrl());
-        map.put("fileName", oss.getOriginalName());
-        map.put("ossId", oss.getOssId().toString());
-        return R.ok(map);
+    @GetMapping("/export")
+    public void export(@Validated SysOssQuery sysOss, HttpServletResponse response) {
+        List<SysOssVo> list = sysOssService.selectSysOssList(sysOss);
+        EasyExcelUtils.exportExcel(list, "sysOss数据", SysOssVo.class, response);
     }
 
     /**
-     * 下载OSS对象
+     * 获取详细信息
      *
-     * @param ossId OSS对象ID
+     * @param sysOssId sysOssID
      */
-    //@SaCheckPermission("system:oss:download")
-    @GetMapping("/download/{ossId}")
-    public void download(@PathVariable Long ossId, HttpServletResponse response) throws IOException {
-        iSysOssService.download(ossId, response);
+//@SaCheckPermission("system:sysOss:query")
+    @GetMapping(value = "/{sysOssId}")
+    public R<SysOssVo> getInfo(@PathVariable Long sysOssId) {
+        return R.ok(sysOssService.selectSysOssById(sysOssId));
     }
 
     /**
-     * 删除OSS对象存储
+     * 新增sysOss
      *
-     * @param ossIds OSS对象ID串
+     * @return
      */
-    //@SaCheckPermission("system:oss:remove")
-    @Log(title = "OSS对象存储", businessType = BusinessType.DELETE)
-    @DeleteMapping("/{ossIds}")
-    public R<Void> remove(@NotEmpty(message = "主键不能为空")
-                          @PathVariable Long[] ossIds) {
-        return toAjax(iSysOssService.deleteWithValidByIds(Arrays.asList(ossIds), true));
+    //@SaCheckPermission("system:sysOss:add")
+    //@Log(title = "sysOss管理", businessType = BusinessType.INSERT)
+    @PostMapping("upload")
+    public R<HashMap<String, Object>> add(MultipartFile file) {
+        HashMap<String, Object> insertSysOss = sysOssService.insertSysOss(file);
+        return R.ok(insertSysOss);
     }
 
+
+    /**
+     * 删除sysOss
+     *
+     * @param sysOssId
+     */
+    @DeleteMapping("/{sysOssId}")
+    public R<Void> deleteSysOssById(@PathVariable Long sysOssId) {
+        return R.result(sysOssService.deleteSysOssById(sysOssId));
+    }
+
+    /**
+     * 删除sysOss
+     *
+     * @param sysOssIds sysOssID串
+     */
+    @DeleteMapping("mul/{sysOssIds}")
+    public R<Void> deleteSysOssByIds(@PathVariable Collection<Long> sysOssIds) {
+        return R.result(sysOssService.deleteSysOssByIds(sysOssIds));
+    }
+
+
+    /**
+     * 获取sysOss列表(所有)
+     */
+    @GetMapping("/selectSysOssList")
+    public R<List<SysOssVo>> selectSysOssList(@Validated SysOssQuery sysOss) {
+        List<SysOssVo> sysOssList = sysOssService.selectSysOssList(sysOss);
+        return R.ok(sysOssList);
+    }
 }

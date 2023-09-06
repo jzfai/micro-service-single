@@ -1,14 +1,16 @@
 package top.hugo.oss.mapper;
 
-
 import top.hugo.common.mapper.BaseMapperPlus;
 import top.hugo.oss.entity.SysOss;
 import top.hugo.oss.vo.SysOssVo;
 
 /**
- * 文件上传 数据层
- *
- * @author Lion Li
- */
+*  OSS对象存储表Mapper
+*
+* @author kuanghua
+* @since 2023-09-06 11:14:58
+*/
+
 public interface SysOssMapper extends BaseMapperPlus<SysOssMapper, SysOss, SysOssVo> {
+
 }
