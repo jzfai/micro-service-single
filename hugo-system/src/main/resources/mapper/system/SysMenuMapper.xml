@@ -54,35 +54,35 @@
             ${ew.getCustomSqlSegment}
     </select>
 
-    <select id="selectMenuTreeByUserId" resultMap="SysMenuResult">
-        select distinct m.menu_id,
-                        m.parent_id,
-                        m.menu_name,
-                        m.path,
-                        m.component,
-                        m.visible,
-                        m.status,
-                        m.perms,
-                        m.is_frame,
-                        m.route_name,
-                        m.meta_extra,
-                        m.always_show,
-                        m.redirect,
-                        m.platform_id,
-                        m.menu_type,
-                        m.icon,
-                        m.order_num,
-                        m.create_time
-        from sys_menu m
-                 left join sys_role_menu rm on m.menu_id = rm.menu_id
-                 left join sys_user_role sur on rm.role_id = sur.role_id
-                 left join sys_role ro on sur.role_id = ro.role_id
-        where m.platform_id = #{platformId}
-          and m.menu_type in ('M', 'C')
-          and m.status = '0'
-          and ro.status = '0'
-        order by m.parent_id, m.order_num
-    </select>
+    <!--    <select id="selectMenuTreeByUserId" resultMap="SysMenuResult">-->
+    <!--        select distinct m.menu_id,-->
+    <!--                        m.parent_id,-->
+    <!--                        m.menu_name,-->
+    <!--                        m.path,-->
+    <!--                        m.component,-->
+    <!--                        m.visible,-->
+    <!--                        m.status,-->
+    <!--                        m.perms,-->
+    <!--                        m.is_frame,-->
+    <!--                        m.route_name,-->
+    <!--                        m.meta_extra,-->
+    <!--                        m.always_show,-->
+    <!--                        m.redirect,-->
+    <!--                        m.platform_id,-->
+    <!--                        m.menu_type,-->
+    <!--                        m.icon,-->
+    <!--                        m.order_num,-->
+    <!--                        m.create_time-->
+    <!--        from sys_menu m-->
+    <!--                 left join sys_role_menu rm on m.menu_id = rm.menu_id-->
+    <!--                 left join sys_user_role sur on rm.role_id = sur.role_id-->
+    <!--                 left join sys_role ro on sur.role_id = ro.role_id-->
+    <!--        where m.platform_id = #{platformId}-->
+    <!--          and m.menu_type in ('M', 'C')-->
+    <!--          and m.status = '0'-->
+    <!--          and ro.status = '0'-->
+    <!--        order by m.parent_id, m.order_num-->
+    <!--    </select>-->
 
     <select id="selectMenuListByRoleId" resultType="Long">
         select m.menu_id
@@ -122,4 +122,30 @@
           and rm.role_id = #{roleId}
     </select>
 
+
+    <!--    new-->
+    <sql id="selectMenuVo">
+        select distinct m.*
+        from sys_menu m
+                 left join sys_role_menu rm on m.menu_id = rm.menu_id
+                 left join sys_user_role sur on rm.role_id = sur.role_id
+                 left join sys_role r on r.role_id = sur.role_id
+    </sql>
+
+    <select id="selectMenuAll" resultType="SysMenu">
+        <include refid="selectMenuVo"/>
+        where m.menu_type!="F" and m.platform_id=#{platformId} order by m.order_num
+    </select>
+
+
+    <select id="selectMenuByUserId" resultType="SysMenu">
+        <include refid="selectMenuVo"/>
+        where sur.user_id = #{userId} and m.menu_type!="F" and m.platform_id=#{platformId} order by m.order_num
+    </select>
+
+
+    <select id="selectBtnPermByUserId" resultType="SysMenu">
+        <include refid="selectMenuVo"/>
+        where sur.user_id = #{userId} and m.menu_type = "F" and m.platform_id=#{platformId} order by m.order_num
+    </select>
 </mapper>

@@ -107,7 +107,6 @@ public class SysLoginInfoService {
      *
      * @param logininfor 访问日志对象
      */
-
     public void insertLogininfor(SysLogininfor logininfor) {
         logininfor.setLoginTime(new Date());
         baseMapper.insert(logininfor);
@@ -119,7 +118,6 @@ public class SysLoginInfoService {
      * @param logininfor 访问日志对象
      * @return 登录记录集合
      */
-
     public List<SysLogininfor> selectLogininforList(SysLogininfor logininfor) {
         Map<String, Object> params = logininfor.getParams();
         return baseMapper.selectList(new LambdaQueryWrapper<SysLogininfor>()

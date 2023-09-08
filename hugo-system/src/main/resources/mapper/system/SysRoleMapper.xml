@@ -68,4 +68,15 @@
         WHERE r.del_flag = '0' and u.user_name = #{userName}
     </select>
 
+
+    <!--new-->
+    <sql id="selectRoleNew">
+        select sr.*
+        from sys_role sr
+                 left join sys_user_role sur on sur.role_id = sr.role_id
+    </sql>
+    <select id="selectRolesByUserId" resultType="SysRole">
+        <include refid="selectRoleNew"/>
+        WHERE sr.del_flag = '0' and sur.user_id = #{userId}
+    </select>
 </mapper>

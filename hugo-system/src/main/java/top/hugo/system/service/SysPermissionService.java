@@ -4,8 +4,11 @@ package top.hugo.system.service;
 import cn.hutool.core.util.ObjectUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import top.hugo.common.helper.LoginHelper;
+import top.hugo.system.entity.SysMenu;
 import top.hugo.system.entity.SysRole;
 import top.hugo.system.entity.SysUser;
+import top.hugo.system.mapper.SysMenuMapper;
 
 import java.util.HashSet;
 import java.util.List;
@@ -22,6 +25,9 @@ public class SysPermissionService {
 
     private final SysRoleService roleService;
     private final SysMenuService menuService;
+
+
+    private final SysMenuMapper sysMenuMapper;
 
     /**
      * 获取角色数据权限
@@ -67,4 +73,30 @@ public class SysPermissionService {
         return perms;
     }
 
+
+    public Set<String> getMenuPermission(int platformId) {
+        Set<String> perms = new HashSet<String>();
+        if (LoginHelper.isAdmin()) {
+            perms.add("*:*:*");
+        } else {
+            List<SysMenu> sysMenus = sysMenuMapper.selectMenuByUserId(LoginHelper.getUserId(), platformId);
+            sysMenus.forEach(m -> {
+                perms.add(m.getPerms());
+            });
+        }
+        return perms;
+    }
+
+    public Set<String> getMenuBtnPermission(Integer platformId) {
+        Set<String> perms = new HashSet<String>();
+        if (LoginHelper.isAdmin()) {
+            perms.add("*:*:*");
+        } else {
+            List<SysMenu> sysMenus = sysMenuMapper.selectBtnPermByUserId(LoginHelper.getUserId(), platformId);
+            sysMenus.forEach(m -> {
+                perms.add(m.getPerms());
+            });
+        }
+        return perms;
+    }
 }

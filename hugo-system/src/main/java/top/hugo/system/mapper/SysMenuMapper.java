@@ -1,10 +1,8 @@
 package top.hugo.system.mapper;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
 import org.apache.ibatis.annotations.Param;
-import top.hugo.common.constant.UserConstants;
 import top.hugo.common.mapper.BaseMapperPlus;
 import top.hugo.system.entity.SysMenu;
 
@@ -53,15 +51,15 @@ public interface SysMenuMapper extends BaseMapperPlus<SysMenuMapper, SysMenu, Sy
      *
      * @return 菜单列表
      */
-    default List<SysMenu> selectMenuTreeAll(Integer platformId) {
-        LambdaQueryWrapper<SysMenu> lqw = new LambdaQueryWrapper<SysMenu>()
-                .in(SysMenu::getMenuType, UserConstants.TYPE_DIR, UserConstants.TYPE_MENU)
-                .eq(SysMenu::getStatus, UserConstants.MENU_NORMAL)
-                .eq(SysMenu::getPlatformId, platformId)
-                .orderByAsc(SysMenu::getParentId)
-                .orderByAsc(SysMenu::getOrderNum);
-        return this.selectList(lqw);
-    }
+//    default List<SysMenu> selectMenuTreeAll(Integer platformId) {
+//        LambdaQueryWrapper<SysMenu> lqw = new LambdaQueryWrapper<SysMenu>()
+//                .in(SysMenu::getMenuType, UserConstants.TYPE_DIR, UserConstants.TYPE_MENU)
+//                .eq(SysMenu::getStatus, UserConstants.MENU_NORMAL)
+//                .eq(SysMenu::getPlatformId, platformId)
+//                .orderByAsc(SysMenu::getParentId)
+//                .orderByAsc(SysMenu::getOrderNum);
+//        return this.selectList(lqw);
+//    }
 
     /**
      * 根据用户ID查询菜单
@@ -81,4 +79,12 @@ public interface SysMenuMapper extends BaseMapperPlus<SysMenuMapper, SysMenu, Sy
      */
     List<Long> selectMenuListByRoleId(@Param("roleId") Long roleId, @Param("menuCheckStrictly") boolean menuCheckStrictly);
 
+
+    List<SysMenu> selectMenuTreeAll(Integer platformId);
+
+    List<SysMenu> selectMenuAll(Integer platformId);
+
+    List<SysMenu> selectMenuByUserId(@Param("userId") Long userId, @Param("platformId") int platformId);
+
+    List<SysMenu> selectBtnPermByUserId(@Param("userId") Long userId, @Param("platformId") int platformId);
 }
