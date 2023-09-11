@@ -7,7 +7,6 @@ import lombok.Data;
  *
  * @author kuanghua
  */
-
 @Data
 public class PageAndTimeRangeQuery extends PageQuery {
     /**

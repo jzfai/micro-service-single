@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>top.hugo</groupId>
+        <artifactId>micro-service-single</artifactId>
+        <version>4.4.0</version>
+    </parent>
+
+    <artifactId>hugo-admin-service</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>top.hugo</groupId>
+            <artifactId>hugo-framework</artifactId>
+            <version>4.4.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>top.hugo</groupId>
+            <artifactId>hugo-swagger</artifactId>
+            <version>4.4.0</version>
+        </dependency>
+        <dependency>
+            <groupId>top.hugo</groupId>
+            <artifactId>hugo-demo</artifactId>
+            <version>4.4.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>top.hugo</groupId>
+            <artifactId>hugo-db</artifactId>
+            <version>4.4.0</version>
+        </dependency>
+
+        <!-- spring-boot-devtools -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <!-- 表示依赖不会传递 -->
+            <optional>true</optional>
+        </dependency>
+    </dependencies>
+</project>

@@ -1,0 +1,42 @@
+# Swagger配置
+swagger:
+  # 是否开启swagger
+  enabled: true
+  info:
+    # 标题
+    title: '标题：${spring.application.name}后台管理系统_接口文档'
+    # 描述
+    description: '描述：用于管理集团旗下公司的人员信息,具体包括XXX,XXX模块,6的不行'
+    # 版本
+    version: '版本号: ${micro-service-single.version}'
+    # 作者信息
+    contact:
+      name: hugo
+      email: xxx@163.com
+      url: https://gitee.com/xxxx/
+  components:
+    # 鉴权方式配置
+    security-schemes:
+      apiKey:
+        type: APIKEY
+        in: HEADER
+        name: ""
+
+springdoc:
+  swagger-ui:
+    # 持久化认证数据
+    persistAuthorization: true
+  #这里定义了两个分组，可定义多个，也可以不定义
+  group-configs:
+    - group: common
+      packages-to-scan: top.hugo
+
+knife4j:
+  enable: true
+  openapi:
+    title: xxx官方文档(swagger3.0文档)
+    description: "xxx官方文档"
+    email: xxxx@163.com
+    concat: 熊猫哥
+    url: https://github.jzfai.top/micro-service-api/doc.html
+    version: v4.0

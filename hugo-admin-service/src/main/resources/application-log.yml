@@ -1,0 +1,6 @@
+# 日志配置
+logging:
+  level:
+    top.hugo: @logging.level@
+    org.springframework: info
+  config: classpath:logback.xml #指定log日志
