@@ -14,6 +14,8 @@
         <module>hugo-swagger</module>
         <module>hugo-demo</module>
         <module>hugo-db</module>
+        <module>hugo-redis</module>
+        <module>hugo-es</module>
     </modules>
     <version>4.4.0</version>
     <name>Micro-Service-Single</name>

@@ -72,7 +72,12 @@ public class MybatisPlusConfig {
         return new DefaultIdentifierGenerator(NetUtil.getLocalhost());
     }
 
-    //返回的map转驼峰
+    /**
+     * 返回的map转驼峰
+     *
+     * @author 熊猫哥
+     * @date 2023-09-12 9:56
+     */
     @Bean
     public ConfigurationCustomizer mybatisConfigurationCustomizer() {
         return new ConfigurationCustomizer() {
