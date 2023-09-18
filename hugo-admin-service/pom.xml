@@ -17,21 +17,40 @@
             <artifactId>hugo-framework</artifactId>
             <version>4.4.0</version>
         </dependency>
-
-        <!-- 排除springboot中内置的es依赖,以防和easy-es中的依赖冲突-->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.elasticsearch.client</groupId>
-                    <artifactId>elasticsearch-rest-high-level-client</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.elasticsearch</groupId>
-                    <artifactId>elasticsearch</artifactId>
-                </exclusion>
-            </exclusions>
+            <groupId>top.hugo</groupId>
+            <artifactId>hugo-swagger</artifactId>
+            <version>4.4.0</version>
+        </dependency>
+        <dependency>
+            <groupId>top.hugo</groupId>
+            <artifactId>hugo-db</artifactId>
+            <version>4.4.0</version>
+        </dependency>
+        <dependency>
+            <groupId>top.hugo</groupId>
+            <artifactId>hugo-redis</artifactId>
+            <version>4.4.0</version>
+        </dependency>
+        <dependency>
+            <groupId>top.hugo</groupId>
+            <artifactId>hugo-satoken</artifactId>
+            <version>4.4.0</version>
+        </dependency>
+        <dependency>
+            <groupId>top.hugo</groupId>
+            <artifactId>hugo-oss</artifactId>
+            <version>4.4.0</version>
+        </dependency>
+        <dependency>
+            <groupId>top.hugo</groupId>
+            <artifactId>hugo-es</artifactId>
+            <version>4.4.0</version>
+        </dependency>
+        <dependency>
+            <groupId>top.hugo</groupId>
+            <artifactId>hugo-xxl-job</artifactId>
+            <version>4.4.0</version>
         </dependency>
         <!--引入es的坐标-->
         <dependency>
@@ -49,41 +68,10 @@
             <artifactId>elasticsearch</artifactId>
             <version>7.14.0</version>
         </dependency>
-
         <dependency>
             <groupId>cn.easy-es</groupId>
             <artifactId>easy-es-boot-starter</artifactId>
             <version>1.1.1</version>
-        </dependency>
-
-        <dependency>
-            <groupId>top.hugo</groupId>
-            <artifactId>hugo-swagger</artifactId>
-            <version>4.4.0</version>
-        </dependency>
-        <!--        <dependency>-->
-        <!--            <groupId>top.hugo</groupId>-->
-        <!--            <artifactId>hugo-demo</artifactId>-->
-        <!--            <version>4.4.0</version>-->
-        <!--        </dependency>-->
-
-        <dependency>
-            <groupId>top.hugo</groupId>
-            <artifactId>hugo-db</artifactId>
-            <version>4.4.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>top.hugo</groupId>
-            <artifactId>hugo-es</artifactId>
-            <version>4.4.0</version>
-        </dependency>
-        <!--spring-boot-devtools-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
-            <!-- 表示依赖不会传递 -->
-            <optional>true</optional>
         </dependency>
     </dependencies>
     <build>

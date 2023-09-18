@@ -1,0 +1,7 @@
+minio:
+  server-url: ${linux.ip}
+  host: http://${minio.server-url}:9000
+  bucket: public
+  url: ${minio.host}/${minio.bucket}/
+  access-key: admin
+  secret-key: admin123456

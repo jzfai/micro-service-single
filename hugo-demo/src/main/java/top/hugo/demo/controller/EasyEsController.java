@@ -1,12 +1,12 @@
 package top.hugo.demo.controller;
 
 import cn.easyes.core.conditions.LambdaEsQueryWrapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import top.hugo.demo.esentity.TestDocument;
-import top.hugo.demo.esmapper.DocumentMapper;
+import top.hugo.es.esentity.TestDocument;
+import top.hugo.es.esmapper.DocumentMapper;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 
@@ -14,10 +14,10 @@ import java.util.List;
  * EasyEs 相关
  */
 @RestController
+@RequiredArgsConstructor
 public class EasyEsController {
 
-    @Resource
-    private DocumentMapper documentMapper;
+    private final DocumentMapper documentMapper;
 
     /**
      * 插入

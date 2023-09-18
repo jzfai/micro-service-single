@@ -15,7 +15,10 @@
         <module>hugo-demo</module>
         <module>hugo-db</module>
         <module>hugo-redis</module>
+        <module>hugo-satoken</module>
         <module>hugo-es</module>
+        <module>hugo-xxl-job</module>
+        <module>hugo-oss</module>
     </modules>
     <version>4.4.0</version>
     <name>Micro-Service-Single</name>

@@ -11,11 +11,15 @@
 
     <artifactId>hugo-demo</artifactId>
 
-
     <dependencies>
         <dependency>
             <groupId>top.hugo</groupId>
             <artifactId>hugo-framework</artifactId>
+            <version>4.4.0</version>
+        </dependency>
+        <dependency>
+            <groupId>top.hugo</groupId>
+            <artifactId>hugo-swagger</artifactId>
             <version>4.4.0</version>
         </dependency>
         <dependency>
@@ -30,8 +34,45 @@
         </dependency>
         <dependency>
             <groupId>top.hugo</groupId>
+            <artifactId>hugo-satoken</artifactId>
+            <version>4.4.0</version>
+        </dependency>
+        <dependency>
+            <groupId>top.hugo</groupId>
+            <artifactId>hugo-oss</artifactId>
+            <version>4.4.0</version>
+        </dependency>
+        <dependency>
+            <groupId>top.hugo</groupId>
             <artifactId>hugo-es</artifactId>
             <version>4.4.0</version>
         </dependency>
+        <dependency>
+            <groupId>top.hugo</groupId>
+            <artifactId>hugo-xxl-job</artifactId>
+            <version>4.4.0</version>
+        </dependency>
+        <!--引入es的坐标-->
+        <dependency>
+            <groupId>org.elasticsearch.client</groupId>
+            <artifactId>elasticsearch-rest-high-level-client</artifactId>
+            <version>7.14.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.elasticsearch.client</groupId>
+            <artifactId>elasticsearch-rest-client</artifactId>
+            <version>7.14.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.elasticsearch</groupId>
+            <artifactId>elasticsearch</artifactId>
+            <version>7.14.0</version>
+        </dependency>
+        <dependency>
+            <groupId>cn.easy-es</groupId>
+            <artifactId>easy-es-boot-starter</artifactId>
+            <version>1.1.1</version>
+        </dependency>
+
     </dependencies>
 </project>
