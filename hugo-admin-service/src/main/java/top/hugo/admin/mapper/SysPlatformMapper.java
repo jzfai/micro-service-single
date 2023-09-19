@@ -1,8 +1,8 @@
 package top.hugo.admin.mapper;
 
-import top.hugo.common.mapper.BaseMapperPlus;
-import top.hugo.system.entity.SysPlatform;
-import top.hugo.system.vo.SysPlatformVo;
+import top.hugo.admin.entity.SysPlatform;
+import top.hugo.admin.vo.SysPlatformVo;
+import top.hugo.db.mapper.BaseMapperPlus;
 
 /**
  * 参数配置 数据层

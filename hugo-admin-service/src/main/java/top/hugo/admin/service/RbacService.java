@@ -17,7 +17,11 @@ import org.springframework.expression.Expression;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.stereotype.Service;
-import top.hugo.admin.mapper.SysMenuMapper;
+import top.hugo.admin.entity.SysMenu;
+import top.hugo.admin.entity.SysRole;
+import top.hugo.admin.entity.SysUser;
+import top.hugo.admin.helper.LoginHelper;
+import top.hugo.admin.mapper.RbacMapper;
 import top.hugo.admin.mapper.SysRoleMapper;
 import top.hugo.admin.mapper.SysUserMapper;
 import top.hugo.redis.utils.RedisUtils;
@@ -28,6 +32,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -35,7 +40,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class RbacService {
     private final SysUserMapper userMapper;
-    private final SysMenuMapper sysMenuMapper;
+    private final RbacMapper rbacMapper;
     private final SysRoleMapper sysRoleMapper;
     private final SysPermissionService permissionService;
     private final HttpServletRequest request;
@@ -226,9 +231,9 @@ public class RbacService {
         List<SysMenu> menus = null;
         //如果是admin则返回改平台下的所有菜单
         if (0 == userId) {
-            menus = sysMenuMapper.selectMenuAll(platformId);
+            menus = rbacMapper.selectMenuAll(platformId);
         } else {
-            menus = sysMenuMapper.selectMenuByUserId(userId, platformId);
+            menus = rbacMapper.selectMenuByUserId(userId, platformId);
         }
         return menus;
     }
@@ -249,7 +254,7 @@ public class RbacService {
         hm.put("btnPermission", btnPermission);
         hm.put("permission", menuPermission.addAll(btnPermission));
         hm.put("roles", selectRolesByUserId(LoginHelper.getUserId()));
-        hm.put("user", userMapper.selectUserById(LoginHelper.getUserId()));
+        hm.put("user", userMapper.selectById(LoginHelper.getUserId()));
         return hm;
     }
 
@@ -262,8 +267,7 @@ public class RbacService {
      * @date 2023-09-07 17:46
      */
     public List<String> selectRolesByUserId(Long userId) {
-        List<SysRole> sysRoles = sysRoleMapper.selectRolesByUserId(userId);
+        List<SysRole> sysRoles = rbacMapper.selectRolesByUserId(userId);
         return sysRoles.stream().map(SysRole::getRoleKey).collect(Collectors.toList());
     }
-
 }

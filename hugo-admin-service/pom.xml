@@ -42,37 +42,44 @@
             <artifactId>hugo-oss</artifactId>
             <version>4.4.0</version>
         </dependency>
-        <dependency>
-            <groupId>top.hugo</groupId>
-            <artifactId>hugo-es</artifactId>
-            <version>4.4.0</version>
-        </dependency>
+
         <dependency>
             <groupId>top.hugo</groupId>
             <artifactId>hugo-xxl-job</artifactId>
             <version>4.4.0</version>
         </dependency>
-        <!--引入es的坐标-->
         <dependency>
-            <groupId>org.elasticsearch.client</groupId>
-            <artifactId>elasticsearch-rest-high-level-client</artifactId>
-            <version>7.14.0</version>
+            <groupId>top.hugo</groupId>
+            <artifactId>hugo-easyexecl</artifactId>
+            <version>4.4.0</version>
         </dependency>
-        <dependency>
-            <groupId>org.elasticsearch.client</groupId>
-            <artifactId>elasticsearch-rest-client</artifactId>
-            <version>7.14.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.elasticsearch</groupId>
-            <artifactId>elasticsearch</artifactId>
-            <version>7.14.0</version>
-        </dependency>
-        <dependency>
-            <groupId>cn.easy-es</groupId>
-            <artifactId>easy-es-boot-starter</artifactId>
-            <version>1.1.1</version>
-        </dependency>
+
+        <!--        <dependency>-->
+        <!--            <groupId>top.hugo</groupId>-->
+        <!--            <artifactId>hugo-es</artifactId>-->
+        <!--            <version>4.4.0</version>-->
+        <!--        </dependency>-->
+        <!--        &lt;!&ndash;引入es的坐标&ndash;&gt;-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.elasticsearch.client</groupId>-->
+        <!--            <artifactId>elasticsearch-rest-high-level-client</artifactId>-->
+        <!--            <version>7.14.0</version>-->
+        <!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.elasticsearch.client</groupId>-->
+        <!--            <artifactId>elasticsearch-rest-client</artifactId>-->
+        <!--            <version>7.14.0</version>-->
+        <!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.elasticsearch</groupId>-->
+        <!--            <artifactId>elasticsearch</artifactId>-->
+        <!--            <version>7.14.0</version>-->
+        <!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>cn.easy-es</groupId>-->
+        <!--            <artifactId>easy-es-boot-starter</artifactId>-->
+        <!--            <version>1.1.1</version>-->
+        <!--        </dependency>-->
     </dependencies>
     <build>
         <finalName>${project.artifactId}</finalName>

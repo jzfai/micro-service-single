@@ -4,3 +4,8 @@ server:
 
 linux:
   ip: 111.230.198.245
+
+
+#是否开启跨域配置
+cors:
+  enabled: true

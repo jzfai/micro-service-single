@@ -1,7 +1,7 @@
 --- # xxl-job 配置
 xxl.job:
   # 执行器开关
-  enabled: true
+  enabled: false
   # 调度中心地址：如调度中心集群部署存在多个地址则用逗号分隔。
   admin-addresses: http://${linux.ip}:8800/xxl-job-admin/
   # 执行器通讯TOKEN：非空时启用

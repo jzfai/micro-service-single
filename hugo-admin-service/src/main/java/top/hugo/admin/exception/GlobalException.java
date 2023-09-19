@@ -1,4 +1,4 @@
-package top.hugo.common.exception;
+package top.hugo.admin.exception;
 
 /**
  * 全局异常

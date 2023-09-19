@@ -19,6 +19,7 @@
         <module>hugo-es</module>
         <module>hugo-xxl-job</module>
         <module>hugo-oss</module>
+        <module>hugo-easyexecl</module>
     </modules>
     <version>4.4.0</version>
     <name>Micro-Service-Single</name>
