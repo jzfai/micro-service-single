@@ -15,7 +15,6 @@
         <module>hugo-system</module>
         <module>hugo-generator</module>
         <module>hugo-demo</module>
-        <module>xxl-job-admin</module>
         <module>hugo-oss</module>
     </modules>
 
