@@ -61,23 +61,23 @@ redisson:
   # redis key前缀
   keyPrefix: hugo
   # 线程池数量
-  threads: 2
+  threads: 1
   # Netty线程池数量
-  nettyThreads: 4
+  nettyThreads: 2
   # 单节点配置
   singleServerConfig:
     # 客户端名称
     clientName: ${hugo.name}
     # 最小空闲连接数
-    connectionMinimumIdleSize: 4
+    connectionMinimumIdleSize: 2
     # 连接池大小
-    connectionPoolSize: 16
+    connectionPoolSize: 4
     # 连接空闲超时，单位：毫秒
     idleConnectionTimeout: 10000
     # 命令等待超时，单位：毫秒
     timeout: 3000
     # 发布和订阅连接池大小
-    subscriptionConnectionPoolSize: 50
+    subscriptionConnectionPoolSize: 4
 
 #是否开启跨域配置
 cors:
