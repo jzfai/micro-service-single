@@ -19,7 +19,7 @@ import java.util.Map;
 public class AddressUtils {
 
     // IP地址查询
-    public static final String IP_URL = "https://qifu-api.baidubce.com/ip/geo/v1/district?";
+    public static final String IP_URL = "https://qifu-api.baidubce.com/ip/local/geo/v1/district?";
 
     // 未知地址
     public static final String UNKNOWN = "XX XX";
