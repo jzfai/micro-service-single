@@ -48,7 +48,7 @@ public class AddressUtils {
                 }
                 Map data = JacksonUtils.parseMap(rspStr);
                 Map<String, Object> obj = JsonUtils.parseMap(JacksonUtils.toJsonString(data.get("data")));
-                String region = (String) obj.get("pro");
+                String region = (String) obj.get("prov");
                 String city = (String) obj.get("city");
                 return String.format("%s %s", region, city);
             } catch (Exception e) {
