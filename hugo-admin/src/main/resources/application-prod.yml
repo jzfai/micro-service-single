@@ -5,7 +5,7 @@ spring:
     # 动态数据源文档 https://www.kancloud.cn/tracy5546/dynamic-datasource/content
     dynamic:
       # 性能分析插件(有性能损耗 不建议生产环境使用)
-      p6spy: true
+      p6spy: false
       # 设置默认的数据源或者数据源组,默认值即为 master
       primary: master
       # 严格模式 匹配不到数据源则报错
@@ -30,9 +30,9 @@ spring:
         #    password:
       hikari:
         # 最大连接池数量
-        maxPoolSize: 2
+        maxPoolSize: 20
         # 最小空闲线程数量
-        minIdle: 1
+        minIdle: 10
         # 配置获取连接等待超时的时间
         connectionTimeout: 10000
         # 校验超时时间
@@ -61,23 +61,23 @@ redisson:
   # redis key前缀
   keyPrefix: hugo
   # 线程池数量
-  threads: 1
+  threads: 2
   # Netty线程池数量
-  nettyThreads: 2
+  nettyThreads: 4
   # 单节点配置
   singleServerConfig:
     # 客户端名称
     clientName: ${hugo.name}
     # 最小空闲连接数
-    connectionMinimumIdleSize: 2
+    connectionMinimumIdleSize: 4
     # 连接池大小
-    connectionPoolSize: 4
+    connectionPoolSize: 16
     # 连接空闲超时，单位：毫秒
     idleConnectionTimeout: 10000
     # 命令等待超时，单位：毫秒
     timeout: 3000
     # 发布和订阅连接池大小
-    subscriptionConnectionPoolSize: 4
+    subscriptionConnectionPoolSize: 50
 
 #是否开启跨域配置
 cors:
@@ -86,6 +86,7 @@ cors:
 #是否开启权限拦截
 satoken:
   enabled: true
+
 
 #minio配置
 minio:

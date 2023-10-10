@@ -25,6 +25,7 @@ public class AddressUtils {
     public static final String UNKNOWN = "XX XX";
 
     public static String getRealAddressByIP(String ip) {
+        //ip = "221.4.157.74";
         String address = UNKNOWN;
         if (StringUtils.isBlank(ip)) {
             return address;
@@ -50,8 +51,9 @@ public class AddressUtils {
                 Map<String, Object> obj = JsonUtils.parseMap(JacksonUtils.toJsonString(data.get("data")));
                 String region = (String) obj.get("prov");
                 String city = (String) obj.get("city");
-                log.info("地址信息{}", obj.toString());
-                return String.format("%s %s", region, city);
+                String district = (String) obj.get("district");
+                log.warn("地址信息{}", obj.toString());
+                return String.format("%s %s %s", region, city, district);
             } catch (Exception e) {
                 log.error("获取地理位置异常 {}", ip);
             }
