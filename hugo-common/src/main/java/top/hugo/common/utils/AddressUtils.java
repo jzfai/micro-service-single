@@ -7,8 +7,6 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.Map;
-
 /**
  * 获取地址类
  *
@@ -19,13 +17,13 @@ import java.util.Map;
 public class AddressUtils {
 
     // IP地址查询
-    public static final String IP_URL = "https://qifu-api.baidubce.com/ip/local/geo/v1/district?";
+    public static final String IP_URL = "http://ip.plyz.net/ip.ashx?";
 
     // 未知地址
     public static final String UNKNOWN = "XX XX";
 
     public static String getRealAddressByIP(String ip) {
-        //ip = "221.4.157.74";
+        ip = "117.131.99.102";
         String address = UNKNOWN;
         if (StringUtils.isBlank(ip)) {
             return address;
@@ -47,13 +45,14 @@ public class AddressUtils {
                     log.error("获取地理位置异常 {}", ip);
                     return UNKNOWN;
                 }
-                Map data = JacksonUtils.parseMap(rspStr);
-                Map<String, Object> obj = JsonUtils.parseMap(JacksonUtils.toJsonString(data.get("data")));
-                String region = (String) obj.get("prov");
-                String city = (String) obj.get("city");
-                String district = (String) obj.get("district");
-                log.warn("地址信息{}", obj.toString());
-                return String.format("%s %s %s", region, city, district);
+                String[] split = rspStr.split("\\|");
+//               Map data = JacksonUtils.parseMap(rspStr);
+//                Map<String, Object> obj = JsonUtils.parseMap(JacksonUtils.toJsonString(data.get("data")));
+//                String region = (String) obj.get("prov");
+//                String city = (String) obj.get("city");
+//                String district = (String) obj.get("district");
+//                log.warn("地址信息{}", obj.toString());
+                return split[1];
             } catch (Exception e) {
                 log.error("获取地理位置异常 {}", ip);
             }
