@@ -50,6 +50,7 @@ public class AddressUtils {
                 Map<String, Object> obj = JsonUtils.parseMap(JacksonUtils.toJsonString(data.get("data")));
                 String region = (String) obj.get("prov");
                 String city = (String) obj.get("city");
+                log.info("地址信息{}", obj.toString());
                 return String.format("%s %s", region, city);
             } catch (Exception e) {
                 log.error("获取地理位置异常 {}", ip);
