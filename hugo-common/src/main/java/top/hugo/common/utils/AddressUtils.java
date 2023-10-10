@@ -23,7 +23,7 @@ public class AddressUtils {
     public static final String UNKNOWN = "XX XX";
 
     public static String getRealAddressByIP(String ip) {
-        ip = "117.131.99.102";
+        //ip = "117.131.99.102";
         String address = UNKNOWN;
         if (StringUtils.isBlank(ip)) {
             return address;
