@@ -176,7 +176,6 @@ public class TemplateFileService {
     public Context setContextData(Map<String, Object> contextData) {
         //设置上下文数据
         Context context = GeneratorTempUtils.getVelocityContext();
-        context.put("totalData", contextData);
         contextData.forEach(context::put);
         return context;
     }
@@ -195,8 +194,10 @@ public class TemplateFileService {
         //返回后端名
         List<String> backExtendList = Arrays.asList("java", "xml", "yml");
         //如果是entity直接返回 “”
-        if ("entity.java".equals(fileName)) return fileNamePre+".java";
-        if("Iservice.java".equals(fileName)){ return "I"+fileNamePre + "Service.java"; }
+        if ("entity.java".equals(fileName)) return fileNamePre + ".java";
+        if ("Iservice.java".equals(fileName)) {
+            return "I" + fileNamePre + "Service.java";
+        }
         //匹配文件前缀
         if (backExtendList.contains(extendName)) {
             if (ObjectUtil.isNotEmpty(fileNamePre)) {

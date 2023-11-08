@@ -24,7 +24,7 @@ public class MysqlTest {
         Statement sta = null;
         ResultSet rs = null;
         try {
-            String url = "jdbc:mysql://111.230.198.245:3310?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8&autoReconnect=true&rewriteBatchedStatements=true";
+            String url = "jdbc:mysql://159.75.144.202:3310?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8&autoReconnect=true&rewriteBatchedStatements=true";
             String user = "root";
             String password = "@Root123";
             conn = JdbcUtils.getConnection(url, user, password);
