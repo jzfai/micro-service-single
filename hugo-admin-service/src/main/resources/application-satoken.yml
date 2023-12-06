@@ -1,0 +1,49 @@
+# 用户配置
+user:
+  password:
+    #密码最大错误次数
+    maxRetryCount: 5
+    #密码锁定时间（默认10分钟）
+    lockTime: 5
+
+
+# Sa-Token配置
+sa-token:
+  enabled: true
+  # token名称 (同时也是cookie名称)
+  token-name: Authorization
+  # token有效期 设为一周 (必定过期) 单位: 秒
+  timeout: 604800
+  # token临时有效期 (指定时间无操作就过期) 单位: 秒（三天）
+  activity-timeout: 259200
+  # 是否允许同一账号并发登录 (为true时允许一起登录, 为false时新登录挤掉旧登录)
+  is-concurrent: true
+  # 在多人登录同一账号时，是否共用一个token (为true时所有登录共用一个token, 为false时每次登录新建一个token)
+  is-share: true
+  # 是否尝试从header里读取token
+  is-read-header: true
+  # 是否尝试从cookie里读取token
+  is-read-cookie: false
+  # token前缀
+  token-prefix: "Bearer"
+  # jwt秘钥
+  jwt-secret-key: "@xiongmaoge"
+
+# security配置
+security:
+  # 排除路径
+  excludes:
+    # 静态资源
+    - /**.html
+    - /**/*.html
+    - /**/*.css
+    - /**/*.js
+    - /login
+    - /register
+    # swagger 文档配置
+    - /favicon.ico
+    - /*/api-docs
+    - /*/api-docs/**
+    - /basis-func/**
+    - /system/platform/**
+

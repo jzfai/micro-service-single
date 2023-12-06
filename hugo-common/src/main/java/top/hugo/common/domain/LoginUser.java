@@ -1,8 +1,9 @@
 package top.hugo.common.domain;
 
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import top.hugo.common.dto.RoleDTO;
+import top.hugo.common.dto.SysRoleDto;
 
 import java.io.Serializable;
 import java.util.List;
@@ -88,12 +89,12 @@ public class LoginUser implements Serializable {
     /**
      * 用户名
      */
-    private String username;
+    private String userName;
 
     /**
      * 角色对象
      */
-    private List<RoleDTO> roles;
+    private List<SysRoleDto> roles;
 
     /**
      * 数据权限 当前角色ID
@@ -104,17 +105,5 @@ public class LoginUser implements Serializable {
      * 数据权限 当前平台id
      */
     private Integer platformId;
-    /**
-     * 获取登录id
-     */
-//    public String getLoginId() {
-//        if (userType == null) {
-//            throw new IllegalArgumentException("用户类型不能为空");
-//        }
-//        if (userId == null) {
-//            throw new IllegalArgumentException("用户ID不能为空");
-//        }
-//        return userType + LoginHelper.JOIN_CODE + userId;
-//    }
 
 }

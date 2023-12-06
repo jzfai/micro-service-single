@@ -1,0 +1,34 @@
+--- # redis 单机配置(单机与集群只能开启一个另一个需要注释掉)
+spring:
+  redis:
+    host: ${linux.ip}
+    # 端口，默认为6379
+    port: 6379
+    # 数据库索引
+    database: 2
+    # 密码(如没有密码请注释掉)
+    password: admin
+    # 是否开启ssl
+    ssl: false
+
+redisson:
+  # redis key前缀(配置)
+  keyPrefix: hugo
+  # 线程池数量
+  threads: 1
+  # Netty线程池数量
+  nettyThreads: 2
+  # 单节点配置
+  singleServerConfig:
+    # 客户端名称
+    clientName: ${hugo.name}
+    # 最小空闲连接数
+    connectionMinimumIdleSize: 2
+    # 连接池大小
+    connectionPoolSize: 8
+    # 连接空闲超时，单位：毫秒
+    idleConnectionTimeout: 10000
+    # 命令等待超时，单位：毫秒
+    timeout: 3000
+    # 发布和订阅连接池大小
+    subscriptionConnectionPoolSize: 8

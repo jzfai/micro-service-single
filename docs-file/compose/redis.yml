@@ -1,0 +1,18 @@
+version: '3'
+services:
+  redis:
+    image: redis:6.2.7
+    container_name: redis
+    ports:
+      - "6379:6379"
+    environment:
+      # 时区上海
+      TZ: Asia/Shanghai
+    volumes:
+      # 配置文件
+      - /docker/redis/conf:/redis/config
+      # 数据文件
+      - /docker/redis/data/:/redis/data/
+    command: "redis-server /redis/config/redis.conf"
+    privileged: true
+    network_mode: "host"

@@ -1,0 +1,6 @@
+# Spring配置
+spring:
+  application:
+    name: "hugo-admin-service"
+  profiles:
+    active: dev,doc,log,i18n,undertow,db,redis,es,xxljob,minio

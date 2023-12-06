@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>top.hugo</groupId>
+        <artifactId>micro-service-single</artifactId>
+        <version>4.4.0</version>
+    </parent>
+
+    <artifactId>hugo-admin-service</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>top.hugo</groupId>
+            <artifactId>hugo-framework</artifactId>
+            <version>4.4.0</version>
+        </dependency>
+        <dependency>
+            <groupId>top.hugo</groupId>
+            <artifactId>hugo-swagger</artifactId>
+            <version>4.4.0</version>
+        </dependency>
+        <dependency>
+            <groupId>top.hugo</groupId>
+            <artifactId>hugo-db</artifactId>
+            <version>4.4.0</version>
+        </dependency>
+        <dependency>
+            <groupId>top.hugo</groupId>
+            <artifactId>hugo-redis</artifactId>
+            <version>4.4.0</version>
+        </dependency>
+        <dependency>
+            <groupId>top.hugo</groupId>
+            <artifactId>hugo-satoken</artifactId>
+            <version>4.4.0</version>
+        </dependency>
+        <dependency>
+            <groupId>top.hugo</groupId>
+            <artifactId>hugo-oss</artifactId>
+            <version>4.4.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>top.hugo</groupId>
+            <artifactId>hugo-xxl-job</artifactId>
+            <version>4.4.0</version>
+        </dependency>
+        <dependency>
+            <groupId>top.hugo</groupId>
+            <artifactId>hugo-easyexecl</artifactId>
+            <version>4.4.0</version>
+        </dependency>
+        <dependency>
+            <groupId>top.hugo</groupId>
+            <artifactId>hugo-generator</artifactId>
+            <version>4.4.0</version>
+        </dependency>
+
+<!--        <dependency>-->
+<!--            <groupId>top.hugo</groupId>-->
+<!--            <artifactId>hugo-ms</artifactId>-->
+<!--            <version>4.4.0</version>-->
+<!--        </dependency>-->
+
+        <!--        <dependency>-->
+        <!--            <groupId>top.hugo</groupId>-->
+        <!--            <artifactId>hugo-es</artifactId>-->
+        <!--            <version>4.4.0</version>-->
+        <!--        </dependency>-->
+        <!--        &lt;!&ndash;引入es的坐标&ndash;&gt;-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.elasticsearch.client</groupId>-->
+        <!--            <artifactId>elasticsearch-rest-high-level-client</artifactId>-->
+        <!--            <version>7.14.0</version>-->
+        <!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.elasticsearch.client</groupId>-->
+        <!--            <artifactId>elasticsearch-rest-client</artifactId>-->
+        <!--            <version>7.14.0</version>-->
+        <!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.elasticsearch</groupId>-->
+        <!--            <artifactId>elasticsearch</artifactId>-->
+        <!--            <version>7.14.0</version>-->
+        <!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>cn.easy-es</groupId>-->
+        <!--            <artifactId>easy-es-boot-starter</artifactId>-->
+        <!--            <version>1.1.1</version>-->
+        <!--        </dependency>-->
+    </dependencies>
+    <build>
+        <finalName>${project.artifactId}</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring-boot.version}</version>
+                <configuration>
+                    <fork>true</fork> <!-- 如果没有该配置，devtools不会生效 -->
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.2.2</version>
+                <configuration>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                    <warName>${project.artifactId}</warName>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

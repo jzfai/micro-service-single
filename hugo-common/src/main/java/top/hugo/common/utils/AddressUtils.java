@@ -6,6 +6,7 @@ import cn.hutool.http.HttpUtil;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * 获取地址类
@@ -33,30 +34,17 @@ public class AddressUtils {
         if (NetUtil.isInnerIP(ip)) {
             return "内网IP";
         }
-        //if (RuoYiConfig.isAddressEnabled()) {
-        Boolean isAddressEnabled = true;
-        if (isAddressEnabled) {
-            try {
-                String rspStr = HttpUtil.createGet(IP_URL)
-                        .body("ip=" + ip)
-                        .execute()
-                        .body();
-                if (StringUtils.isEmpty(rspStr)) {
-                    log.error("获取地理位置异常 {}", ip);
-                    return UNKNOWN;
-                }
-                String[] split = rspStr.split("\\|");
-//               Map data = JacksonUtils.parseMap(rspStr);
-//                Map<String, Object> obj = JsonUtils.parseMap(JacksonUtils.toJsonString(data.get("data")));
-//                String region = (String) obj.get("prov");
-//                String city = (String) obj.get("city");
-//                String district = (String) obj.get("district");
-//                log.warn("地址信息{}", obj.toString());
-                return split[1];
-            } catch (Exception e) {
+        try {
+            String rspStr = HttpUtil.createGet(IP_URL).body("ip=" + ip).execute().body();
+            if (StringUtils.isEmpty(rspStr)) {
                 log.error("获取地理位置异常 {}", ip);
+                return UNKNOWN;
             }
+            String[] split = rspStr.split("\\|");
+            return split[1];
+        } catch (Exception e) {
+            log.error("获取地理位置异常 {}", ip);
         }
-        return UNKNOWN;
+        return address;
     }
 }

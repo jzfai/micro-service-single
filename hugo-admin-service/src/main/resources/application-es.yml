@@ -1,0 +1,7 @@
+easy-es:
+  # 是否开启EE自动配置
+  enable: false
+  # es连接地址+端口 格式必须为ip:port,如果是集群则可用逗号隔开
+  address: ${linux.ip}:9200
+  username: elastic
+  password: Root123

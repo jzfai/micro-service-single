@@ -1,0 +1,14 @@
+--- # sms 短信
+aliyun:
+  sms:
+    accessKeyId: xxxx
+    secret: xxxx
+    signName: 熊猫哥后台管理系统
+    templateCode: xxxx
+
+spring:
+  mail:
+    host: smtp.qq.com
+    username: 869653722@qq.com
+    password: xxx
+    port: 587

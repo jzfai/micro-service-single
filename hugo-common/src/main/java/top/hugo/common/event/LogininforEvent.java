@@ -5,12 +5,6 @@ import lombok.Data;
 import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 
-/**
- * 登录事件
- *
- * @author kuanghua
- */
-
 @Data
 public class LogininforEvent implements Serializable {
 

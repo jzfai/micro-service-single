@@ -13,7 +13,6 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class UndertowConfig implements WebServerFactoryCustomizer<UndertowServletWebServerFactory> {
-
     /**
      * 设置 Undertow 的 websocket 缓冲池
      */
@@ -26,5 +25,4 @@ public class UndertowConfig implements WebServerFactoryCustomizer<UndertowServle
             deploymentInfo.addServletContextAttribute("io.undertow.websockets.jsr.WebSocketDeploymentInfo", webSocketDeploymentInfo);
         });
     }
-
 }

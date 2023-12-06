@@ -106,5 +106,9 @@ public class R<T> implements Serializable {
     public static R<Void> result(int rows) {
         return rows > 0 ? R.<Void>ok() : R.<Void>fail();
     }
-    
+
+    public static R<Void> result(Boolean rows, String msg) {
+        return rows ? R.<Void>ok() : R.<Void>fail(msg);
+    }
+
 }

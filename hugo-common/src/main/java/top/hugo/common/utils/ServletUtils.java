@@ -10,7 +10,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-import top.hugo.common.constant.Constants;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
@@ -181,7 +180,7 @@ public class ServletUtils extends ServletUtil {
      */
     public static String urlEncode(String str) {
         try {
-            return URLEncoder.encode(str, Constants.UTF8);
+            return URLEncoder.encode(str, "UTF-8");
         } catch (UnsupportedEncodingException e) {
             return StringUtils.EMPTY;
         }
@@ -195,7 +194,7 @@ public class ServletUtils extends ServletUtil {
      */
     public static String urlDecode(String str) {
         try {
-            return URLDecoder.decode(str, Constants.UTF8);
+            return URLDecoder.decode(str, "UTF-8");
         } catch (UnsupportedEncodingException e) {
             return StringUtils.EMPTY;
         }

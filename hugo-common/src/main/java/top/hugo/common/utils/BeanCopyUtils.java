@@ -14,6 +14,8 @@ import org.springframework.cglib.core.Converter;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * bean深拷贝工具(基于 cglib 性能优异)
@@ -78,11 +80,18 @@ public class BeanCopyUtils {
         if (CollUtil.isEmpty(sourceList)) {
             return CollUtil.newArrayList();
         }
-        return StreamUtils.toList(sourceList, source -> {
-            V target = ReflectUtil.newInstanceIfPossible(desc);
-            copy(source, target);
-            return target;
-        });
+        if (CollUtil.isEmpty(sourceList)) {
+            return CollUtil.newArrayList();
+        }
+        return sourceList
+                .stream()
+                .map(source -> {
+                    V target = ReflectUtil.newInstanceIfPossible(desc);
+                    copy(source, target);
+                    return target;
+                })
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
     }
 
     /**

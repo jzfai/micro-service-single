@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
@@ -14,19 +13,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  *
  * @author kuanghua
  */
-@Configuration()
+@Configuration
 public class ResourcesConfig implements WebMvcConfigurer {
-
-    //@Override
-    //public void addInterceptors(InterceptorRegistry registry) {
-    //    // 全局访问性能拦截
-    //    registry.addInterceptor(new PlusWebInvokeTimeInterceptor());
-    //}
-
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-    }
-
     /**
      * 跨域配置
      */

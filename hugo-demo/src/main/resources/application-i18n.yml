@@ -1,0 +1,5 @@
+--- # 国际化配置
+spring:
+  messages:
+    # 国际化资源文件路径
+    basename: i18n/messages
