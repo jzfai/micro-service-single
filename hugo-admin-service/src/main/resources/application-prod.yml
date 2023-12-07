@@ -1,0 +1,7 @@
+linux:
+  ip: 159.75.144.202
+
+
+#是否开启跨域配置
+cors:
+  enabled: false

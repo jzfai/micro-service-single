@@ -3,7 +3,7 @@ spring:
   application:
     name: "hugo-admin-service"
   profiles:
-    active: dev,doc,log,i18n,undertow,db,redis,es,xxljob,minio,satoken
+    active: @profiles.active@,doc,log,i18n,undertow,db,redis,es,xxljob,minio,satoken
 
 server:
   port: 12050
