@@ -297,4 +297,25 @@ public class RbacService {
         logininforEvent.setRequest(ServletUtils.getRequest());
         SpringUtil.getApplicationContext().publishEvent(logininforEvent);
     }
+
+
+    /**
+     * 根据角色查询菜单信息
+     *
+     * @param roleId 角色id
+     */
+    public List<SysMenu> selectMenuListByRoleId(Long roleId) {
+        List<SysMenu> sysMenus = rbacMapper.selectMenuListByRoleId(roleId);
+        return sysMenus;
+    }
+
+    /**
+     * 根据角色查询菜单信息
+     *
+     * @param roleId 角色id
+     */
+    public List<SysMenu> selectMenuListByRolePlatformId(Long roleId, Integer platformId) {
+        List<SysMenu> sysMenus = rbacMapper.selectMenuListByRolePlatformId(roleId, platformId);
+        return sysMenus;
+    }
 }

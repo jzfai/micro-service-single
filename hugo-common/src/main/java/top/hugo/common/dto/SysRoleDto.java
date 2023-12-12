@@ -3,6 +3,7 @@ package top.hugo.common.dto;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * 角色信息表请求接收类
@@ -23,7 +24,7 @@ public class SysRoleDto {
     /**
      * 数据范围（1：全部数据权限 2：自定数据权限 3：本部门数据权限 4：本部门及以下数据权限）
      */
-    private String dataScope;
+    // private String dataScope;
     /**
      * 删除标志（0代表存在 2代表删除）
      */
@@ -31,19 +32,23 @@ public class SysRoleDto {
     /**
      * 部门树选择项是否关联显示
      */
-    private Integer deptCheckStrictly;
-    /**
-     * 菜单树选择项是否关联显示
-     */
-    private Integer menuCheckStrictly;
+//    private Integer deptCheckStrictly;
+//    /**
+//     * 菜单树选择项是否关联显示
+//     */
+//    private Integer menuCheckStrictly;
     /**
      * 平台id(,号分割)
      */
-    private String platformIds;
+    // private String platformIds;
     /**
      * 备注
      */
     private String remark;
+
+
+    //选中的菜单
+    private List<Long> menuIds;
     /**
      * 角色ID
      */

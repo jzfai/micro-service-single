@@ -97,8 +97,35 @@ public class RbacController {
      */
     @GetMapping("getMenu")
     public R<List<SysMenu>> getMenu(Integer platformId) {
+
         List<SysMenu> menus = rbacService.selectMenuByUserId(LoginHelper.getUserId(), platformId);
         return R.ok(menus);
+    }
+
+
+    /**
+     * 根据角色查询菜单信息
+     *
+     * @param roleId 角色id
+     * @return
+     */
+    @GetMapping("selectMenuListByRoleId")
+    public R<List<SysMenu>> selectMenuListByRoleId(Long roleId) {
+        List<SysMenu> sysMenus = rbacService.selectMenuListByRoleId(roleId);
+        return R.ok(sysMenus);
+    }
+
+
+    /**
+     * 根据角色平台查询菜单信息
+     *
+     * @param roleId 角色id
+     * @return
+     */
+    @GetMapping("selectMenuListByRolePlatformId")
+    public R<List<SysMenu>> selectMenuListByRolePlatformId(Long roleId, Integer platformId) {
+        List<SysMenu> sysMenus = rbacService.selectMenuListByRolePlatformId(roleId, platformId);
+        return R.ok(sysMenus);
     }
 }
 

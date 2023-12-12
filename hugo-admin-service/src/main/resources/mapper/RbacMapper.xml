@@ -29,10 +29,31 @@
     <sql id="selectRole">
         select sr.*
         from sys_role sr
-                 left join sys_user_role sur on sur.role_id = sr.role_id
+        left join sys_user_role sur on sur.role_id = sr.role_id
     </sql>
     <select id="selectRolesByUserId" resultType="SysRole">
         <include refid="selectRole"/>
         WHERE sr.del_flag = '0' and sur.user_id = #{userId}
+    </select>
+
+
+    <!--根据角色查询菜单信息-->
+    <select id="selectMenuListByRoleId" resultType="Long">
+        select m.menu_id
+        from sys_menu m
+        left join sys_role_menu rm on m.menu_id = rm.menu_id
+        where rm.role_id = #{roleId}
+        order by m.parent_id, m.order_num
+    </select>
+
+
+    <!--根据角色查询菜单信息-->
+    <select id="selectMenuListByRolePlatformId">
+        select m.menu_id
+        from sys_menu m
+        left join sys_role_menu rm on m.menu_id = rm.menu_id
+        where rm.role_id = #{roleId}
+        where m.platform_id=#{platformId}
+        order by m.parent_id, m.order_num
     </select>
 </mapper>

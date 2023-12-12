@@ -10,7 +10,6 @@ import top.hugo.admin.service.SysRoleService;
 import top.hugo.admin.vo.SysRoleVo;
 import top.hugo.common.domain.R;
 import top.hugo.common.dto.SysRoleDto;
-import top.hugo.common.utils.BeanCopyUtils;
 import top.hugo.domain.TableDataInfo;
 import top.hugo.easyexecl.utils.EasyExcelUtils;
 
@@ -67,8 +66,7 @@ public class SysRoleController {
      */
     @PostMapping
     public R<Void> add(@Validated @RequestBody SysRoleDto sysRoleDto) {
-        SysRole sysRole = BeanCopyUtils.copy(sysRoleDto, SysRole.class);
-        return R.result(sysRoleService.insertSysRole(sysRole));
+        return R.result(sysRoleService.insertSysRole(sysRoleDto));
     }
 
     /**
@@ -76,8 +74,7 @@ public class SysRoleController {
      */
     @PutMapping
     public R<Void> edit(@Validated @RequestBody SysRoleDto sysRoleDto) {
-        SysRole sysRole = BeanCopyUtils.copy(sysRoleDto, SysRole.class);
-        return R.result(sysRoleService.updateSysRole(sysRole));
+        return R.result(sysRoleService.updateSysRole(sysRoleDto));
     }
 
     /**

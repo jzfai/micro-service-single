@@ -20,5 +20,11 @@ public interface RbacMapper {
 
     List<SysMenu> selectMenuByUserId(@Param("userId") Long userId, @Param("platformId") int platformId);
 
-    List<SysMenu> selectBtnPermByUserId(@Param("userId") Long userId, @Param("platformId") Integer platformId);
+    List<SysMenu> selectBtnPermByUserId(@Param("userId") Long userId, @Param("platformId") int platformId);
+
+
+    /*根据角色查询菜单*/
+    List<SysMenu> selectMenuListByRoleId(@Param("roleId") Long roleId);
+
+    List<SysMenu> selectMenuListByRolePlatformId(@Param("roleId") Long roleId, @Param("platformId") int platformId);
 }

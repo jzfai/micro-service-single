@@ -61,6 +61,7 @@ public class SysRole {
     //角色状态（0正常 1停用）
     private String status;
 
+
     //更新者
     @TableField(fill = FieldFill.UPDATE)
     private String updateBy;
