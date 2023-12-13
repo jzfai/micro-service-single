@@ -1,10 +1,13 @@
 package top.hugo.generator.dto;
 
 import lombok.Data;
-import top.hugo.generator.entity.TemplateFile;
 
 @Data
-public class TemplateChangeDto extends TemplateFile {
+public class TemplateChangeDto {
     private String fileName;
     private String code;
+    /**
+     * id
+     */
+    private Integer id;
 }

@@ -97,7 +97,6 @@ public class RbacController {
      */
     @GetMapping("getMenu")
     public R<List<SysMenu>> getMenu(Integer platformId) {
-
         List<SysMenu> menus = rbacService.selectMenuByUserId(LoginHelper.getUserId(), platformId);
         return R.ok(menus);
     }

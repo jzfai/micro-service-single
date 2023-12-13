@@ -13,15 +13,21 @@
     </sql>
     <select id="selectMenuAll" resultType="SysMenu">
         <include refid="selectMenuVo"/>
-        where m.menu_type!="F" and m.platform_id=#{platformId} order by m.order_num
+        where m.menu_type!="F" and m.platform_id=#{platformId}
+        and m.status="0"
+        order by m.order_num
     </select>
     <select id="selectMenuByUserId" resultType="SysMenu">
         <include refid="selectMenuVo"/>
-        where sur.user_id = #{userId} and m.menu_type!="F" and m.platform_id=#{platformId} order by m.order_num
+        where sur.user_id = #{userId} and m.menu_type!="F" and m.platform_id=#{platformId}
+        and m.status="0"
+        order by m.order_num
     </select>
     <select id="selectBtnPermByUserId" resultType="SysMenu">
         <include refid="selectMenuVo"/>
-        where sur.user_id = #{userId} and m.menu_type = "F" and m.platform_id=#{platformId} order by m.order_num
+        where sur.user_id = #{userId} and m.menu_type = "F" and m.platform_id=#{platformId}
+        and m.status="0"
+        order by m.order_num
     </select>
 
 

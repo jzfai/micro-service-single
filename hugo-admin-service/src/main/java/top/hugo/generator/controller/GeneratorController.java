@@ -27,7 +27,7 @@ import java.util.Map;
 @Validated
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/generator")
+@RequestMapping("/generator/templateFile")
 public class GeneratorController {
     private final GeneratorService generatorService;
 

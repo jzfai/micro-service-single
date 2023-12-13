@@ -35,9 +35,9 @@ public class ConfigSaveController {
      * @return
      */
     @GetMapping("/listPage")
-    public R<TableDataInfo<ConfigSaveVo>> list(@Validated ConfigSaveQuery configSave) {
+    public TableDataInfo<ConfigSaveVo> list(@Validated ConfigSaveQuery configSave) {
         TableDataInfo<ConfigSaveVo> list = configSaveService.selectPageConfigSaveList(configSave);
-        return R.ok(list);
+        return list;
     }
 
     /**
@@ -82,6 +82,13 @@ public class ConfigSaveController {
         return R.result(configSaveService.updateConfigSave(configSave));
     }
 
+
+    @DeleteMapping("/{configSaveIds}")
+    public R<Void> remove(@PathVariable Long configSaveIds) {
+        return R.result(configSaveService.deleteConfigSaveById(configSaveIds));
+    }
+
+
     /**
      * 删除configSave
      *
@@ -89,8 +96,8 @@ public class ConfigSaveController {
      */
     //@SaCheckPermission("system:configSave:remove")
     //@Log(title = "configSave管理", businessType = BusinessType.DELETE)
-    @DeleteMapping("/{configSaveIds}")
-    public R<Void> remove(@PathVariable Long[] configSaveIds) {
+    @DeleteMapping("deleteBatchIds")
+    public R<Void> remove(@RequestBody Long[] configSaveIds) {
         return R.result(configSaveService.deleteConfigSaveByIds(configSaveIds));
     }
 

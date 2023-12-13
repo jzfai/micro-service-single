@@ -97,6 +97,17 @@ public class SysMenuController {
         return R.result(sysMenuService.deleteSysMenuByIds(sysMenuIds));
     }
 
+
+    /**
+     * 删除单个sysMenu
+     *
+     * @param sysMenuId sysMenuID
+     */
+    @DeleteMapping("/{sysMenuId}")
+    public R<Void> remove(@PathVariable Long sysMenuId) {
+        return R.result(sysMenuService.deleteSysMenuById(sysMenuId));
+    }
+
     /**
      * 获取sysMenu选择框列表
      */

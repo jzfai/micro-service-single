@@ -6,12 +6,14 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import top.hugo.admin.entity.SysMenu;
 import top.hugo.admin.mapper.SysMenuMapper;
 import top.hugo.admin.query.SysMenuQuery;
 import top.hugo.admin.vo.SysMenuVo;
 import top.hugo.domain.TableDataInfo;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -86,8 +88,10 @@ public class SysMenuService {
      * @param sysMenuId 平台ID
      * @return 结果
      */
-
+    @Transactional(rollbackFor = Exception.class)
     public int deleteSysMenuById(Long sysMenuId) {
+        ArrayList<Long> childrenIdListByMeuId = getChildrenIdListByMeuId(sysMenuId);
+        sysMenuMapper.deleteBatchIds(childrenIdListByMeuId);
         return sysMenuMapper.deleteById(sysMenuId);
     }
 
@@ -107,8 +111,9 @@ public class SysMenuService {
      * @param sysMenu 平台信息
      * @return 结果
      */
-
     public int insertSysMenu(SysMenu sysMenu) {
+
+
         return sysMenuMapper.insert(sysMenu);
     }
 
@@ -119,9 +124,50 @@ public class SysMenuService {
      * @param sysMenu 平台信息
      * @return 结果
      */
-
+    @Transactional(rollbackFor = Exception.class)
     public int updateSysMenu(SysMenu sysMenu) {
+        //如果是父级菜单统一设置状态
+        ArrayList<SysMenu> childrenIdList = getChildrenIdList(sysMenu.getMenuId(), sysMenu.getStatus());
+        if (childrenIdList.size() > 0) {
+            sysMenuMapper.updateBatchById(childrenIdList);
+        }
         return sysMenuMapper.updateById(sysMenu);
     }
 
+
+    /*
+     * 查询该memuId下的所有子元素
+     * */
+    public ArrayList<SysMenu> getChildrenIdList(Long menuId, String status) {
+        LambdaQueryWrapper<SysMenu> lqw = new LambdaQueryWrapper<SysMenu>();
+        lqw.eq(SysMenu::getParentId, menuId);
+        ArrayList<SysMenu> menuList = new ArrayList<>();
+        List<SysMenu> sysMenus = sysMenuMapper.selectList(lqw);
+        if (sysMenus.size() > 0) {
+            sysMenus.forEach(f -> {
+                f.setStatus(status);
+                menuList.add(f);
+                getChildrenIdList(f.getMenuId(), status);
+            });
+        }
+        return menuList;
+    }
+
+
+    /*
+     * 查询该memuId下的所有子元素id
+     * */
+    public ArrayList<Long> getChildrenIdListByMeuId(Long menuId) {
+        LambdaQueryWrapper<SysMenu> lqw = new LambdaQueryWrapper<SysMenu>();
+        lqw.eq(SysMenu::getParentId, menuId);
+        ArrayList<Long> menuList = new ArrayList<>();
+        List<SysMenu> sysMenus = sysMenuMapper.selectList(lqw);
+        if (sysMenus.size() > 0) {
+            sysMenus.forEach(f -> {
+                menuList.add(f.getMenuId());
+                getChildrenIdListByMeuId(f.getMenuId());
+            });
+        }
+        return menuList;
+    }
 }

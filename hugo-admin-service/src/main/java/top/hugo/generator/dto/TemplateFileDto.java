@@ -19,4 +19,8 @@ public class TemplateFileDto {
      * 文件存储名
      */
     private String name;
+    /**
+     * id
+     */
+    private Integer id;
 }

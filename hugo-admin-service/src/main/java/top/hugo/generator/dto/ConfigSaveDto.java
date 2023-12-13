@@ -22,4 +22,9 @@ public class ConfigSaveDto {
      */
     @NotBlank(message = "name不能为空")
     private String name;
+
+    /**
+     * id
+     */
+    private Integer id;
 }

@@ -24,4 +24,9 @@ public class ConfigSaveVo implements Serializable {
      */
     @ExcelProperty(value = "配置名称")
     private String name;
+
+    /**
+     * 配置名称
+     */
+    private Integer id;
 }

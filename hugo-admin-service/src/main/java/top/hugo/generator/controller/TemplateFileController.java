@@ -27,16 +27,16 @@ import java.util.List;
 @RestController
 @RequestMapping("/generator/templateFile")
 public class TemplateFileController {
-    
+
     private final TemplateFileService templateFileService;
 
     /**
      * 获取templateFile列表(分页)
      */
     @GetMapping("/listPage")
-    public R<TableDataInfo<TemplateFileVo>> list(@Validated TemplateFileQuery templateFile) {
+    public TableDataInfo<TemplateFileVo> list(@Validated TemplateFileQuery templateFile) {
         TableDataInfo<TemplateFileVo> list = templateFileService.selectPageTemplateFileList(templateFile);
-        return R.ok(list);
+        return list;
     }
 
     /**
@@ -79,6 +79,17 @@ public class TemplateFileController {
     public R<Void> edit(@Validated @RequestBody TemplateFileDto templateFileDto) {
         TemplateFile templateFile = BeanCopyUtils.copy(templateFileDto, TemplateFile.class);
         return R.result(templateFileService.updateTemplateFile(templateFile));
+    }
+
+
+    /**
+     * 删除templateFile
+     *
+     * @param templateFileId templateFileID串
+     */
+    @DeleteMapping("deleteById/{templateFileId}")
+    public R<Void> deleteTemplateFileById(@PathVariable Long templateFileId) {
+        return R.result(templateFileService.deleteTemplateFileById(templateFileId));
     }
 
     /**
