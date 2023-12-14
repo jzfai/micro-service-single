@@ -23,11 +23,6 @@ public class PageAndTimeRangeQuery {
      */
     private String endTime;
 
-    /**
-     * 更新时间
-     */
-    private String updateTime;
-
 
     /**
      * 当前记录起始索引 默认值

@@ -24,4 +24,6 @@ public class SysOssQuery extends PageAndTimeRangeQuery {
      * 原名
      */
     private String originalName;
+
+
 }
