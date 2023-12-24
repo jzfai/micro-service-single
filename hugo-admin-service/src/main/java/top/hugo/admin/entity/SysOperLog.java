@@ -49,5 +49,8 @@ public class SysOperLog {
     private Integer status;
     //模块标题
     private String title;
-
+    /**
+     * 消耗时间
+     */
+    private Long costTime;
 }

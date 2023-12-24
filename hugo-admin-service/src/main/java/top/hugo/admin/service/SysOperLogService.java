@@ -18,6 +18,7 @@ import top.hugo.common.utils.AddressUtils;
 import top.hugo.domain.TableDataInfo;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -133,6 +134,7 @@ public class SysOperLogService {
     @EventListener
     public void recordOper(OperLogEvent operLogEvent) {
         SysOperLog operLog = BeanUtil.toBean(operLogEvent, SysOperLog.class);
+        operLog.setOperTime(new Date());
         // 远程查询操作地点
         operLog.setOperLocation(AddressUtils.getRealAddressByIP(operLog.getOperIp()));
         insertSysOperLog(operLog);

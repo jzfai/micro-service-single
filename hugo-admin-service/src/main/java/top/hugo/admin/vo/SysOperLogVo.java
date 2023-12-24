@@ -52,10 +52,17 @@ public class SysOperLogVo {
      * 请求参数
      */
     private String operParam;
+
+
+    /**
+     * 关闭时间
+     */
+    private Long costTime;
     /**
      * 操作时间
      */
     private Date operTime;
+
     /**
      * 请求URL
      */

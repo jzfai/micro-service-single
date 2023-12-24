@@ -6,9 +6,11 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import top.hugo.admin.dto.SysDictypeDto;
 import top.hugo.admin.entity.SysDictype;
+import top.hugo.common.enums.BusinessType;
 import top.hugo.admin.query.SysDictypeQuery;
 import top.hugo.admin.service.SysDictypeService;
 import top.hugo.admin.vo.SysDictypeVo;
+import top.hugo.common.annotation.Log;
 import top.hugo.common.domain.R;
 import top.hugo.common.utils.BeanCopyUtils;
 import top.hugo.domain.TableDataInfo;
@@ -37,6 +39,7 @@ public class SysDictypeController {
      */
 //@SaCheckPermission("system:sysDictype:list")
     @PostMapping("/list")
+    @Log(title = "字典类型",businessType = BusinessType.OTHER)
     public TableDataInfo<SysDictypeVo> list(@RequestBody @Validated SysDictypeQuery sysDictype) {
         return sysDictypeService.selectPageSysDictypeList(sysDictype);
     }
@@ -44,8 +47,8 @@ public class SysDictypeController {
     /**
      * 导出sysDictype列表
      */
-//@Log(title = "sysDictype管理", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
+    @Log(title = "字典类型",businessType = BusinessType.EXPORT)
     public void export(SysDictypeQuery sysDictype, HttpServletResponse response) {
         List<SysDictypeVo> list = sysDictypeService.selectSysDictypeList(sysDictype);
         EasyExcelUtils.exportExcel(list, "sysDictype数据", SysDictypeVo.class, response);
@@ -66,6 +69,7 @@ public class SysDictypeController {
      * 新增sysDictype
      */
     @PostMapping
+    @Log(title = "字典类型",businessType = BusinessType.INSERT)
     public R<Void> add(@Validated @RequestBody SysDictypeDto sysDictypeDto) {
         SysDictype sysDictype = BeanCopyUtils.copy(sysDictypeDto, SysDictype.class);
         return R.result(sysDictypeService.insertSysDictype(sysDictype));
@@ -75,6 +79,7 @@ public class SysDictypeController {
      * 修改sysDictype
      */
     @PutMapping
+    @Log(title = "字典类型",businessType = BusinessType.UPDATE)
     public R<Void> edit(@Validated @RequestBody SysDictypeDto sysDictypeDto) {
         SysDictype sysDictype = BeanCopyUtils.copy(sysDictypeDto, SysDictype.class);
         return R.result(sysDictypeService.updateSysDictype(sysDictype));
@@ -87,6 +92,7 @@ public class SysDictypeController {
      */
 //@Log(title = "sysDictype管理", businessType = BusinessType.DELETE)
     @DeleteMapping("/{sysDictypeIds}")
+    @Log(title = "字典类型",businessType = BusinessType.DELETE)
     public R<Void> remove(@PathVariable Long[] sysDictypeIds) {
         return R.result(sysDictypeService.deleteSysDictypeByIds(sysDictypeIds));
     }

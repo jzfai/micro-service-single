@@ -89,7 +89,7 @@ public class OperLogEvent implements Serializable {
     /**
      * 操作状态（0正常 1异常）
      */
-    private Integer status;
+    private String status;
 
     /**
      * 错误消息
@@ -100,5 +100,10 @@ public class OperLogEvent implements Serializable {
      * 操作时间
      */
     private Date operTime;
+
+    /**
+     * 消耗时间
+     */
+    private Long costTime;
 
 }

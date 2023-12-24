@@ -1,15 +1,69 @@
+切面拦截器
+
+依赖
+
+```xml
+<!-- SpringBoot 拦截器 -->
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-aop</artifactId>
+</dependency>
+```
+
+
+
+定义注解
+
+```java
+package top.hugo.common.annotation;
+
+
+import java.lang.annotation.*;
+
+@Target({ElementType.PARAMETER, ElementType.METHOD})
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+public @interface Log {
+    /**
+     * 模块
+     */
+    String title() default "";
+
+    //    /**
+    //     * 功能
+    //     */
+    //    BusinessType businessType() default BusinessType.OTHER;
+    //
+    //    /**
+    //     * 操作人类别
+    //     */
+    //    OperatorType operatorType() default OperatorType.MANAGE;
+
+    /**
+     * 是否保存请求的参数
+     */
+    boolean isSaveRequestData() default true;
+
+    /**
+     * 是否保存响应的参数
+     */
+    boolean isSaveResponseData() default true;
+}
+```
+
+
+
+切面类
+
+```java
 package top.hugo.admin.aspectj;
 
-
 import cn.hutool.extra.spring.SpringUtil;
-import com.alibaba.ttl.TransmittableThreadLocal;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.StopWatch;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
 import org.springframework.stereotype.Component;
 import top.hugo.common.annotation.Log;
 import top.hugo.common.event.OperLogEvent;
@@ -26,23 +80,6 @@ import top.hugo.satoken.helper.LoginHelper;
 @Aspect
 @Component
 public class LogAspect {
-
-    /**
-     * 计算操作消耗时间
-     */
-    private static final ThreadLocal<StopWatch> TIME_THREADLOCAL = new TransmittableThreadLocal<>();
-
-    /**
-     * 处理请求前执行
-     */
-    @Before(value = "@annotation(controllerLog)")
-    public void boBefore(JoinPoint joinPoint, Log controllerLog) {
-        StopWatch stopWatch = new StopWatch();
-        TIME_THREADLOCAL.set(stopWatch);
-        stopWatch.start();
-    }
-
-
     /**
      * 处理完请求后执行
      *
@@ -51,7 +88,9 @@ public class LogAspect {
     @AfterReturning(pointcut = "@annotation(controllerLog)", returning = "jsonResult")
     public void doAfterReturning(JoinPoint joinPoint, Log controllerLog, Object jsonResult) {
         OperLogEvent operLog = new OperLogEvent();
-        operLog.setStatus("0");
+
+
+        operLog.setStatus(1);
         // 请求的地址
         String ip = ServletUtils.getClientIP();
         operLog.setOperIp(ip);
@@ -65,14 +104,24 @@ public class LogAspect {
         operLog.setRequestMethod(ServletUtils.getRequest().getMethod());
         SpringUtil.getApplicationContext().publishEvent(operLog);
 
-        //设置注解上的值
-        operLog.setBusinessType(controllerLog.businessType().ordinal());
-        operLog.setTitle(controllerLog.title());
-        operLog.setOperatorType(controllerLog.operatorType().ordinal());
-        // 设置消耗时间
-        StopWatch stopWatch = TIME_THREADLOCAL.get();
-        stopWatch.stop();
-        operLog.setCostTime(stopWatch.getTime());
         log.info(controllerLog.title());
     }
+
 }
+
+```
+
+
+
+定义 OperLogEvent 事件
+
+```java
+@Async
+@EventListener
+public void recordOper(OperLogEvent operLogEvent) {
+    SysOperLog operLog = BeanUtil.toBean(operLogEvent, SysOperLog.class);
+    // 远程查询操作地点   operLog.setOperLocation(AddressUtils.getRealAddressByIP(operLog.getOperIp()));
+    insertSysOperLog(operLog);
+}
+```
+

@@ -30,13 +30,11 @@ import java.util.List;
 @RequestMapping("/monitor/operatorLog")
 public class SysOperLogController {
     private final SysOperLogService sysOperLogService;
-
     /**
      * 获取sysOperLog列表
-     *
      * @return
      */
-    @Log(title = "sysOperLog管理")
+    //@Log(title = "sysOperLog管理")
     @PostMapping("/list")
     public TableDataInfo<SysOperLogVo> list(@RequestBody @Validated SysOperLogQuery sysOperLog) {
         return sysOperLogService.selectPageSysOperLogList(sysOperLog);
@@ -57,7 +55,6 @@ public class SysOperLogController {
      *
      * @param sysOperLogId sysOperLogID
      */
-
     @GetMapping(value = "/{sysOperLogId}")
     public R<SysOperLog> getInfo(@PathVariable Long sysOperLogId) {
         return R.ok(sysOperLogService.selectSysOperLogById(sysOperLogId));
