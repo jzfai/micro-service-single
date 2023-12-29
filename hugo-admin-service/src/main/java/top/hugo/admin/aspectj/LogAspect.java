@@ -63,7 +63,6 @@ public class LogAspect {
         operLog.setMethod(className + "." + methodName + "()");
         // 设置请求方式
         operLog.setRequestMethod(ServletUtils.getRequest().getMethod());
-        SpringUtil.getApplicationContext().publishEvent(operLog);
 
         //设置注解上的值
         operLog.setBusinessType(controllerLog.businessType().ordinal());
@@ -73,6 +72,8 @@ public class LogAspect {
         StopWatch stopWatch = TIME_THREADLOCAL.get();
         stopWatch.stop();
         operLog.setCostTime(stopWatch.getTime());
-        log.info(controllerLog.title());
+
+        //发送事件保存
+        SpringUtil.getApplicationContext().publishEvent(operLog);
     }
 }

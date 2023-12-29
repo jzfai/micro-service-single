@@ -103,7 +103,7 @@ public class SysMenuController {
      *
      * @param sysMenuId sysMenuID
      */
-    @DeleteMapping("/{sysMenuId}")
+    @DeleteMapping("/deleteById/{sysMenuId}")
     public R<Void> remove(@PathVariable Long sysMenuId) {
         return R.result(sysMenuService.deleteSysMenuById(sysMenuId));
     }

@@ -105,11 +105,14 @@ public class SysLogininforController {
 
     /**
      * 清空系统登录日志
+     *
+     * @return
      */
 
     @DeleteMapping("/clean")
-    public void cleanLogininfor() {
+    public R<Void> cleanLogininfor() {
         sysLogininforService.delete(new LambdaQueryWrapper<>());
+        return R.ok();
     }
 
 

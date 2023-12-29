@@ -91,7 +91,9 @@ public class SysMenuService {
     @Transactional(rollbackFor = Exception.class)
     public int deleteSysMenuById(Long sysMenuId) {
         ArrayList<Long> childrenIdListByMeuId = getChildrenIdListByMeuId(sysMenuId);
-        sysMenuMapper.deleteBatchIds(childrenIdListByMeuId);
+        if (childrenIdListByMeuId.size() > 0) {
+            sysMenuMapper.deleteBatchIds(childrenIdListByMeuId);
+        }
         return sysMenuMapper.deleteById(sysMenuId);
     }
 
