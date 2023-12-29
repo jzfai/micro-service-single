@@ -114,12 +114,10 @@ public class SysMenuService {
      * @return 结果
      */
     public int insertSysMenu(SysMenu sysMenu) {
-
-
         return sysMenuMapper.insert(sysMenu);
     }
 
-
+    
     /**
      * 修改保存平台信息
      *

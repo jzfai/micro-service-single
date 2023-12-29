@@ -96,4 +96,6 @@ public class SysRoleController {
         List<SysRoleVo> sysRoles = sysRoleService.selectSysRoleAll();
         return R.ok(sysRoles);
     }
+    
+
 }
