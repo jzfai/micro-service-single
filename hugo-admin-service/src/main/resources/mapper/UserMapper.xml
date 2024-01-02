@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.hugo.admin.mapper.SysUserMapper">
+    <select id="selectPostByUserId" resultType="SysPost">
+        select sp.post_id, sp.post_name from  sys_post  sp
+        LEFT JOIN sys_user_post sup
+        ON sp.post_id=sup.post_id
+        where sup.user_id =#{userId}
+    </select>
+</mapper>
