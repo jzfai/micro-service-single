@@ -9,14 +9,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import top.hugo.admin.entity.SysRole;
 import top.hugo.admin.entity.SysRoleMenu;
+import top.hugo.admin.entity.SysUserRole;
 import top.hugo.admin.mapper.SysRoleMapper;
 import top.hugo.admin.mapper.SysRoleMenuMapper;
+import top.hugo.admin.mapper.SysUserRoleMapper;
 import top.hugo.admin.query.SysRoleQuery;
 import top.hugo.admin.vo.SysRoleVo;
 import top.hugo.common.dto.SysRoleDto;
 import top.hugo.common.utils.BeanCopyUtils;
 import top.hugo.domain.TableDataInfo;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,6 +34,7 @@ import java.util.stream.Collectors;
 public class SysRoleService {
     private final SysRoleMapper sysRoleMapper;
     private final SysRoleMenuMapper sysRoleMenuMapper;
+    private final SysUserRoleMapper sysUserRoleMapper;
 
     public TableDataInfo<SysRoleVo> selectPageSysRoleList(SysRoleQuery sysRoleQuery) {
         LambdaQueryWrapper<SysRole> lqw = getQueryWrapper(sysRoleQuery);
@@ -116,8 +120,10 @@ public class SysRoleService {
     @Transactional(rollbackFor = Exception.class)
     public int insertSysRole(SysRoleDto sysRoleDto) {
         SysRole sysRole = BeanCopyUtils.copy(sysRoleDto, SysRole.class);
-        //删除role_menu表中role对应原有的menu字段
+        //1.更新菜单
         updateRoleMenuId(sysRoleDto);
+        //2.更新用户
+        updateUserIdsByRoleId(sysRoleDto);
         return sysRoleMapper.insert(sysRole);
     }
 
@@ -144,9 +150,34 @@ public class SysRoleService {
      */
     @Transactional(rollbackFor = Exception.class)
     public int updateSysRole(SysRoleDto sysRoleDto) {
+        //1.更新菜单
         updateRoleMenuId(sysRoleDto);
+        //2.更新用户
+        updateUserIdsByRoleId(sysRoleDto);
+        //3.更新角色
         SysRole sysRole = BeanCopyUtils.copy(sysRoleDto, SysRole.class);
         return sysRoleMapper.updateById(sysRole);
+    }
+
+    private void updateUserIdsByRoleId(SysRoleDto sysRoleDto) {
+        sysUserRoleMapper.delete(new LambdaQueryWrapper<SysUserRole>().eq(SysUserRole::getRoleId, sysRoleDto.getRoleId()));
+        List<Long> userIds = ObjectUtil.defaultIfNull(sysRoleDto.getUserIds(), new ArrayList<>());
+        ArrayList<SysUserRole> sysUserRoles = new ArrayList<>();
+        userIds.forEach(f -> {
+            SysUserRole sysUserRole = new SysUserRole();
+            sysUserRole.setUserId(f);
+            sysUserRole.setRoleId(sysRoleDto.getRoleId());
+            sysUserRoles.add(sysUserRole);
+        });
+        sysUserRoleMapper.insertBatch(sysUserRoles);
+    }
+
+    /*
+     * 查询该角色下存在的用户id
+     * */
+    public List<Long> getUserIdsByRoleId(Long RoleId) {
+        List<SysUserRole> sysUserRoles = sysUserRoleMapper.selectList(new LambdaQueryWrapper<SysUserRole>().eq(SysUserRole::getRoleId, RoleId));
+        return sysUserRoles.stream().map(SysUserRole::getUserId).collect(Collectors.toList());
     }
 
 }

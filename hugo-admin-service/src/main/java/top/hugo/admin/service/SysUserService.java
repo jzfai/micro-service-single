@@ -8,12 +8,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import top.hugo.admin.dto.SysUserDto;
+import top.hugo.admin.entity.SysDept;
 import top.hugo.admin.entity.SysUser;
 import top.hugo.admin.entity.SysUserPost;
 import top.hugo.admin.entity.SysUserRole;
-import top.hugo.admin.mapper.SysUserMapper;
-import top.hugo.admin.mapper.SysUserPostMapper;
-import top.hugo.admin.mapper.SysUserRoleMapper;
+import top.hugo.admin.mapper.*;
 import top.hugo.admin.query.SysUserQuery;
 import top.hugo.admin.vo.SysUserDetailVo;
 import top.hugo.admin.vo.SysUserVo;
@@ -21,6 +20,7 @@ import top.hugo.common.utils.BeanCopyUtils;
 import top.hugo.domain.TableDataInfo;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -34,13 +34,38 @@ import java.util.stream.Collectors;
 @Service
 public class SysUserService {
     private final SysUserMapper sysUserMapper;
-
+    private final SysDeptMapper sysDeptMapper;
+    private final SysPostMapper sysPostMapper;
     private final SysUserPostMapper sysUserPostMapper;
     private final SysUserRoleMapper sysUserRoleMapper;
 
     public TableDataInfo<SysUserVo> selectPageSysUserList(SysUserQuery sysUserQuery) {
         LambdaQueryWrapper<SysUser> lqw = getQueryWrapper(sysUserQuery);
         IPage<SysUserVo> page = sysUserMapper.selectVoPage(sysUserQuery.build(), lqw);
+        //转换部门
+        List<SysDept> sysDepts = sysDeptMapper.selectList();
+        HashMap<Long, String> hashMap = new HashMap<>();
+        sysDepts.forEach(f -> {
+            hashMap.put(f.getDeptId(), f.getDeptName());
+        });
+        //转换岗位
+        //        List<SysPost> sysPosts = sysUserMapper.selectPostByUserId(LoginHelper.getUserId());
+        //
+        //        List<String> pstNames = sysPosts.stream().map(mItem -> {
+        //            return mItem.getPostName();
+        //        }).collect(Collectors.toList());
+        //
+        //        List<Long> PostIds = sysPosts.stream().map(mItem -> {
+        //            return mItem.getPostId();
+        //        }).collect(Collectors.toList());
+        List<SysUserVo> records = page.getRecords();
+        records.forEach(f -> {
+            f.setDeptName(hashMap.get(f.getDeptId()));
+            //            f.setDeptName(hashMapPost.get(f.get()));
+        });
+
+
+        page.setRecords(records);
         return TableDataInfo.build(page);
     }
 
@@ -184,6 +209,12 @@ public class SysUserService {
         //更新用户
         return sysUserMapper.updateById(BeanCopyUtils.copy(sysUserDto, SysUser.class));
     }
+
+    /*更新用户密码*/
+    public int updateUserPassWord(SysUser sysUser) {
+        return sysUserMapper.updateById(sysUser);
+    }
+
 
     /**
      * 修改用户状态

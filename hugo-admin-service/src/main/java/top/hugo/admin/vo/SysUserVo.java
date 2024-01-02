@@ -32,6 +32,12 @@ public class SysUserVo {
      * 部门ID
      */
     private Long deptId;
+
+
+    /**
+     * 部门名称
+     */
+    private String deptName;
     /**
      * 用户邮箱
      */

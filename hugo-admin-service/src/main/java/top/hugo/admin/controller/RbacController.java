@@ -73,6 +73,7 @@ public class RbacController {
     /**
      * 注册
      */
+    @SaIgnore
     @PostMapping("register")
     public R<Void> register(String code, String uuid, SysUser sysUser) {
         return R.result(rbacService.register(code, uuid, sysUser));

@@ -112,7 +112,11 @@ public class LoginHelper {
      * 获取用户账户
      */
     public static String getUsername() {
-        return getLoginUser().getUserName();
+        if (StpUtil.isLogin()) {
+            return getLoginUser().getUserName();
+        } else {
+            return "用户注册";
+        }
     }
 
     /**

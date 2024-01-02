@@ -82,7 +82,7 @@ public class SysRoleController {
      *
      * @param sysRoleIds sysRoleID串
      */
-//@Log(title = "sysRole管理", businessType = BusinessType.DELETE)
+    //@Log(title = "sysRole管理", businessType = BusinessType.DELETE)
     @DeleteMapping("/{sysRoleIds}")
     public R<Void> remove(@PathVariable Long[] sysRoleIds) {
         return R.result(sysRoleService.deleteSysRoleByIds(sysRoleIds));
@@ -96,6 +96,14 @@ public class SysRoleController {
         List<SysRoleVo> sysRoles = sysRoleService.selectSysRoleAll();
         return R.ok(sysRoles);
     }
-    
 
+
+    /**
+     * 获取sysRole选择框列表
+     */
+    @GetMapping("/getUserIdsByRoleId")
+    public R<List<Long>> getUserIdsByRoleId(Long roleId) {
+        List<Long> userIdsByRoleId = sysRoleService.getUserIdsByRoleId(roleId);
+        return R.ok(userIdsByRoleId);
+    }
 }

@@ -201,6 +201,7 @@ public class RbacService {
         boolean b = checkUserNameUnique(sysUser);
         if (b) throw new RuntimeException("用户已存在");
 
+        sysUser.setNickName(sysUser.getUserName());
         //转换密码
         sysUser.setPassword(BCrypt.hashpw(sysUser.getPassword()));
         return userMapper.insert(sysUser);

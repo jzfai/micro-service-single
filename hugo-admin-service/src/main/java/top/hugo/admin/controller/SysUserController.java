@@ -113,8 +113,8 @@ public class SysUserController {
 
 
     @PutMapping("/resetPwd")
-    public R<Void> resetPwd(@RequestBody SysUserDto sysUserDto) {
-        sysUserDto.setPassword(BCrypt.hashpw(sysUserDto.getPassword()));
-        return R.result(sysUserService.updateSysUser(sysUserDto));
+    public R<Void> resetPwd(@RequestBody SysUser sysUser) {
+        sysUser.setPassword(BCrypt.hashpw(sysUser.getPassword()));
+        return R.result(sysUserService.updateUserPassWord(sysUser));
     }
 }

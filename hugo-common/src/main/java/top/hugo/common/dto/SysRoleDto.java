@@ -53,6 +53,8 @@ public class SysRoleDto {
      * 角色ID
      */
     private Long roleId;
+
+    private List<Long> userIds;
     /**
      * 角色权限字符串
      */

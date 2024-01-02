@@ -62,6 +62,7 @@ public class SysOperLogService {
         lqw.like(ObjectUtil.isNotEmpty(sysOperLogQuery.getOperTime()), SysOperLog::getOperTime, sysOperLogQuery.getOperTime());
         lqw.like(ObjectUtil.isNotEmpty(sysOperLogQuery.getOperatorType()), SysOperLog::getOperatorType, sysOperLogQuery.getOperatorType());
         lqw.like(ObjectUtil.isNotEmpty(sysOperLogQuery.getStatus()), SysOperLog::getStatus, sysOperLogQuery.getStatus());
+        lqw.orderByDesc(SysOperLog::getOperTime);
         return lqw;
     }
 
