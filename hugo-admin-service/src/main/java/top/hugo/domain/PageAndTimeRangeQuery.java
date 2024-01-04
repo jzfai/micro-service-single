@@ -49,7 +49,8 @@ public class PageAndTimeRangeQuery {
             pageNum = DEFAULT_PAGE_NUM;
         }
         Page<T> page = new Page<>(pageNum, pageSize);
-
+        //解决优化left join问题
+        page.setOptimizeJoinOfCountSql(false);
         return page;
     }
 }

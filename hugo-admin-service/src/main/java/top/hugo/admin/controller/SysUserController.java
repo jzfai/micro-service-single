@@ -39,7 +39,13 @@ public class SysUserController {
     //@SaCheckPermission("system:sysUser:list")
     @PostMapping("/list")
     public TableDataInfo<SysUserVo> list(@RequestBody @Validated SysUserQuery sysUser) {
-        return sysUserService.selectPageSysUserList(sysUser);
+        return sysUserService.selectPageSysUserPostList(sysUser);
+    }
+
+
+    @PostMapping("/selectPageSysUserPostList")
+    public TableDataInfo<SysUserVo> selectPageSysUserPostList(@RequestBody @Validated SysUserQuery sysUser) {
+        return sysUserService.selectPageSysUserPostList(sysUser);
     }
 
     /**
@@ -116,5 +122,14 @@ public class SysUserController {
     public R<Void> resetPwd(@RequestBody SysUser sysUser) {
         sysUser.setPassword(BCrypt.hashpw(sysUser.getPassword()));
         return R.result(sysUserService.updateUserPassWord(sysUser));
+    }
+
+
+    /**
+     * selectUserAndPostList
+     */
+    @PostMapping("/selectUserAndPostList")
+    public TableDataInfo<SysUserVo> selectUserAndPostList(@RequestBody @Validated SysUserQuery sysUser) {
+        return sysUserService.selectPageSysUserPostList(sysUser);
     }
 }

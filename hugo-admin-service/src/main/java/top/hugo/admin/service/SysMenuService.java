@@ -55,9 +55,10 @@ public class SysMenuService {
     private static LambdaQueryWrapper<SysMenu> getQueryWrapper(SysMenuQuery sysMenuQuery) {
         LambdaQueryWrapper<SysMenu> lqw = new LambdaQueryWrapper<SysMenu>();
         lqw.like(ObjectUtil.isNotEmpty(sysMenuQuery.getMenuName()), SysMenu::getMenuName, sysMenuQuery.getMenuName());
-        lqw.like(ObjectUtil.isNotEmpty(sysMenuQuery.getPlatformId()), SysMenu::getPlatformId, sysMenuQuery.getPlatformId());
-        lqw.like(ObjectUtil.isNotEmpty(sysMenuQuery.getStatus()), SysMenu::getStatus, sysMenuQuery.getStatus());
-        lqw.like(ObjectUtil.isNotEmpty(sysMenuQuery.getMenuType()), SysMenu::getMenuType, sysMenuQuery.getMenuType());
+        lqw.eq(ObjectUtil.isNotEmpty(sysMenuQuery.getPlatformId()), SysMenu::getPlatformId, sysMenuQuery.getPlatformId());
+        lqw.eq(ObjectUtil.isNotEmpty(sysMenuQuery.getStatus()), SysMenu::getStatus, sysMenuQuery.getStatus());
+        lqw.eq(ObjectUtil.isNotEmpty(sysMenuQuery.getMenuType()), SysMenu::getMenuType, sysMenuQuery.getMenuType());
+        lqw.orderByDesc(SysMenu::getOrderNum);
         return lqw;
     }
 
@@ -117,7 +118,7 @@ public class SysMenuService {
         return sysMenuMapper.insert(sysMenu);
     }
 
-    
+
     /**
      * 修改保存平台信息
      *

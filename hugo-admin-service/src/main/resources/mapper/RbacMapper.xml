@@ -15,19 +15,19 @@
         <include refid="selectMenuVo"/>
         where m.menu_type!="F" and m.platform_id=#{platformId}
         and m.status="0"
-        order by m.order_num
+        order by m.order_num DESC
     </select>
     <select id="selectMenuByUserId" resultType="SysMenu">
         <include refid="selectMenuVo"/>
         where sur.user_id = #{userId} and m.menu_type!="F" and m.platform_id=#{platformId}
         and m.status="0"
-        order by m.order_num
+        order by m.order_num DESC
     </select>
     <select id="selectBtnPermByUserId" resultType="SysMenu">
         <include refid="selectMenuVo"/>
         where sur.user_id = #{userId} and m.menu_type = "F" and m.platform_id=#{platformId}
         and m.status="0"
-        order by m.order_num
+        order by m.order_num DESC
     </select>
 
 
@@ -49,7 +49,7 @@
         from sys_menu m
         left join sys_role_menu rm on m.menu_id = rm.menu_id
         where rm.role_id = #{roleId}
-        order by m.parent_id, m.order_num
+        order by m.parent_id, m.order_num DESC
     </select>
 
 
@@ -60,6 +60,6 @@
         left join sys_role_menu rm on m.menu_id = rm.menu_id
         where rm.role_id = #{roleId}
         where m.platform_id=#{platformId}
-        order by m.parent_id, m.order_num
+        order by m.parent_id, m.order_num DESC
     </select>
 </mapper>

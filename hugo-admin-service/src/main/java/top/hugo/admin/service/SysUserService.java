@@ -3,16 +3,19 @@ package top.hugo.admin.service;
 
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import top.hugo.admin.dto.SysUserDto;
-import top.hugo.admin.entity.SysDept;
 import top.hugo.admin.entity.SysUser;
 import top.hugo.admin.entity.SysUserPost;
 import top.hugo.admin.entity.SysUserRole;
-import top.hugo.admin.mapper.*;
+import top.hugo.admin.mapper.SysDeptMapper;
+import top.hugo.admin.mapper.SysUserMapper;
+import top.hugo.admin.mapper.SysUserPostMapper;
+import top.hugo.admin.mapper.SysUserRoleMapper;
 import top.hugo.admin.query.SysUserQuery;
 import top.hugo.admin.vo.SysUserDetailVo;
 import top.hugo.admin.vo.SysUserVo;
@@ -20,7 +23,6 @@ import top.hugo.common.utils.BeanCopyUtils;
 import top.hugo.domain.TableDataInfo;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -35,39 +37,8 @@ import java.util.stream.Collectors;
 public class SysUserService {
     private final SysUserMapper sysUserMapper;
     private final SysDeptMapper sysDeptMapper;
-    private final SysPostMapper sysPostMapper;
     private final SysUserPostMapper sysUserPostMapper;
     private final SysUserRoleMapper sysUserRoleMapper;
-
-    public TableDataInfo<SysUserVo> selectPageSysUserList(SysUserQuery sysUserQuery) {
-        LambdaQueryWrapper<SysUser> lqw = getQueryWrapper(sysUserQuery);
-        IPage<SysUserVo> page = sysUserMapper.selectVoPage(sysUserQuery.build(), lqw);
-        //转换部门
-        List<SysDept> sysDepts = sysDeptMapper.selectList();
-        HashMap<Long, String> hashMap = new HashMap<>();
-        sysDepts.forEach(f -> {
-            hashMap.put(f.getDeptId(), f.getDeptName());
-        });
-        //转换岗位
-        //        List<SysPost> sysPosts = sysUserMapper.selectPostByUserId(LoginHelper.getUserId());
-        //
-        //        List<String> pstNames = sysPosts.stream().map(mItem -> {
-        //            return mItem.getPostName();
-        //        }).collect(Collectors.toList());
-        //
-        //        List<Long> PostIds = sysPosts.stream().map(mItem -> {
-        //            return mItem.getPostId();
-        //        }).collect(Collectors.toList());
-        List<SysUserVo> records = page.getRecords();
-        records.forEach(f -> {
-            f.setDeptName(hashMap.get(f.getDeptId()));
-            //            f.setDeptName(hashMapPost.get(f.get()));
-        });
-
-
-        page.setRecords(records);
-        return TableDataInfo.build(page);
-    }
 
 
     /**
@@ -116,20 +87,22 @@ public class SysUserService {
     public SysUserDetailVo selectSysUserById(Long sysUserId) {
         LambdaQueryWrapper<SysUserPost> lqw = new LambdaQueryWrapper<>();
         lqw.eq(ObjectUtil.isNotEmpty(sysUserId), SysUserPost::getUserId, sysUserId);
-
         //查询用户岗位表
-        Set<Long> postIds = this.sysUserPostMapper.selectList(lqw).stream().map(m -> m.getPostId()).collect(Collectors.toSet());
-
+        Set<Long> postIds = this.sysUserPostMapper.selectList(lqw).stream().map(SysUserPost::getPostId).collect(Collectors.toSet());
         //查询用户角色
         LambdaQueryWrapper<SysUserRole> lq = new LambdaQueryWrapper<>();
         lq.eq(ObjectUtil.isNotEmpty(sysUserId), SysUserRole::getUserId, sysUserId);
-        Set<Long> roleIds = this.sysUserRoleMapper.selectList(lq).stream().map(m -> m.getRoleId()).collect(Collectors.toSet());
+        Set<Long> roleIds = this.sysUserRoleMapper.selectList(lq).stream().map(SysUserRole::getRoleId).collect(Collectors.toSet());
         //查询用户
         SysUser sysUser = sysUserMapper.selectById(sysUserId);
         //拼接数据
         SysUserDetailVo sysUserDetailVo = BeanCopyUtils.copy(sysUser, SysUserDetailVo.class);
-        sysUserDetailVo.setPostIds(postIds);
-        sysUserDetailVo.setRoleIds(roleIds);
+        if (sysUserDetailVo != null) {
+            sysUserDetailVo.setPostIds(postIds);
+        }
+        if (sysUserDetailVo != null) {
+            sysUserDetailVo.setRoleIds(roleIds);
+        }
         return sysUserDetailVo;
     }
 
@@ -224,5 +197,13 @@ public class SysUserService {
      */
     public int updateUserStatus(SysUser user) {
         return sysUserMapper.updateById(user);
+    }
+
+    public TableDataInfo<SysUserVo> selectPageSysUserPostList(SysUserQuery sysUserQuery) {
+
+        QueryWrapper<SysUser> wrapper = new QueryWrapper<>();
+        wrapper.eq("su.del_flag", "0");
+        IPage<SysUserVo> page = sysUserMapper.selectUserAndPostList(sysUserQuery.build(), wrapper);
+        return TableDataInfo.build(page);
     }
 }

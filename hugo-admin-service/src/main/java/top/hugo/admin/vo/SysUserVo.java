@@ -24,10 +24,7 @@ public class SysUserVo {
      * 创建时间
      */
     private Date createTime;
-    /**
-     * 删除标志（0代表存在 2代表删除）
-     */
-    private String delFlag;
+
     /**
      * 部门ID
      */
@@ -54,10 +51,7 @@ public class SysUserVo {
      * 用户昵称
      */
     private String nickName;
-    /**
-     * 密码
-     */
-    private String password;
+
     /**
      * 手机号码
      */
@@ -90,6 +84,14 @@ public class SysUserVo {
      * 用户账号
      */
     private String userName;
+    /**
+     * 部门id
+     */
+    private String postIds;
+    /**
+     * 部门名
+     */
+    private String postNames;
     /**
      * 用户类型（sys_user系统用户）
      */
