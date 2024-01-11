@@ -8,9 +8,12 @@ import org.springframework.web.bind.annotation.*;
 import top.hugo.admin.dto.SysUserDto;
 import top.hugo.admin.entity.SysUser;
 import top.hugo.admin.query.SysUserQuery;
+import top.hugo.admin.query.UserPostQuery;
 import top.hugo.admin.service.SysUserService;
+import top.hugo.admin.service.UserPostService;
 import top.hugo.admin.vo.SysUserDetailVo;
 import top.hugo.admin.vo.SysUserVo;
+import top.hugo.admin.vo.UserPostVo;
 import top.hugo.common.domain.R;
 import top.hugo.domain.TableDataInfo;
 import top.hugo.easyexecl.utils.EasyExcelUtils;
@@ -30,18 +33,17 @@ import java.util.List;
 @RequestMapping("/system/user")
 public class SysUserController {
     private final SysUserService sysUserService;
+    private final UserPostService userPostService;
+    
 
     /**
      * 获取sysUser列表
-     *
-     * @return
      */
-    //@SaCheckPermission("system:sysUser:list")
     @PostMapping("/list")
-    public TableDataInfo<SysUserVo> list(@RequestBody @Validated SysUserQuery sysUser) {
-        return sysUserService.selectPageSysUserPostList(sysUser);
+    public TableDataInfo<UserPostVo> selectPageUserPostList(@RequestBody @Validated UserPostQuery userPostQuery) {
+        TableDataInfo<UserPostVo> userPostList = userPostService.selectPageUserPostList(userPostQuery);
+        return userPostList;
     }
-
 
     @PostMapping("/selectPageSysUserPostList")
     public TableDataInfo<SysUserVo> selectPageSysUserPostList(@RequestBody @Validated SysUserQuery sysUser) {
@@ -125,11 +127,4 @@ public class SysUserController {
     }
 
 
-    /**
-     * selectUserAndPostList
-     */
-    @PostMapping("/selectUserAndPostList")
-    public TableDataInfo<SysUserVo> selectUserAndPostList(@RequestBody @Validated SysUserQuery sysUser) {
-        return sysUserService.selectPageSysUserPostList(sysUser);
-    }
 }

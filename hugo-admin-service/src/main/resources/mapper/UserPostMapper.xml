@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.hugo.admin.mapper.UserPostMapper">
+    <select id="selectPageUserPostList"  resultType="UserPostVo">
+        SELECT su.user_id as userId,
+               su.dept_id as deptId,
+               su.user_name as userName,
+               su.nick_name as nickName,
+               su.user_type as userType,
+               su.email as email,
+               su.phonenumber as phonenumber,
+               su.sex as sex,
+               su.avatar as avatar,
+               su.password as password,
+               su.status as status,
+               su.login_ip as loginIp,
+               su.login_date as loginDate,
+               su.create_by as createBy,
+               su.create_time as createTime,
+               su.update_by as updateBy,
+               su.update_time as updateTime,
+               su.remark as remark,
+               group_concat(sp.post_name) as postNames,
+               sd.dept_name as deptName
+
+        FROM sys_user su
+                 LEFT JOIN sys_dept sd ON su.dept_id = sd.dept_id
+                 LEFT JOIN sys_user_post sup ON su.user_id = sup.user_id
+                 LEFT JOIN sys_post sp ON sp.post_id = sup.post_id
+            ${ew.getCustomSqlSegment}
+        GROUP BY su.user_id
+    </select>
+</mapper>

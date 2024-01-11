@@ -12,4 +12,5 @@
        ${ew.getCustomSqlSegment}
        GROUP BY su.user_id
     </select>
+
 </mapper>

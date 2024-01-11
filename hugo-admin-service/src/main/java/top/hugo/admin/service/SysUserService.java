@@ -12,7 +12,6 @@ import top.hugo.admin.dto.SysUserDto;
 import top.hugo.admin.entity.SysUser;
 import top.hugo.admin.entity.SysUserPost;
 import top.hugo.admin.entity.SysUserRole;
-import top.hugo.admin.mapper.SysDeptMapper;
 import top.hugo.admin.mapper.SysUserMapper;
 import top.hugo.admin.mapper.SysUserPostMapper;
 import top.hugo.admin.mapper.SysUserRoleMapper;
@@ -36,7 +35,6 @@ import java.util.stream.Collectors;
 @Service
 public class SysUserService {
     private final SysUserMapper sysUserMapper;
-    private final SysDeptMapper sysDeptMapper;
     private final SysUserPostMapper sysUserPostMapper;
     private final SysUserRoleMapper sysUserRoleMapper;
 
@@ -203,6 +201,15 @@ public class SysUserService {
 
         QueryWrapper<SysUser> wrapper = new QueryWrapper<>();
         wrapper.eq("su.del_flag", "0");
+        if (ObjectUtil.isNotEmpty(sysUserQuery.getStatus())) {
+            wrapper.eq("su.status", sysUserQuery.getStatus());
+        }
+        if (ObjectUtil.isNotEmpty(sysUserQuery.getStatus())) {
+            wrapper.eq("su.phonenumber", sysUserQuery.getPhonenumber());
+        }
+        if (ObjectUtil.isNotEmpty(sysUserQuery.getBeginTime())) {
+            wrapper.between("su.create_time", sysUserQuery.getBeginTime(), sysUserQuery.getEndTime());
+        }
         IPage<SysUserVo> page = sysUserMapper.selectUserAndPostList(sysUserQuery.build(), wrapper);
         return TableDataInfo.build(page);
     }
