@@ -135,12 +135,7 @@ public class SysUserService {
 
     @Transactional(rollbackFor = Exception.class)
     public int insertSysUser(SysUserDto sysUserDto) {
-        //检验手机号是否唯一
-        LambdaQueryWrapper<SysUser> lqw = new LambdaQueryWrapper<>();
-        lqw.eq(ObjectUtil.isNotEmpty(sysUserDto.getPhonenumber()), SysUser::getPhonenumber, sysUserDto.getPhonenumber());
-        if (sysUserMapper.exists(lqw)) {
-            throw new RuntimeException("手机号已存在");
-        }
+        validUserUnique(sysUserDto);
         //新增用户表
         SysUser sysUser = BeanCopyUtils.copy(sysUserDto, SysUser.class);
         int insert = sysUserMapper.insert(sysUser);
@@ -153,6 +148,16 @@ public class SysUserService {
         userRoleList.forEach(f -> f.setUserId(sysUser.getUserId()));
         sysUserRoleMapper.insertBatch(userRoleList, 10);
         return insert;
+    }
+
+    private void validUserUnique(SysUserDto sysUserDto) {
+        //检验手机号和用户名是否唯一
+        LambdaQueryWrapper<SysUser> lqw = new LambdaQueryWrapper<>();
+        lqw.eq(ObjectUtil.isNotEmpty(sysUserDto.getPhonenumber()), SysUser::getPhonenumber, sysUserDto.getPhonenumber());
+        lqw.eq(ObjectUtil.isNotEmpty(sysUserDto.getUserName()), SysUser::getUserName, sysUserDto.getUserName());
+        if (sysUserMapper.exists(lqw)) {
+            throw new RuntimeException("手机号或用户名已存在");
+        }
     }
 
 
@@ -178,6 +183,7 @@ public class SysUserService {
         userRoleList.forEach(f -> f.setUserId(sysUserDto.getUserId()));
         sysUserRoleMapper.insertBatch(userRoleList, 10);
         //更新用户
+        validUserUnique(sysUserDto);
         return sysUserMapper.updateById(BeanCopyUtils.copy(sysUserDto, SysUser.class));
     }
 

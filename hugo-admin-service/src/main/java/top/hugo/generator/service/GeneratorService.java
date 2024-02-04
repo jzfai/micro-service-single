@@ -152,8 +152,9 @@ public class GeneratorService {
             }
         });
         //生成zip包
-        GeneratorTempUtils.createZipFile(exportZipDir + ".zip", exportZipDir);
-        return exportZipDir + ".zip";
+        String finalFilePath = exportZipDir + ".zip";
+        GeneratorTempUtils.createZipFile(finalFilePath, exportZipDir);
+        return finalFilePath;
     }
 
 

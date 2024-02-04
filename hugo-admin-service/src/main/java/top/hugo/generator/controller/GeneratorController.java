@@ -84,7 +84,7 @@ public class GeneratorController {
         //生成模板
         String exportFilePath = generatorService.generatorFileByConfig(JacksonUtils.parseObject(jsonData, Map.class), id, fileNamePre);
         //你压缩包路径
-        FileSelfUtils.exportFile(response, exportFilePath, DateUtils.dateTimeNow() + ".zip");
+        FileSelfUtils.exportFile(response, exportFilePath, fileNamePre + DateUtils.dateTimeNow() + ".zip");
     }
 
 
@@ -100,7 +100,7 @@ public class GeneratorController {
         //生成模板
         String exportFilePath = generatorService.generatorTemplateFileByConfigId(configId, templateId, fileNamePre);
         //你压缩包路径
-        FileSelfUtils.exportFile(response, exportFilePath, DateUtils.dateTimeNow() + ".zip");
+        FileSelfUtils.exportFile(response, exportFilePath, fileNamePre + DateUtils.dateTimeNow() + ".zip");
     }
 
     /**

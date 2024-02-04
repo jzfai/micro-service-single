@@ -15,19 +15,16 @@
         <include refid="selectMenuVo"/>
         where m.menu_type!="F" and m.platform_id=#{platformId}
         and m.status="0"
-        order by m.order_num DESC
     </select>
     <select id="selectMenuByUserId" resultType="SysMenu">
         <include refid="selectMenuVo"/>
         where sur.user_id = #{userId} and m.menu_type!="F" and m.platform_id=#{platformId}
         and m.status="0"
-        order by m.order_num DESC
     </select>
     <select id="selectBtnPermByUserId" resultType="SysMenu">
         <include refid="selectMenuVo"/>
         where sur.user_id = #{userId} and m.menu_type = "F" and m.platform_id=#{platformId}
         and m.status="0"
-        order by m.order_num DESC
     </select>
 
 
@@ -35,7 +32,7 @@
     <sql id="selectRole">
         select sr.*
         from sys_role sr
-        left join sys_user_role sur on sur.role_id = sr.role_id
+                 left join sys_user_role sur on sur.role_id = sr.role_id
     </sql>
     <select id="selectRolesByUserId" resultType="SysRole">
         <include refid="selectRole"/>
@@ -47,9 +44,9 @@
     <select id="selectMenuListByRoleId" resultType="Long">
         select m.menu_id
         from sys_menu m
-        left join sys_role_menu rm on m.menu_id = rm.menu_id
+                 left join sys_role_menu rm on m.menu_id = rm.menu_id
         where rm.role_id = #{roleId}
-        order by m.parent_id, m.order_num DESC
+        order by m.parent_id
     </select>
 
 
@@ -57,9 +54,8 @@
     <select id="selectMenuListByRolePlatformId">
         select m.menu_id
         from sys_menu m
-        left join sys_role_menu rm on m.menu_id = rm.menu_id
-        where rm.role_id = #{roleId}
-        where m.platform_id=#{platformId}
-        order by m.parent_id, m.order_num DESC
+                 left join sys_role_menu rm on m.menu_id = rm.menu_id
+        where rm.role_id = #{roleId} where m.platform_id=#{platformId}
+        order by m.parent_id
     </select>
 </mapper>
