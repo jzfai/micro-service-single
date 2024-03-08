@@ -15,11 +15,13 @@
         <include refid="selectMenuVo"/>
         where m.menu_type!="F" and m.platform_id=#{platformId}
         and m.status="0"
+        ORDER BY m.order_num desc
     </select>
     <select id="selectMenuByUserId" resultType="SysMenu">
         <include refid="selectMenuVo"/>
         where sur.user_id = #{userId} and m.menu_type!="F" and m.platform_id=#{platformId}
         and m.status="0"
+        ORDER BY m.order_num desc
     </select>
     <select id="selectBtnPermByUserId" resultType="SysMenu">
         <include refid="selectMenuVo"/>

@@ -50,7 +50,7 @@ public class SysMenuController {
     /**
      * 导出sysMenu列表
      */
-//@Log(title = "sysMenu管理", businessType = BusinessType.EXPORT)
+    //@Log(title = "sysMenu管理", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(SysMenuQuery sysMenu, HttpServletResponse response) {
         List<SysMenuVo> list = sysMenuService.selectSysMenuList(sysMenu);
