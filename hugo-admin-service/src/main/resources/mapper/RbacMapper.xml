@@ -15,21 +15,19 @@
         <include refid="selectMenuVo"/>
         where m.menu_type!="F" and m.platform_id=#{platformId}
         and m.status="0"
-        ORDER BY m.order_num desc
+        ORDER BY m.order_num
     </select>
     <select id="selectMenuByUserId" resultType="SysMenu">
         <include refid="selectMenuVo"/>
         where sur.user_id = #{userId} and m.menu_type!="F" and m.platform_id=#{platformId}
         and m.status="0"
-        ORDER BY m.order_num desc
+        ORDER BY m.order_num
     </select>
     <select id="selectBtnPermByUserId" resultType="SysMenu">
         <include refid="selectMenuVo"/>
         where sur.user_id = #{userId} and m.menu_type = "F" and m.platform_id=#{platformId}
         and m.status="0"
     </select>
-
-
     <!--角色筛选-->
     <sql id="selectRole">
         select sr.*
@@ -39,6 +37,7 @@
     <select id="selectRolesByUserId" resultType="SysRole">
         <include refid="selectRole"/>
         WHERE sr.del_flag = '0' and sur.user_id = #{userId}
+
     </select>
 
 
@@ -50,7 +49,6 @@
         where rm.role_id = #{roleId}
         order by m.parent_id
     </select>
-
 
     <!--根据角色查询菜单信息-->
     <select id="selectMenuListByRolePlatformId">

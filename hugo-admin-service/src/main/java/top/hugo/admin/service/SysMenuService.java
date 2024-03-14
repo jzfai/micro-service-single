@@ -43,6 +43,7 @@ public class SysMenuService {
 
     public List<SysMenuVo> selectSysMenuList(SysMenuQuery sysMenuQuery) {
         LambdaQueryWrapper<SysMenu> lqw = getQueryWrapper(sysMenuQuery);
+
         return sysMenuMapper.selectVoList(lqw);
     }
 
@@ -58,7 +59,7 @@ public class SysMenuService {
         lqw.eq(ObjectUtil.isNotEmpty(sysMenuQuery.getPlatformId()), SysMenu::getPlatformId, sysMenuQuery.getPlatformId());
         lqw.eq(ObjectUtil.isNotEmpty(sysMenuQuery.getStatus()), SysMenu::getStatus, sysMenuQuery.getStatus());
         lqw.eq(ObjectUtil.isNotEmpty(sysMenuQuery.getMenuType()), SysMenu::getMenuType, sysMenuQuery.getMenuType());
-        lqw.orderByDesc(SysMenu::getOrderNum);
+        lqw.orderByAsc(SysMenu::getOrderNum);
         return lqw;
     }
 
