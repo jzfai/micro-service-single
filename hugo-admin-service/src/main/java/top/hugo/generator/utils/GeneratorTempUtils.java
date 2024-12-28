@@ -90,6 +90,7 @@ public class GeneratorTempUtils {
     public static void createZipFile(String outputZipPath, String needZipDir) {
         try {
             new ZipFile(outputZipPath).addFolder(new File(needZipDir));
+            //FileSelfUtils.deleteDir(needZipDir); //删除导出的文件夹（清空目录）
         } catch (ZipException e) {
             throw new RuntimeException("压缩文件夹报错" + e);
         }
@@ -98,6 +99,7 @@ public class GeneratorTempUtils {
     /**
      * 根据环境返回文件存储目录
      *
+     * +
      * @return
      */
     public static String getDirByEnv() {

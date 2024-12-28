@@ -1,7 +1,7 @@
 package top.hugo.admin.query;
 
-import lombok.Data;
 import top.hugo.domain.PageAndTimeRangeQuery;
+import lombok.Data;
 
 /**
  * 平台请求接收类

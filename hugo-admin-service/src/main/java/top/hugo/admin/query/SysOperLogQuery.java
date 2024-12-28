@@ -1,7 +1,7 @@
 package top.hugo.admin.query;
 
-import lombok.Data;
 import top.hugo.domain.PageAndTimeRangeQuery;
+import lombok.Data;
 
 import java.util.Date;
 
@@ -25,6 +25,11 @@ public class SysOperLogQuery extends PageAndTimeRangeQuery {
      * 操作类别（0其它 1后台用户 2手机端用户）
      */
     private Integer operatorType;
+
+    /**
+     * 操作人
+     */
+    private String operName;
     /**
      * 操作状态（0正常 1异常）
      */

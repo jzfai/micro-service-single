@@ -9,5 +9,14 @@ public class TemplateChangeDto {
     /**
      * id
      */
+    private Integer modelId;
+
+    /**
+     * id
+     */
     private Integer id;
+    /**
+     * id
+     */
+    private Integer fileId;
 }

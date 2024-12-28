@@ -1,15 +1,6 @@
 package top.hugo.generator.service;
 
 import cn.hutool.core.util.ObjectUtil;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.velocity.Template;
-import org.apache.velocity.context.Context;
-import org.apache.velocity.shaded.commons.io.FilenameUtils;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 import top.hugo.common.utils.BeanCopyUtils;
 import top.hugo.common.utils.JacksonUtils;
 import top.hugo.generator.dto.TemplateChangeDto;
@@ -19,6 +10,15 @@ import top.hugo.generator.mapper.ConfigSaveMapper;
 import top.hugo.generator.mapper.TemplateFileMapper;
 import top.hugo.generator.utils.FileSelfUtils;
 import top.hugo.generator.utils.GeneratorTempUtils;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.velocity.Template;
+import org.apache.velocity.context.Context;
+import org.apache.velocity.shaded.commons.io.FilenameUtils;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -44,7 +44,7 @@ public class GeneratorService {
         //更新模板文件信息
         this.templateFileMapper.updateById(BeanCopyUtils.copy(templateChangeBo, TemplateFile.class));
         //更新模板内容
-        FileSelfUtils.savaFileByName(templateChangeBo.getId(), templateChangeBo.getFileName(), templateChangeBo.getCode());
+        FileSelfUtils.savaFileByName(templateChangeBo.getModelId(), templateChangeBo.getFileName(), templateChangeBo.getCode());
     }
 
     /**
@@ -69,6 +69,8 @@ public class GeneratorService {
             FileSelfUtils.savaFileByMulti(file, templateFile.getId().toString(), file.getOriginalFilename());
         }
     }
+
+
 
     /*根据文件配置id,提供下载*/
     public String downZipByTemplateFileId(Integer id) {
@@ -97,11 +99,9 @@ public class GeneratorService {
         xmlTemp.merge(context, xmlWriter);
         return xmlWriter.toString();
     }
-
-
     /**
      * 除vm以外的文件生成文件导出(根据配置Id)
-     * 熊猫哥
+     * 邝华
      */
     public String generatorTemplateFileByConfigId(Integer configId, Integer templateId, String fileNamePre) {
         ConfigSave configSave = configSaveMapper.selectById(configId);
@@ -152,10 +152,10 @@ public class GeneratorService {
             }
         });
         //生成zip包
-        GeneratorTempUtils.createZipFile(exportZipDir + ".zip", exportZipDir);
-        return exportZipDir + ".zip";
+        String finalFilePath = exportZipDir + ".zip";
+        GeneratorTempUtils.createZipFile(finalFilePath, exportZipDir);
+        return finalFilePath;
     }
-
 
     /**
      * 处理前后端文件名

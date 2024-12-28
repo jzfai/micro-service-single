@@ -1,9 +1,6 @@
 package top.hugo.admin.controller;
 
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
 import top.hugo.admin.dto.SysMenuDto;
 import top.hugo.admin.entity.SysMenu;
 import top.hugo.admin.query.SysMenuQuery;
@@ -13,6 +10,9 @@ import top.hugo.common.domain.R;
 import top.hugo.common.utils.BeanCopyUtils;
 import top.hugo.domain.TableDataInfo;
 import top.hugo.easyexecl.utils.EasyExcelUtils;
+import lombok.RequiredArgsConstructor;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
@@ -50,7 +50,7 @@ public class SysMenuController {
     /**
      * 导出sysMenu列表
      */
-//@Log(title = "sysMenu管理", businessType = BusinessType.EXPORT)
+    //@Log(title = "sysMenu管理", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(SysMenuQuery sysMenu, HttpServletResponse response) {
         List<SysMenuVo> list = sysMenuService.selectSysMenuList(sysMenu);
@@ -91,13 +91,12 @@ public class SysMenuController {
      *
      * @param sysMenuIds sysMenuID串
      */
-//@Log(title = "sysMenu管理", businessType = BusinessType.DELETE)
+    //@Log(title = "sysMenu管理", businessType = BusinessType.DELETE)
     @DeleteMapping("/{sysMenuIds}")
     public R<Void> remove(@PathVariable Long[] sysMenuIds) {
         return R.result(sysMenuService.deleteSysMenuByIds(sysMenuIds));
     }
-
-
+    
     /**
      * 删除单个sysMenu
      *

@@ -1,4 +1,4 @@
-//package top.hugo.admin.controller;
+package top.hugo.admin.controller;//package top.hugo.admin.controller;
 //
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.web.bind.annotation.GetMapping;

@@ -1,4 +1,4 @@
-//package top.hugo.admin.controller;
+package top.hugo.admin.controller;//package top.hugo.admin.controller;
 //
 //import cn.hutool.core.lang.Dict;
 //import lombok.RequiredArgsConstructor;

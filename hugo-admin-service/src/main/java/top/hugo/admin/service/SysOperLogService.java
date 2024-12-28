@@ -3,12 +3,6 @@ package top.hugo.admin.service;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.ObjectUtil;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import lombok.RequiredArgsConstructor;
-import org.springframework.context.event.EventListener;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Service;
 import top.hugo.admin.entity.SysOperLog;
 import top.hugo.admin.mapper.SysOperLogMapper;
 import top.hugo.admin.query.SysOperLogQuery;
@@ -16,6 +10,12 @@ import top.hugo.admin.vo.SysOperLogVo;
 import top.hugo.common.event.OperLogEvent;
 import top.hugo.common.utils.AddressUtils;
 import top.hugo.domain.TableDataInfo;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import lombok.RequiredArgsConstructor;
+import org.springframework.context.event.EventListener;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -60,8 +60,10 @@ public class SysOperLogService {
         LambdaQueryWrapper<SysOperLog> lqw = new LambdaQueryWrapper<SysOperLog>();
         lqw.like(ObjectUtil.isNotEmpty(sysOperLogQuery.getBusinessType()), SysOperLog::getBusinessType, sysOperLogQuery.getBusinessType());
         lqw.like(ObjectUtil.isNotEmpty(sysOperLogQuery.getOperTime()), SysOperLog::getOperTime, sysOperLogQuery.getOperTime());
+        lqw.like(ObjectUtil.isNotEmpty(sysOperLogQuery.getOperName()), SysOperLog::getOperName, sysOperLogQuery.getOperName());
         lqw.like(ObjectUtil.isNotEmpty(sysOperLogQuery.getOperatorType()), SysOperLog::getOperatorType, sysOperLogQuery.getOperatorType());
         lqw.like(ObjectUtil.isNotEmpty(sysOperLogQuery.getStatus()), SysOperLog::getStatus, sysOperLogQuery.getStatus());
+        lqw.orderByDesc(SysOperLog::getOperTime);
         return lqw;
     }
 

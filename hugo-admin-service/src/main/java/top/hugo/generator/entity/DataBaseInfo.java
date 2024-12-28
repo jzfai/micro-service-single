@@ -14,11 +14,12 @@ import javax.validation.constraints.NotBlank;
 public class DataBaseInfo {
     @NotBlank(message = "url不能为空")
     private String url;
-    @NotBlank(message = "name不能为空")
-    private String name;
+    @NotBlank(message = "userName不能为空")
+    private String userName;
     @NotBlank(message = "password不能为空")
     private String password;
-    @NotBlank(message = "dbName不能为空")
     private String dbName;
     private String tbName;
+    // 数据库配置主键ID
+    private Integer dbConfigId;
 }

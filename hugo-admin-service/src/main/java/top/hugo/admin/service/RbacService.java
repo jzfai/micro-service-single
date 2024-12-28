@@ -7,15 +7,6 @@ import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.crypto.digest.BCrypt;
 import cn.hutool.extra.spring.SpringUtil;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.expression.Expression;
-import org.springframework.expression.ExpressionParser;
-import org.springframework.expression.spel.standard.SpelExpressionParser;
-import org.springframework.stereotype.Service;
 import top.hugo.admin.captcha.UnsignedMathGenerator;
 import top.hugo.admin.entity.SysMenu;
 import top.hugo.admin.entity.SysRole;
@@ -30,6 +21,15 @@ import top.hugo.common.utils.BeanCopyUtils;
 import top.hugo.common.utils.ServletUtils;
 import top.hugo.redis.utils.RedisUtils;
 import top.hugo.satoken.helper.LoginHelper;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.expression.Expression;
+import org.springframework.expression.ExpressionParser;
+import org.springframework.expression.spel.standard.SpelExpressionParser;
+import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.Duration;
@@ -201,6 +201,7 @@ public class RbacService {
         boolean b = checkUserNameUnique(sysUser);
         if (b) throw new RuntimeException("用户已存在");
 
+        sysUser.setNickName(sysUser.getUserName());
         //转换密码
         sysUser.setPassword(BCrypt.hashpw(sysUser.getPassword()));
         return userMapper.insert(sysUser);
@@ -232,7 +233,7 @@ public class RbacService {
      * 根据用户查询菜单列表
      *
      * @return
-     * @author 熊猫哥
+     * @author 邝华
      * @date 2023-09-07 17:25
      */
     public List<SysMenu> selectMenuByUserId(Long userId, Integer platformId) {
@@ -252,7 +253,7 @@ public class RbacService {
      * 获取用户信息
      *
      * @return
-     * @author 熊猫哥
+     * @author 邝华
      * @date 2023-09-07 17:40
      */
     public HashMap<String, Object> getUserInfo(Integer platformId) {
@@ -272,7 +273,7 @@ public class RbacService {
      * 根据用户id查询角色集合
      *
      * @return
-     * @author 熊猫哥
+     * @author 邝华
      * @date 2023-09-07 17:46
      */
     public List<String> selectRolesByUserId(Long userId) {

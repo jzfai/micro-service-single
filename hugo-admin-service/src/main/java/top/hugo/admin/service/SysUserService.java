@@ -2,11 +2,7 @@ package top.hugo.admin.service;
 
 
 import cn.hutool.core.util.ObjectUtil;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import cn.hutool.crypto.digest.BCrypt;
 import top.hugo.admin.dto.SysUserDto;
 import top.hugo.admin.entity.SysUser;
 import top.hugo.admin.entity.SysUserPost;
@@ -19,6 +15,12 @@ import top.hugo.admin.vo.SysUserDetailVo;
 import top.hugo.admin.vo.SysUserVo;
 import top.hugo.common.utils.BeanCopyUtils;
 import top.hugo.domain.TableDataInfo;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.List;
@@ -34,16 +36,28 @@ import java.util.stream.Collectors;
 @Service
 public class SysUserService {
     private final SysUserMapper sysUserMapper;
-
     private final SysUserPostMapper sysUserPostMapper;
     private final SysUserRoleMapper sysUserRoleMapper;
 
-    public TableDataInfo<SysUserVo> selectPageSysUserList(SysUserQuery sysUserQuery) {
-        LambdaQueryWrapper<SysUser> lqw = getQueryWrapper(sysUserQuery);
-        IPage<SysUserVo> page = sysUserMapper.selectVoPage(sysUserQuery.build(), lqw);
-        return TableDataInfo.build(page);
-    }
 
+
+    /*同步用户*/
+    @Transactional(rollbackFor = Exception.class)
+    public void syncUser(SysUserDto sysUserDto) {
+        //新增用户表
+        SysUser sysUser = BeanCopyUtils.copy(sysUserDto, SysUser.class);
+        QueryWrapper<SysUser> wrapper = new QueryWrapper<>();
+        wrapper.eq("user_name",sysUser.getUserName());
+        if(sysUserMapper.selectCount(wrapper)==0){
+             sysUser.setPassword(BCrypt.hashpw(sysUser.getPassword()));
+             sysUserMapper.insert(sysUser);
+             //插入角色
+            SysUserRole sysUserRole = new SysUserRole();
+            sysUserRole.setRoleId(5L);
+            sysUserRole.setUserId(sysUser.getUserId());
+            sysUserRoleMapper.insert(sysUserRole);
+        }
+    }
 
     /**
      * 查询用户集合
@@ -91,20 +105,22 @@ public class SysUserService {
     public SysUserDetailVo selectSysUserById(Long sysUserId) {
         LambdaQueryWrapper<SysUserPost> lqw = new LambdaQueryWrapper<>();
         lqw.eq(ObjectUtil.isNotEmpty(sysUserId), SysUserPost::getUserId, sysUserId);
-
         //查询用户岗位表
-        Set<Long> postIds = this.sysUserPostMapper.selectList(lqw).stream().map(m -> m.getPostId()).collect(Collectors.toSet());
-
+        Set<Long> postIds = this.sysUserPostMapper.selectList(lqw).stream().map(SysUserPost::getPostId).collect(Collectors.toSet());
         //查询用户角色
         LambdaQueryWrapper<SysUserRole> lq = new LambdaQueryWrapper<>();
         lq.eq(ObjectUtil.isNotEmpty(sysUserId), SysUserRole::getUserId, sysUserId);
-        Set<Long> roleIds = this.sysUserRoleMapper.selectList(lq).stream().map(m -> m.getRoleId()).collect(Collectors.toSet());
+        Set<Long> roleIds = this.sysUserRoleMapper.selectList(lq).stream().map(SysUserRole::getRoleId).collect(Collectors.toSet());
         //查询用户
         SysUser sysUser = sysUserMapper.selectById(sysUserId);
         //拼接数据
         SysUserDetailVo sysUserDetailVo = BeanCopyUtils.copy(sysUser, SysUserDetailVo.class);
-        sysUserDetailVo.setPostIds(postIds);
-        sysUserDetailVo.setRoleIds(roleIds);
+        if (sysUserDetailVo != null) {
+            sysUserDetailVo.setPostIds(postIds);
+        }
+        if (sysUserDetailVo != null) {
+            sysUserDetailVo.setRoleIds(roleIds);
+        }
         return sysUserDetailVo;
     }
 
@@ -139,12 +155,7 @@ public class SysUserService {
 
     @Transactional(rollbackFor = Exception.class)
     public int insertSysUser(SysUserDto sysUserDto) {
-        //检验手机号是否唯一
-        LambdaQueryWrapper<SysUser> lqw = new LambdaQueryWrapper<>();
-        lqw.eq(ObjectUtil.isNotEmpty(sysUserDto.getPhonenumber()), SysUser::getPhonenumber, sysUserDto.getPhonenumber());
-        if (sysUserMapper.exists(lqw)) {
-            throw new RuntimeException("手机号已存在");
-        }
+        validUserUnique(sysUserDto);
         //新增用户表
         SysUser sysUser = BeanCopyUtils.copy(sysUserDto, SysUser.class);
         int insert = sysUserMapper.insert(sysUser);
@@ -157,6 +168,16 @@ public class SysUserService {
         userRoleList.forEach(f -> f.setUserId(sysUser.getUserId()));
         sysUserRoleMapper.insertBatch(userRoleList, 10);
         return insert;
+    }
+
+    private void validUserUnique(SysUserDto sysUserDto) {
+        //检验手机号和用户名是否唯一
+        LambdaQueryWrapper<SysUser> lqw = new LambdaQueryWrapper<>();
+        lqw.eq(ObjectUtil.isNotEmpty(sysUserDto.getPhonenumber()), SysUser::getPhonenumber, sysUserDto.getPhonenumber());
+        lqw.eq(ObjectUtil.isNotEmpty(sysUserDto.getUserName()), SysUser::getUserName, sysUserDto.getUserName());
+        if (sysUserMapper.exists(lqw)) {
+            throw new RuntimeException("手机号或用户名已存在");
+        }
     }
 
 
@@ -182,8 +203,15 @@ public class SysUserService {
         userRoleList.forEach(f -> f.setUserId(sysUserDto.getUserId()));
         sysUserRoleMapper.insertBatch(userRoleList, 10);
         //更新用户
+        validUserUnique(sysUserDto);
         return sysUserMapper.updateById(BeanCopyUtils.copy(sysUserDto, SysUser.class));
     }
+
+    /*更新用户密码*/
+    public int updateUserPassWord(SysUser sysUser) {
+        return sysUserMapper.updateById(sysUser);
+    }
+
 
     /**
      * 修改用户状态
@@ -193,5 +221,22 @@ public class SysUserService {
      */
     public int updateUserStatus(SysUser user) {
         return sysUserMapper.updateById(user);
+    }
+
+    public TableDataInfo<SysUserVo> selectPageSysUserPostList(SysUserQuery sysUserQuery) {
+
+        QueryWrapper<SysUser> wrapper = new QueryWrapper<>();
+        wrapper.eq("su.del_flag", "0");
+        if (ObjectUtil.isNotEmpty(sysUserQuery.getStatus())) {
+            wrapper.eq("su.status", sysUserQuery.getStatus());
+        }
+        if (ObjectUtil.isNotEmpty(sysUserQuery.getStatus())) {
+            wrapper.eq("su.phonenumber", sysUserQuery.getPhonenumber());
+        }
+        if (ObjectUtil.isNotEmpty(sysUserQuery.getBeginTime())) {
+            wrapper.between("su.create_time", sysUserQuery.getBeginTime(), sysUserQuery.getEndTime());
+        }
+        IPage<SysUserVo> page = sysUserMapper.selectUserAndPostList(sysUserQuery.build(), wrapper);
+        return TableDataInfo.build(page);
     }
 }

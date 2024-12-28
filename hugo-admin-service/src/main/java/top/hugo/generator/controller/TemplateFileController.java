@@ -1,9 +1,8 @@
 package top.hugo.generator.controller;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import top.hugo.common.annotation.Log;
 import top.hugo.common.domain.R;
+import top.hugo.common.enums.BusinessType;
 import top.hugo.common.utils.BeanCopyUtils;
 import top.hugo.domain.TableDataInfo;
 import top.hugo.easyexecl.utils.EasyExcelUtils;
@@ -12,6 +11,9 @@ import top.hugo.generator.entity.TemplateFile;
 import top.hugo.generator.query.TemplateFileQuery;
 import top.hugo.generator.service.TemplateFileService;
 import top.hugo.generator.vo.TemplateFileVo;
+import lombok.RequiredArgsConstructor;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
@@ -65,6 +67,7 @@ public class TemplateFileController {
     //@SaCheckPermission("system:templateFile:add")
     //@Log(title = "templateFile管理", businessType = BusinessType.INSERT)
     @PostMapping
+    @Log(title = "模板文件", businessType = BusinessType.INSERT)
     public R<Void> add(@Validated @RequestBody TemplateFileDto templateFileDto) {
         TemplateFile templateFile = BeanCopyUtils.copy(templateFileDto, TemplateFile.class);
         return R.result(templateFileService.insertTemplateFile(templateFile));
@@ -88,6 +91,7 @@ public class TemplateFileController {
      * @param templateFileId templateFileID串
      */
     @DeleteMapping("deleteById/{templateFileId}")
+    @Log(title = "模板文件", businessType = BusinessType.DELETE)
     public R<Void> deleteTemplateFileById(@PathVariable Long templateFileId) {
         return R.result(templateFileService.deleteTemplateFileById(templateFileId));
     }
@@ -107,7 +111,7 @@ public class TemplateFileController {
     /**
      * 获取templateFile列表(所有)
      */
-    @GetMapping("/selectTemplateFileList")
+    @GetMapping("/selectTemplateFileAll")
     public R<List<TemplateFileVo>> selectTemplateFileList(@Validated TemplateFileQuery templateFile) {
         List<TemplateFileVo> templateFileList = templateFileService.selectTemplateFileList(templateFile);
         return R.ok(templateFileList);

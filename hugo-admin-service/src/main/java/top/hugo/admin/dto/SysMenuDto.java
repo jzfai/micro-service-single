@@ -2,12 +2,10 @@
 
 
 package top.hugo.admin.dto;
-import java.util.Date;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Pattern;
+
 import lombok.Data;
+
+import java.util.Date;
 /**
 *  菜单权限表请求接收类
 *

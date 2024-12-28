@@ -1,9 +1,6 @@
 package top.hugo.admin.controller;
 
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
 import top.hugo.admin.dto.SysDeptDto;
 import top.hugo.admin.entity.SysDept;
 import top.hugo.admin.query.SysDeptQuery;
@@ -13,6 +10,9 @@ import top.hugo.common.domain.R;
 import top.hugo.common.utils.BeanCopyUtils;
 import top.hugo.domain.TableDataInfo;
 import top.hugo.easyexecl.utils.EasyExcelUtils;
+import lombok.RequiredArgsConstructor;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;

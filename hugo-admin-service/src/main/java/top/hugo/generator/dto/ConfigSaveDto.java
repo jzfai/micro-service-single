@@ -27,4 +27,11 @@ public class ConfigSaveDto {
      * id
      */
     private Integer id;
+
+
+    //用户名
+    private String userName;
+
+    //备注
+    private String remark;
 }

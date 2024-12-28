@@ -1,15 +1,15 @@
 package top.hugo.generator.service;
 
 import cn.hutool.core.util.ObjectUtil;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 import top.hugo.domain.TableDataInfo;
 import top.hugo.generator.entity.TemplateFile;
 import top.hugo.generator.mapper.TemplateFileMapper;
 import top.hugo.generator.query.TemplateFileQuery;
 import top.hugo.generator.vo.TemplateFileVo;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.List;
@@ -45,6 +45,10 @@ public class TemplateFileService {
     private static LambdaQueryWrapper<TemplateFile> getQueryWrapper(TemplateFileQuery templateFileQuery) {
         LambdaQueryWrapper<TemplateFile> lqw = new LambdaQueryWrapper<>();
         lqw.like(ObjectUtil.isNotEmpty(templateFileQuery.getName()), TemplateFile::getName, templateFileQuery.getName());
+        lqw.eq(ObjectUtil.isNotEmpty(templateFileQuery.getProjectType()), TemplateFile::getProjectType, templateFileQuery.getProjectType());
+        //用户查询
+        //lqw.eq(!LoginHelper.isAdmin(), TemplateFile::getCreateBy, LoginHelper.getUsername());
+
         lqw.orderByDesc(TemplateFile::getCreateTime).orderByDesc(TemplateFile::getUpdateTime);
         return lqw;
     }

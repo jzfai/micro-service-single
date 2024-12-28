@@ -2,15 +2,15 @@ package top.hugo.admin.service;
 
 
 import cn.hutool.core.util.ObjectUtil;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 import top.hugo.admin.entity.SysPlatform;
 import top.hugo.admin.mapper.SysPlatformMapper;
 import top.hugo.admin.query.SysPlatformQuery;
 import top.hugo.admin.vo.SysPlatformVo;
 import top.hugo.domain.TableDataInfo;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.List;

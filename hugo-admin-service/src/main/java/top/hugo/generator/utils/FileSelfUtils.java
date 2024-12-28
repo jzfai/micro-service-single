@@ -6,11 +6,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 
 /**
  * @Title: FileSelfUtils
@@ -20,6 +21,97 @@ import java.nio.charset.StandardCharsets;
  */
 @Log4j2
 public class FileSelfUtils {
+    /**
+     * 将包名转换成目录
+     */
+    public static String changeDiagToDir(String pathString){
+        return  pathString.replace("-",File.separator);
+    }
+
+
+    public static String changeDotToDir(String pathString){
+        return  pathString.replace(".",File.separator);
+    }
+
+    //复制文件到目标目录下
+    public static void copyFileToDir(String sourceFile,String targetString){
+        // 源文件路径
+        Path source = Paths.get(sourceFile);
+        // 目标文件夹路径
+        Path targetDir = Paths.get(targetString);
+
+        // 检查目标文件夹是否存在，如果不存在则创建它
+        if (!Files.exists(targetDir)) {
+            try {
+                Files.createDirectories(targetDir);
+            } catch (IOException e) {
+                e.printStackTrace();
+                return;
+            }
+        }
+        // 构建目标文件路径（源文件名不变，只是改变其所在的目录）
+        Path target = targetDir.resolve(source.getFileName());
+        try {
+            // 复制文件
+            Files.copy(source, target, StandardCopyOption.REPLACE_EXISTING);
+            System.out.println("文件复制成功!");
+        } catch (IOException e) {
+            throw new RuntimeException(e+"文件复制失败");
+        }
+    }
+
+
+
+    /*复制文件目录到另一个目录*/
+    public static   void copyDirectory(File source, File dest) {
+        if (!dest.exists()) {
+            dest.mkdirs();
+        }
+        if (source.isDirectory()) {
+            String[] children = source.list();
+            for (int i = 0; i < children.length; i++) {
+                copyDirectory(new File(source, children[i]), new File(dest, children[i]));
+            }
+        } else {
+            try {
+                Files.copy(source.toPath(), dest.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            } catch (IOException e) {
+                throw new RuntimeException(e+"文件复制报错");
+            }
+        }
+    }
+
+    /**
+     * 根据传入的路径生成目录
+     *
+     * @param dirPath
+     */
+    public static void createDir(String dirPath) {
+        File directory = new File(dirPath);
+        // 创建目录
+        boolean result = directory.mkdirs();
+//        if (!result) {
+//            throw new RuntimeException("创建目录失败" + dirPath);
+//        }
+    }
+
+
+    /**
+     * 根据传入的路径生成目录
+     *
+     * @param filePath 传入文件路径
+     * @param content 文件内容
+     */
+    public static void createFile(String filePath, String content) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+            writer.write(content);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException("文件创建或写入失败：" + e.getMessage());
+        }
+    }
+
+
     /**
      * 上传文件存储到本地
      *
@@ -41,6 +133,27 @@ public class FileSelfUtils {
     }
 
     /**
+     * 上传文件存储到本地
+     *
+     * @param file
+     */
+    public static void savaFileByMultiBack(MultipartFile file, Integer id, Integer fileId,String fileName) {
+        String tmpSaveDir = getTemplateSaveRootDir();
+        //创建目录
+        String mkdirSting=tmpSaveDir + File.separator + id+ File.separator+ fileId;
+        fileMkdir(mkdirSting);
+        String filePath = mkdirSting+File.separator+fileName;
+        File f = new File(filePath);
+        log.info("保存文件路径" + filePath);
+        try {
+            file.transferTo(f);
+        } catch (IOException e) {
+            log.error("savaFileByMulti报错" + e);
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * 单个文件存储到本地
      *
      * @param id
@@ -48,9 +161,31 @@ public class FileSelfUtils {
      * @param code     文件内容
      */
     public static void savaFileByName(Integer id, String fileName, String code) {
-
         try {
             String savePath = GeneratorTempUtils.getDirByEnv() + File.separator + id + File.separator + fileName;
+            log.info(savePath);
+            FileWriter fw = new FileWriter(savePath);
+            fw.write(code);
+            fw.close();
+        } catch (IOException e) {
+            log.error("savaFileByName" + fileName);
+            e.printStackTrace();
+        }
+    }
+
+
+    /**
+     * 单个文件存储到本地
+     *
+     * @param id
+     * @param fileName
+     * @param code     文件内容
+     */
+    public static void savaFileByNameBack(Integer id,Integer fileId, String fileName, String code) {
+        try {
+            String saveDir=GeneratorTempUtils.getDirByEnv() + File.separator + id + File.separator+fileId;
+            FileSelfUtils.createDir(saveDir);
+            String savePath = saveDir+File.separator + fileName;
             log.info(savePath);
             FileWriter fw = new FileWriter(savePath);
             fw.write(code);

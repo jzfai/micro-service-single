@@ -1,11 +1,11 @@
 package top.hugo.admin.runner;
 
+import top.hugo.admin.service.DataDictService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
-import top.hugo.admin.service.DataDictService;
 
 @Slf4j
 @RequiredArgsConstructor

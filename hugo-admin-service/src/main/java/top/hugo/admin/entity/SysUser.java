@@ -70,13 +70,12 @@ public class SysUser {
 
     //更新时间
     @TableField(fill = FieldFill.UPDATE)
-      
 
     private Date updateTime;
 
 
     //用户ID
-    @TableId(type = IdType.AUTO)
+    @TableId(type = IdType.ASSIGN_ID)
     private Long userId;
 
     //用户账号

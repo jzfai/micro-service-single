@@ -1,8 +1,8 @@
 package top.hugo.admin.mapper;
 
-import org.apache.ibatis.annotations.Param;
 import top.hugo.admin.entity.SysMenu;
 import top.hugo.admin.entity.SysRole;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 

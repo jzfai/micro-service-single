@@ -11,5 +11,5 @@ import top.hugo.db.mapper.BaseMapperPlus;
  */
 
 public interface SysUserPostMapper extends BaseMapperPlus<SysUserPostMapper, SysUserPost, SysUserPost> {
-
-}
+  
+}  

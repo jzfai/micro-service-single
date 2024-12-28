@@ -1,8 +1,8 @@
 package top.hugo.admin.dto;
 
-import lombok.Data;
 import top.hugo.admin.entity.SysUserPost;
 import top.hugo.admin.entity.SysUserRole;
+import lombok.Data;
 
 import java.util.Date;
 import java.util.List;

@@ -1,7 +1,7 @@
 package top.hugo.generator.query;
 
-import lombok.Data;
 import top.hugo.domain.PageAndTimeRangeQuery;
+import lombok.Data;
 
 /**
  * 代码生成配置保存请求接收类

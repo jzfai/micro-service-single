@@ -1,10 +1,10 @@
 package top.hugo.generator.entity;
 
+import top.hugo.admin.domain.BaseEntity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
-import top.hugo.admin.domain.BaseEntity;
 
 /**
  * 代码生成配置保存实体类

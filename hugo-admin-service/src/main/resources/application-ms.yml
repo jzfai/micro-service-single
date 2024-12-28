@@ -1,10 +1,10 @@
 --- # sms 短信
 aliyun:
   sms:
-    accessKeyId: xxxx
-    secret: xxxx
+    accessKeyId: "333"
+    secret: "22"
     signName: 熊猫哥后台管理系统
-    templateCode: xxxx
+    templateCode: "11"
 
 spring:
   mail:

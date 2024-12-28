@@ -2,8 +2,10 @@
 
 
 package top.hugo.admin.vo;
-import java.util.Date;
+
 import lombok.Data;
+
+import java.util.Date;
 /**
 *  部门表返回实体类
 *

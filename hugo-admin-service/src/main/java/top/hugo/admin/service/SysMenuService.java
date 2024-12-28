@@ -2,16 +2,16 @@ package top.hugo.admin.service;
 
 
 import cn.hutool.core.util.ObjectUtil;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import top.hugo.admin.entity.SysMenu;
 import top.hugo.admin.mapper.SysMenuMapper;
 import top.hugo.admin.query.SysMenuQuery;
 import top.hugo.admin.vo.SysMenuVo;
 import top.hugo.domain.TableDataInfo;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -43,6 +43,7 @@ public class SysMenuService {
 
     public List<SysMenuVo> selectSysMenuList(SysMenuQuery sysMenuQuery) {
         LambdaQueryWrapper<SysMenu> lqw = getQueryWrapper(sysMenuQuery);
+
         return sysMenuMapper.selectVoList(lqw);
     }
 
@@ -55,9 +56,10 @@ public class SysMenuService {
     private static LambdaQueryWrapper<SysMenu> getQueryWrapper(SysMenuQuery sysMenuQuery) {
         LambdaQueryWrapper<SysMenu> lqw = new LambdaQueryWrapper<SysMenu>();
         lqw.like(ObjectUtil.isNotEmpty(sysMenuQuery.getMenuName()), SysMenu::getMenuName, sysMenuQuery.getMenuName());
-        lqw.like(ObjectUtil.isNotEmpty(sysMenuQuery.getPlatformId()), SysMenu::getPlatformId, sysMenuQuery.getPlatformId());
-        lqw.like(ObjectUtil.isNotEmpty(sysMenuQuery.getStatus()), SysMenu::getStatus, sysMenuQuery.getStatus());
-        lqw.like(ObjectUtil.isNotEmpty(sysMenuQuery.getMenuType()), SysMenu::getMenuType, sysMenuQuery.getMenuType());
+        lqw.eq(ObjectUtil.isNotEmpty(sysMenuQuery.getPlatformId()), SysMenu::getPlatformId, sysMenuQuery.getPlatformId());
+        lqw.eq(ObjectUtil.isNotEmpty(sysMenuQuery.getStatus()), SysMenu::getStatus, sysMenuQuery.getStatus());
+        lqw.eq(ObjectUtil.isNotEmpty(sysMenuQuery.getMenuType()), SysMenu::getMenuType, sysMenuQuery.getMenuType());
+        lqw.orderByAsc(SysMenu::getOrderNum);
         return lqw;
     }
 
@@ -117,7 +119,7 @@ public class SysMenuService {
         return sysMenuMapper.insert(sysMenu);
     }
 
-    
+
     /**
      * 修改保存平台信息
      *

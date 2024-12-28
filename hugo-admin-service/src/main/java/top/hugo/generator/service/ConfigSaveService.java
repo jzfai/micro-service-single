@@ -1,15 +1,15 @@
 package top.hugo.generator.service;
 
 import cn.hutool.core.util.ObjectUtil;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 import top.hugo.domain.TableDataInfo;
 import top.hugo.generator.entity.ConfigSave;
 import top.hugo.generator.mapper.ConfigSaveMapper;
 import top.hugo.generator.query.ConfigSaveQuery;
 import top.hugo.generator.vo.ConfigSaveVo;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.List;
@@ -26,10 +26,11 @@ public class ConfigSaveService {
 
     public TableDataInfo<ConfigSaveVo> selectPageConfigSaveList(ConfigSaveQuery configSaveQuery) {
         LambdaQueryWrapper<ConfigSave> lqw = getQueryWrapper(configSaveQuery);
+        lqw.select(ConfigSave::getId,ConfigSave::getUpdateBy,ConfigSave::getCreateBy,ConfigSave::getName);
         IPage<ConfigSaveVo> page = configSaveMapper.selectVoPage(configSaveQuery.build(), lqw);
         return TableDataInfo.build(page);
     }
-
+    
 
     /**
      * 查询代码生成配置保存分页
@@ -46,6 +47,7 @@ public class ConfigSaveService {
     private static LambdaQueryWrapper<ConfigSave> getQueryWrapper(ConfigSaveQuery configSaveQuery) {
         LambdaQueryWrapper<ConfigSave> lqw = new LambdaQueryWrapper<>();
         lqw.like(ObjectUtil.isNotEmpty(configSaveQuery.getName()), ConfigSave::getName, configSaveQuery.getName());
+//        lqw.eq(!LoginHelper.isAdmin(), ConfigSave::getCreateBy, LoginHelper.getUsername());
         lqw.orderByDesc(ConfigSave::getCreateTime).orderByDesc(ConfigSave::getUpdateTime);
         return lqw;
     }

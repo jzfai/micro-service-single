@@ -1,9 +1,6 @@
 package top.hugo.admin.controller;
 
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
 import top.hugo.admin.dto.SysDictypeDto;
 import top.hugo.admin.entity.SysDictype;
 import top.hugo.admin.query.SysDictypeQuery;
@@ -15,6 +12,9 @@ import top.hugo.common.enums.BusinessType;
 import top.hugo.common.utils.BeanCopyUtils;
 import top.hugo.domain.TableDataInfo;
 import top.hugo.easyexecl.utils.EasyExcelUtils;
+import lombok.RequiredArgsConstructor;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;

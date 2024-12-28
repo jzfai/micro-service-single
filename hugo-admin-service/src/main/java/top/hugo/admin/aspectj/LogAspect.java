@@ -3,6 +3,10 @@ package top.hugo.admin.aspectj;
 
 import cn.hutool.extra.spring.SpringUtil;
 import com.alibaba.ttl.TransmittableThreadLocal;
+import top.hugo.common.annotation.Log;
+import top.hugo.common.event.OperLogEvent;
+import top.hugo.common.utils.ServletUtils;
+import top.hugo.satoken.helper.LoginHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.StopWatch;
@@ -11,10 +15,6 @@ import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.springframework.stereotype.Component;
-import top.hugo.common.annotation.Log;
-import top.hugo.common.event.OperLogEvent;
-import top.hugo.common.utils.ServletUtils;
-import top.hugo.satoken.helper.LoginHelper;
 
 
 /**

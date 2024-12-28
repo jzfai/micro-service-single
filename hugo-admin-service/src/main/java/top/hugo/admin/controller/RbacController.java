@@ -2,18 +2,18 @@ package top.hugo.admin.controller;
 
 
 import cn.dev33.satoken.annotation.SaIgnore;
-import lombok.RequiredArgsConstructor;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
 import top.hugo.admin.domain.LoginBody;
 import top.hugo.admin.entity.SysMenu;
 import top.hugo.admin.entity.SysUser;
 import top.hugo.admin.service.RbacService;
 import top.hugo.common.domain.R;
 import top.hugo.satoken.helper.LoginHelper;
+import lombok.RequiredArgsConstructor;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.List;
@@ -35,7 +35,7 @@ public class RbacController {
      *
      * @param width  验证码宽度
      * @param height 验证码高度
-     * @author 熊猫哥
+     * @author 邝华
      * @date 2023-09-07 17:55
      */
     @SaIgnore
@@ -73,6 +73,7 @@ public class RbacController {
     /**
      * 注册
      */
+    @SaIgnore
     @PostMapping("register")
     public R<Void> register(String code, String uuid, SysUser sysUser) {
         return R.result(rbacService.register(code, uuid, sysUser));

@@ -1,13 +1,13 @@
 package top.hugo.admin.controller;
 
 
+import top.hugo.admin.entity.DictData;
+import top.hugo.admin.service.DataDictService;
+import top.hugo.common.domain.R;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import top.hugo.admin.entity.DictData;
-import top.hugo.admin.service.DataDictService;
-import top.hugo.common.domain.R;
 
 import java.util.List;
 

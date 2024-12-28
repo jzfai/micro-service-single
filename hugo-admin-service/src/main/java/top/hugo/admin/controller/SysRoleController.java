@@ -1,17 +1,19 @@
 package top.hugo.admin.controller;
 
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
 import top.hugo.admin.entity.SysRole;
 import top.hugo.admin.query.SysRoleQuery;
 import top.hugo.admin.service.SysRoleService;
 import top.hugo.admin.vo.SysRoleVo;
+import top.hugo.common.annotation.Log;
 import top.hugo.common.domain.R;
 import top.hugo.common.dto.SysRoleDto;
+import top.hugo.common.enums.BusinessType;
 import top.hugo.domain.TableDataInfo;
 import top.hugo.easyexecl.utils.EasyExcelUtils;
+import lombok.RequiredArgsConstructor;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
@@ -43,7 +45,7 @@ public class SysRoleController {
     /**
      * 导出sysRole列表
      */
-//@Log(title = "sysRole管理", businessType = BusinessType.EXPORT)
+    @Log(title = "sysRole管理", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(SysRoleQuery sysRole, HttpServletResponse response) {
         List<SysRoleVo> list = sysRoleService.selectSysRoleList(sysRole);
@@ -63,10 +65,13 @@ public class SysRoleController {
 
     /**
      * 新增sysRole
+     *
+     * @return
      */
     @PostMapping
-    public R<Void> add(@Validated @RequestBody SysRoleDto sysRoleDto) {
-        return R.result(sysRoleService.insertSysRole(sysRoleDto));
+    public R<Object> add(@Validated @RequestBody SysRoleDto sysRoleDto) {
+        sysRoleService.insertSysRole(sysRoleDto);
+        return R.ok();
     }
 
     /**
@@ -82,7 +87,7 @@ public class SysRoleController {
      *
      * @param sysRoleIds sysRoleID串
      */
-//@Log(title = "sysRole管理", businessType = BusinessType.DELETE)
+    //@Log(title = "sysRole管理", businessType = BusinessType.DELETE)
     @DeleteMapping("/{sysRoleIds}")
     public R<Void> remove(@PathVariable Long[] sysRoleIds) {
         return R.result(sysRoleService.deleteSysRoleByIds(sysRoleIds));
@@ -96,6 +101,14 @@ public class SysRoleController {
         List<SysRoleVo> sysRoles = sysRoleService.selectSysRoleAll();
         return R.ok(sysRoles);
     }
-    
 
+
+    /**
+     * 获取sysRole选择框列表
+     */
+    @GetMapping("/getUserIdsByRoleId")
+    public R<List<Long>> getUserIdsByRoleId(Long roleId) {
+        List<Long> userIdsByRoleId = sysRoleService.getUserIdsByRoleId(roleId);
+        return R.ok(userIdsByRoleId);
+    }
 }
