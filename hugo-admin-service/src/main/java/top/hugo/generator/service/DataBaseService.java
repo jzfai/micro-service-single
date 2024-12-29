@@ -1,14 +1,14 @@
 package top.hugo.generator.service;
 
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.stereotype.Service;
 import top.hugo.common.exception.ServiceException;
 import top.hugo.generator.entity.DataBaseInfo;
 import top.hugo.generator.entity.DatabaseConfig;
 import top.hugo.generator.mapper.DatabaseConfigMapper;
 import top.hugo.generator.utils.JdbcUtils;
 import top.hugo.redis.utils.RedisUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.stereotype.Service;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -37,8 +37,8 @@ public class DataBaseService {
     }
 
     /*
-    * 刷新缓存
-    * */
+     * 刷新缓存
+     * */
     public void flushAllSchema(DataBaseInfo dataBaseInfo){
         RedisUtils.getClient().getMapCache("getAllSchema").delete();
         getAllSchema(dataBaseInfo,dataBaseInfo.getUrl());
@@ -48,7 +48,7 @@ public class DataBaseService {
      * 获取所有的库
      */
     @Cacheable(cacheNames = "getAllSchema", key = "#ip")
-    public Set<String> getAllSchema(DataBaseInfo dataBaseInfo,String ip) {
+    public Set<String> getAllSchema(DataBaseInfo dataBaseInfo, String ip) {
         Connection conn = null;
         Statement sta = null;
         ResultSet rs = null;
@@ -117,7 +117,7 @@ public class DataBaseService {
             conn = JdbcUtils.getConnection(url, dataBaseInfo.getUserName(), dataBaseInfo.getPassword());
             sta = conn.createStatement();
             String sql = "select table_schema, table_name, column_name, is_nullable, data_type, column_type, column_key, extra, column_comment " +
-                    "from INFORMATION_SCHEMA.COLUMNS COL where TABLE_SCHEMA =" + changeStringToQue(dataBaseInfo.getDbName()) + " and COL.TABLE_NAME = " + changeStringToQue(dataBaseInfo.getTbName());
+                    "from INFORMATION_SCHEMA.COLUMNS COL where TABLE_SCHEMA =" + changeStringToQue(dataBaseInfo.getDbName()) + " and COL.TABLE_NAME = " + changeStringToQue(dataBaseInfo.getTbName()) +" order  by ORDINAL_POSITION asc ";
             rs = sta.executeQuery(sql);
 
             while (rs.next()) {

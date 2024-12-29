@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.hugo.admin.mapper.SysUserMapper">
+    <select id="selectUserAndPostList" resultType="SysUserVo">
+       select  su.*, sd.dept_name, GROUP_CONCAT(sp.post_name) as post_names, GROUP_CONCAT(sp.post_id) as post_ids
+       from  sys_user su
+       LEFT JOIN sys_dept sd on sd.dept_id=su.dept_id
+       LEFT JOIN sys_user_post sup on su.user_id=sup.user_id
+       LEFT JOIN sys_post sp on sp.post_id=sup.post_id
+       ${ew.getCustomSqlSegment}
+       GROUP BY su.user_id
+    </select>
+
+</mapper>
